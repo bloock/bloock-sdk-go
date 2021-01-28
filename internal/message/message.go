@@ -13,3 +13,6 @@ func New(bytes []byte) (*message, error) {
 	return &m, nil
 }
 
+func (m *message) Hash() string {
+	return m.hash
+}
