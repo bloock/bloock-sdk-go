@@ -27,7 +27,7 @@ type Receipts struct {
 //type Receipts []Receipt `json:"messages"`
 
 type Receipt struct {
-	Message string `json:"message"`
+	Message string `json:"Message"`
 	Anchor  int    `json:"anchor"`
 	Client  string `json:"client"`
 	Status  string `json:"status"`

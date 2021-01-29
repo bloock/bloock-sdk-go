@@ -2,17 +2,17 @@ package message
 
 import "encoding/hex"
 
-type message struct {
+type Message struct {
 	hash string
 }
 
-func New(bytes []byte) (*message, error) {
+func New(bytes []byte) (*Message, error) {
 	hash := hex.EncodeToString(bytes)
-	m := message{hash: hash}
+	m := Message{hash: hash}
 
 	return &m, nil
 }
 
-func (m *message) Hash() string {
+func (m *Message) Hash() string {
 	return m.hash
 }

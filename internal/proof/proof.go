@@ -17,18 +17,18 @@ var (
 )
 
 type Proof struct {
-	leaves []string
-	nodes  []string
-	depth  string
-	bitmap string
+	Leaves []string
+	Nodes  []string
+	Depth  string
+	Bitmap string
 }
 
 func New(leaves, nodes []string, depth, bitmap string) (*Proof, error) {
 	p := Proof{
-		leaves: leaves,
-		nodes:  nodes,
-		depth:  depth,
-		bitmap: bitmap,
+		Leaves: leaves,
+		Nodes:  nodes,
+		Depth:  depth,
+		Bitmap: bitmap,
 	}
 	if err := p.validate(); err != nil {
 		return nil, err
@@ -37,20 +37,20 @@ func New(leaves, nodes []string, depth, bitmap string) (*Proof, error) {
 }
 
 func (p *Proof) validate() error {
-	for _, l := range p.leaves {
+	for _, l := range p.Leaves {
 		if !isHex(l) || len(l) != length {
 			return ErrInvalidLeave
 		}
 	}
-	for _, n := range p.nodes {
+	for _, n := range p.Nodes {
 		if !isHex(n) || len(n) != length {
 			return ErrInvalidNode
 		}
 	}
-	if !isHex(p.depth) {
+	if !isHex(p.Depth) {
 		return ErrInvalidDepth
 	}
-	if !isHex(p.bitmap) {
+	if !isHex(p.Bitmap) {
 		return ErrInvalidBitmap
 	}
 
@@ -64,18 +64,3 @@ func isHex(s string) bool {
 	return true
 }
 
-func (p *Proof) Leaves() []string {
-	return p.leaves
-}
-
-func (p *Proof) Nodes() []string {
-	return p.nodes
-}
-
-func (p *Proof) Depth() string {
-	return p.depth
-}
-
-func (p *Proof) Bitmap() string {
-	return p.bitmap
-}

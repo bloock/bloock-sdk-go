@@ -21,8 +21,8 @@ func TestMessageServiceSearch(t *testing.T) {
 
 	// should successfully return the receipts
 	var messages [][]byte
-	messages = append(messages, []byte("first message"))
-	messages = append(messages, []byte("second message"))
+	messages = append(messages, []byte("first Message"))
+	messages = append(messages, []byte("second Message"))
 
 	var hashes []string
 	for _, mb := range messages {
@@ -54,8 +54,8 @@ func TestMessageServiceSearch(t *testing.T) {
 			},
 		}}
 
-	jsonREs, _ := json.Marshal(res)
-	http.EXPECT().PostRequest("/v1/messages/fetch", body).Return(jsonREs, nil).Times(1)
+	jsonRes, _ := json.Marshal(res)
+	http.EXPECT().PostRequest("/v1/messages/fetch", body).Return(jsonRes, nil).Times(1)
 
 	receipts, err := s.Search(messages)
 	if err != nil {
