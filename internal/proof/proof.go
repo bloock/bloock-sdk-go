@@ -5,13 +5,16 @@ import (
 	"errors"
 )
 
-var (
-	ErrInvalidLeave = errors.New("invalid leave hexadecimal string provided")
-	ErrInvalidNode = errors.New("invalid node hexadecimal string provided")
-	ErrInvalidDepth = errors.New("invalid depth hexadecimal string provided")
-	ErrInvalidBitmap = errors.New("invalid bitmap hexadecimal string provided")
+const (
+	length = 64
 )
 
+var (
+	ErrInvalidLeave  = errors.New("invalid leave provided")
+	ErrInvalidNode   = errors.New("invalid node provided")
+	ErrInvalidDepth  = errors.New("invalid depth provided")
+	ErrInvalidBitmap = errors.New("invalid bitmap provided")
+)
 
 type Proof struct {
 	leaves []string
@@ -35,12 +38,12 @@ func New(leaves, nodes []string, depth, bitmap string) (*Proof, error) {
 
 func (p *Proof) validate() error {
 	for _, l := range p.leaves {
-		if !isHex(l) || len(l) != 64 {
+		if !isHex(l) || len(l) != length {
 			return ErrInvalidLeave
 		}
 	}
 	for _, n := range p.nodes {
-		if !isHex(n) || len(n) != 64 {
+		if !isHex(n) || len(n) != length {
 			return ErrInvalidNode
 		}
 	}

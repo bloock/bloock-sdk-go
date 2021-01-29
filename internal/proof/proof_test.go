@@ -5,13 +5,13 @@ import (
 	"testing"
 )
 
-func TestProofNewProof(t *testing.T)  {
-	tests := []struct{
+func TestProofNewProof(t *testing.T) {
+	tests := []struct {
 		leaves []string
 		nodes  []string
 		depth  string
 		bitmap string
-		err error
+		err    error
 	}{
 		{
 			[]string{
