@@ -33,31 +33,31 @@ func (m *HttpClient) EXPECT() *HttpClientMockRecorder {
 }
 
 // Request mocks base method
-func (m *HttpClient) Request(verb, endpoint string, body interface{}) (map[string]interface{}, error) {
+func (m *HttpClient) Request(apiKey, verb, url string, headers map[string]string, body interface{}) ([]byte, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Request", verb, endpoint, body)
-	ret0, _ := ret[0].(map[string]interface{})
+	ret := m.ctrl.Call(m, "Request", apiKey, verb, url, headers, body)
+	ret0, _ := ret[0].([]byte)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // Request indicates an expected call of Request
-func (mr *HttpClientMockRecorder) Request(verb, endpoint, body interface{}) *gomock.Call {
+func (mr *HttpClientMockRecorder) Request(apiKey, verb, url, headers, body interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Request", reflect.TypeOf((*HttpClient)(nil).Request), verb, endpoint, body)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Request", reflect.TypeOf((*HttpClient)(nil).Request), apiKey, verb, url, headers, body)
 }
 
 // PostRequest mocks base method
-func (m *HttpClient) PostRequest(endpoint string, body interface{}) ([]byte, error) {
+func (m *HttpClient) PostRequest(url string, body interface{}) ([]byte, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "PostRequest", endpoint, body)
+	ret := m.ctrl.Call(m, "PostRequest", url, body)
 	ret0, _ := ret[0].([]byte)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // PostRequest indicates an expected call of PostRequest
-func (mr *HttpClientMockRecorder) PostRequest(endpoint, body interface{}) *gomock.Call {
+func (mr *HttpClientMockRecorder) PostRequest(url, body interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PostRequest", reflect.TypeOf((*HttpClient)(nil).PostRequest), endpoint, body)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PostRequest", reflect.TypeOf((*HttpClient)(nil).PostRequest), url, body)
 }

@@ -33,18 +33,19 @@ func (m *MessageService) EXPECT() *MessageServiceMockRecorder {
 	return m.recorder
 }
 
-// Send mocks base method
-func (m *MessageService) Send(hash []byte) bool {
+// Write mocks base method
+func (m *MessageService) Write(hash []byte) (bool, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Send", hash)
+	ret := m.ctrl.Call(m, "Write", hash)
 	ret0, _ := ret[0].(bool)
-	return ret0
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
-// Send indicates an expected call of Send
-func (mr *MessageServiceMockRecorder) Send(hash interface{}) *gomock.Call {
+// Write indicates an expected call of Write
+func (mr *MessageServiceMockRecorder) Write(hash interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Send", reflect.TypeOf((*MessageService)(nil).Send), hash)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Write", reflect.TypeOf((*MessageService)(nil).Write), hash)
 }
 
 // Search mocks base method
