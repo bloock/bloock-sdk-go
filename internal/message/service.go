@@ -2,23 +2,39 @@ package message
 
 import (
 	"encoding/json"
+	"errors"
+	"fmt"
+	"github.com/enchainte/enchainte-sdk-go/config"
 	"github.com/enchainte/enchainte-sdk-go/pkg/http"
 	"time"
 )
 
 type Service interface {
-	Send(hash []byte) bool
+	Write(hash []byte) error
 	Search(hash [][]byte) (*Receipts, error)
 	Verify(hashes [][]byte) bool
 	Wait(hashes [][]byte) (*Receipts, error)
 }
 
+const period = 2 // seconds
+
+var (
+	messagesStack []Message
+)
+
 type service struct {
+	channel chan SendResponse
+	apiKey string
 	http http.Client
+	constants config.Constants
 }
 
-func NewService(http http.Client) Service {
-	return &service{http}
+func NewService(ch chan SendResponse, apiKey string, http http.Client, constants config.Constants) Service {
+	return &service{ch,apiKey,http, constants}
+}
+
+func (s *service) init() {
+	go s.scheduler(time.Second * period, s.channel)
 }
 
 type Receipts struct {
@@ -41,8 +57,19 @@ type ReceiptOld struct {
 	Error   string
 }
 
-func (s *service) Send(message []byte) bool {
-	panic("implement me")
+type SendResponse struct {
+	body WriteResponse
+	err  error
+}
+
+func (s *service) Write(hash []byte) error {
+	message, err := New(hash)
+	if err != nil {
+		return err
+	}
+	messagesStack = append(messagesStack, *message)
+
+	return nil
 }
 
 // TODO should receive client ID parameter
@@ -56,26 +83,36 @@ func (s *service) Search(messageBytes [][]byte) (*Receipts, error) {
 		hashes = append(hashes, m.hash)
 	}
 
-	body := ApiFetchRequestBody{
+	body := FetchRequest{
 		Messages: hashes,
 		// TODO
 		Client: "",
 	}
 
-	// TODO add endpoint to config
-	resp, err := s.http.PostRequest("/v1/messages/fetch", body)
+	resp, err := s.http.Request(s.apiKey, "POST", fmt.Sprintf("%s%s",s.constants.Api.Host, s.constants.Api.Endpoints.MessageFetch), nil, body)
 	if err != nil {
 		return nil, err
 	}
 
-	var rs Receipts
-	if err := json.Unmarshal(resp, &rs); err != nil {
+	var res map[string]interface{}
+	if err := json.Unmarshal(resp, &res); err != nil {
 		return nil, err
 	}
 
-	return &rs, nil
+	if res["status"] == "error" {
+		return nil, errors.New(fmt.Sprintf("%v", res["message"]))
+	}
+
+	var receipts Receipts
+	bytes, _ := json.Marshal(res)
+	if err := json.Unmarshal(bytes, &receipts); err != nil {
+		return nil, err
+	}
+
+	return &receipts, nil
 }
 
+// TODO implement
 func (s *service) Verify(hashes [][]byte) bool {
 	panic("implement me")
 }
@@ -86,8 +123,13 @@ func (s *service) Wait(hashes [][]byte) (*Receipts, error) {
 
 	var receipts Receipts
 	for !complete {
-		receipts, err := s.Search(hashes)
+		res, err := s.Search(hashes)
 		if err != nil {
+			return nil, err
+		}
+
+		bytes, _ := json.Marshal(res)
+		if err := json.Unmarshal(bytes, &receipts); err != nil {
 			return nil, err
 		}
 
@@ -115,4 +157,73 @@ func (s *service) Wait(hashes [][]byte) (*Receipts, error) {
 	}
 
 	return &receipts, nil
+}
+
+// send does a POST request to Enchainté's API to write all hashes stored in the message stack to the blockchain.
+func (s *service) send() (*WriteResponse, error) {
+	if len(messagesStack) == 0 {
+		return nil, nil
+	}
+
+	var hashes []string
+	for _, message := range messagesStack {
+		hashes = append(hashes, message.Hash())
+	}
+
+	body := WriteRequest{
+		Messages: hashes,
+		// TODO
+		Client: "",
+	}
+	resp, err := s.http.Request(s.apiKey, "POST", fmt.Sprintf("%s%s",s.constants.Api.Host, s.constants.Api.Endpoints.MessageWrite), nil, body)
+	if err != nil {
+		return nil, err
+	}
+
+	var res map[string]interface{}
+	if err := json.Unmarshal(resp, &res); err != nil {
+		return nil, err
+	}
+
+	if res["status"] == "error" {
+		return nil, errors.New(fmt.Sprintf("%v", res["message"]))
+	}
+
+	var anchor WriteResponse
+	bytes, _ := json.Marshal(res)
+	if err := json.Unmarshal(bytes, &anchor); err != nil {
+		return nil, err
+	}
+
+	return &anchor, nil
+}
+
+// scheduler executes periodically the checkStack method
+func (s *service) scheduler(period time.Duration, ch chan SendResponse) {
+	for {
+		c := time.Tick(period)
+		for range c {
+			s.checkStack(ch)
+		}
+	}
+}
+
+// checkStack executes the send method when the message stack is not empty and sends the result to the channel
+func (s *service) checkStack(ch chan SendResponse) {
+	if messagesStack == nil {
+		fmt.Println("Empty stack... leaving")
+		fmt.Println()
+		return
+	}
+
+	fmt.Println("Sending message stack...")
+	fmt.Println()
+	resp, err := s.send()
+
+	messagesStack = nil
+	ch <- SendResponse{
+		body: *resp,
+		err:  err,
+	}
+	return
 }
