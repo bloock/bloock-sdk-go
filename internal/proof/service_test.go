@@ -3,6 +3,7 @@ package proof
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/enchainte/enchainte-sdk-go/config"
 	"github.com/enchainte/enchainte-sdk-go/internal/message"
 	"github.com/enchainte/enchainte-sdk-go/internal/mocks"
 	"github.com/golang/mock/gomock"
@@ -15,7 +16,9 @@ func TestProofServiceProof(t *testing.T) {
 	defer mockCtrl.Finish()
 
 	http := mocks.NewHttpClient(mockCtrl)
-	s := NewService(http)
+	hasher := mocks.NewHasher(mockCtrl)
+	constants := config.EnvVariables()
+	s := NewService("", http, constants, hasher)
 
 	var hashesBytes [][]byte
 	hashesBytes = append(hashesBytes, []byte("first hash"))
@@ -36,8 +39,8 @@ func TestProofServiceProof(t *testing.T) {
 	}
 
 	res := Proof{
-		Leaves: []string{"72aae7e86eb51f61a620831320475d9d61cbd52749dbf18fa942b1b97f50aee9"},
-		Nodes:  []string{"359b5206452a4ca5058129727fb48f0860a36c0afee0ec62baa874927e9d4b99"},
+		Leaves: []hexadecimal{"72aae7e86eb51f61a620831320475d9d61cbd52749dbf18fa942b1b97f50aee9"},
+		Nodes:  []hexadecimal{"359b5206452a4ca5058129727fb48f0860a36c0afee0ec62baa874927e9d4b99"},
 		Depth:  "020304050501",
 		Bitmap: "f4",
 	}
@@ -51,3 +54,39 @@ func TestProofServiceProof(t *testing.T) {
 	}
 	assert.Equal(t, &res, p)
 }
+
+//func TestProofServiceCalculateRoot(t *testing.T) {
+//	var leaves = []string{"72aae7e86eb51f61a620831320475d9d61cbd52749dbf18fa942b1b97f50aee9"}
+//	var nodes = []string{
+//		"359b5206452a4ca5058129727fb48f0860a36c0afee0ec62baa874927e9d4b99",
+//		"707cb86e449cd3990c85fb3ae9ec967ee12b82f21eae9e6ea35180e6c331c3e8",
+//		"23950edeb3ca719e814d8b04d63d90d39327b49b7df5baf2f72305c1f2b260b7",
+//		"72aae7e86eb50f61a620831320475d9d61cbd52749dbf18fa942b1b97f50aee9",
+//		"517e320992fb35553575750153992d6360268d04a1e4d9e2cae7e5c3736ac627",
+//	}
+//	var depth = "020304050501"
+//	var bitmap = "f4"
+//	var root = "6608fd2c5d9c28124b41d6e441d552ad811a51fc6fdae0f33aa64bf3f43ca699"
+//
+//	mockCtrl := gomock.NewController(t)
+//	defer mockCtrl.Finish()
+//
+//	http := mocks.NewHttpClient(mockCtrl)
+//	hasher := mocks.NewHasher(mockCtrl)
+//	s := NewService(http, hasher)
+//
+//	hasher.EXPECT().Hash(gomock.Any()).Return([]byte("a"), nil).AnyTimes()
+//
+//	proof, err := New(leaves, nodes, depth, bitmap)
+//	if err != nil {
+//		assert.Fail(t, fmt.Sprintf("unexpected error: %s", err.Error()))
+//	}
+//
+//	var res string
+//	res, err = s.CalculateRoot(proof)
+//	if err != nil {
+//		assert.Fail(t, fmt.Sprintf("unexpected error: %s", err.Error()))
+//	}
+//
+//	assert.Equal(t, root, res)
+//}
