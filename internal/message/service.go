@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/enchainte/enchainte-sdk-go/config"
+	"github.com/enchainte/enchainte-sdk-go/internal/proof"
 	"github.com/enchainte/enchainte-sdk-go/pkg/http"
 	"time"
 )
@@ -12,7 +13,7 @@ import (
 type Service interface {
 	Write(hash []byte) error
 	Search(hash [][]byte) (*Receipts, error)
-	Verify(hashes [][]byte) bool
+	Verify(hashes [][]byte) (bool, error)
 	Wait(hashes [][]byte) (*Receipts, error)
 }
 
@@ -27,10 +28,11 @@ type service struct {
 	apiKey string
 	http http.Client
 	constants config.Constants
+	proof proof.Service
 }
 
-func NewService(ch chan SendResponse, apiKey string, http http.Client, constants config.Constants) Service {
-	return &service{ch,apiKey,http, constants}
+func NewService(ch chan SendResponse, apiKey string, http http.Client, constants config.Constants, proof proof.Service) Service {
+	return &service{ch,apiKey,http, constants, proof}
 }
 
 func (s *service) init() {
@@ -85,7 +87,7 @@ func (s *service) Search(messageBytes [][]byte) (*Receipts, error) {
 
 	body := FetchRequest{
 		Messages: hashes,
-		// TODO
+		// TODO client id
 		Client: "",
 	}
 
@@ -112,9 +114,14 @@ func (s *service) Search(messageBytes [][]byte) (*Receipts, error) {
 	return &receipts, nil
 }
 
-// TODO implement
-func (s *service) Verify(hashes [][]byte) bool {
-	panic("implement me")
+func (s *service) Verify(hashes [][]byte) (bool, error) {
+
+	p, err := s.proof.Proof(hashes)
+	if err != nil {
+		return false, err
+	}
+
+	return s.proof.Verify(p.Leaves, p.Nodes, string(p.Depth), string(p.Bitmap))
 }
 
 func (s *service) Wait(hashes [][]byte) (*Receipts, error) {
