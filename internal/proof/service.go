@@ -13,21 +13,21 @@ import (
 )
 
 type service struct {
-	apiKey string
-	http   http.Client
+	apiKey    string
+	http      http.Client
 	constants config.Constants
-	hasher crypto.Hasher
-	bc blockchain.Client
+	hasher    crypto.Hasher
+	bc        blockchain.Client
 }
 
 type Service interface {
 	Proof(hashes [][]byte) (*Proof, error)
-	Verify(leaves, nodes []string, depth, bitmap string) (bool, error)
+	Verify(hashes [][]byte) (bool, error)
 	CalculateRoot(proof *Proof) (string, error)
 }
 
 func NewService(apiKey string, http http.Client, constants config.Constants, hasher crypto.Hasher, bc blockchain.Client) Service {
-	return &service{apiKey,http,constants,hasher, bc}
+	return &service{apiKey, http, constants, hasher, bc}
 }
 
 func (s *service) Proof(hashesBytes [][]byte) (*Proof, error) {
@@ -46,7 +46,7 @@ func (s *service) Proof(hashesBytes [][]byte) (*Proof, error) {
 	}
 
 	// TODO sort necessary?
-	resp, err := s.http.Request(s.apiKey, "POST", fmt.Sprintf("%s%s",s.constants.Api.Host, s.constants.Api.Endpoints.MessageProof),nil,  body)
+	resp, err := s.http.Request(s.apiKey, "POST", fmt.Sprintf("%s%s", s.constants.Api.Host, s.constants.Api.Endpoints.MessageProof), nil, body)
 	if err != nil {
 		return nil, err
 	}
@@ -69,8 +69,9 @@ func (s *service) Proof(hashesBytes [][]byte) (*Proof, error) {
 	return &proof, nil
 }
 
-func (s *service) Verify(leaves, nodes []string, depth, bitmap string) (bool, error) {
-	proof, err := New(leaves, nodes, depth, bitmap)
+func (s *service) Verify(hashes [][]byte) (bool, error) {
+
+	proof, err := s.Proof(hashes)
 	if err != nil {
 		return false, err
 	}
@@ -138,10 +139,7 @@ func (s *service) merge(hashes ...[]byte) ([]byte, error) {
 		concat = append(concat, h...)
 	}
 
-	newHash, err := s.hasher.Hash(concat)
-	if err != nil {
-		return nil, err
-	}
+	newHash := s.hasher.Hash(concat)
 
 	return newHash, nil
 }

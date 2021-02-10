@@ -33,12 +33,11 @@ func (m *Hasher) EXPECT() *HasherMockRecorder {
 }
 
 // Hash mocks base method
-func (m *Hasher) Hash(key []byte) ([]byte, error) {
+func (m *Hasher) Hash(key []byte) []byte {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Hash", key)
 	ret0, _ := ret[0].([]byte)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	return ret0
 }
 
 // Hash indicates an expected call of Hash

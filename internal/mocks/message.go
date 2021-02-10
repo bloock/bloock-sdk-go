@@ -34,12 +34,11 @@ func (m *MessageService) EXPECT() *MessageServiceMockRecorder {
 }
 
 // Write mocks base method
-func (m *MessageService) Write(hash []byte) (bool, error) {
+func (m *MessageService) Write(hash []byte) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Write", hash)
-	ret0, _ := ret[0].(bool)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	ret0, _ := ret[0].(error)
+	return ret0
 }
 
 // Write indicates an expected call of Write
@@ -61,20 +60,6 @@ func (m *MessageService) Search(hash [][]byte) (*message.Receipts, error) {
 func (mr *MessageServiceMockRecorder) Search(hash interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Search", reflect.TypeOf((*MessageService)(nil).Search), hash)
-}
-
-// Verify mocks base method
-func (m *MessageService) Verify(hashes [][]byte) bool {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Verify", hashes)
-	ret0, _ := ret[0].(bool)
-	return ret0
-}
-
-// Verify indicates an expected call of Verify
-func (mr *MessageServiceMockRecorder) Verify(hashes interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Verify", reflect.TypeOf((*MessageService)(nil).Verify), hashes)
 }
 
 // Wait mocks base method

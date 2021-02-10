@@ -33,11 +33,12 @@ func (m *BlockchainClient) EXPECT() *BlockchainClientMockRecorder {
 }
 
 // ValidateRoot mocks base method
-func (m *BlockchainClient) ValidateRoot(root string) bool {
+func (m *BlockchainClient) ValidateRoot(root string) (bool, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ValidateRoot", root)
 	ret0, _ := ret[0].(bool)
-	return ret0
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // ValidateRoot indicates an expected call of ValidateRoot
