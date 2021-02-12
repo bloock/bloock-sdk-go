@@ -45,17 +45,3 @@ func (mr *HasherMockRecorder) Hash(key interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Hash", reflect.TypeOf((*Hasher)(nil).Hash), key)
 }
-
-// Validate mocks base method
-func (m *Hasher) Validate(hash string) bool {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Validate", hash)
-	ret0, _ := ret[0].(bool)
-	return ret0
-}
-
-// Validate indicates an expected call of Validate
-func (mr *HasherMockRecorder) Validate(hash interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Validate", reflect.TypeOf((*Hasher)(nil).Validate), hash)
-}

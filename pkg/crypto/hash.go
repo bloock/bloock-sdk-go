@@ -5,27 +5,25 @@ import (
 )
 
 type Hasher interface {
-	Hash(key []byte) ([]byte, error)
-	Validate(hash string) bool
+	Hash(key []byte) []byte
 }
 
 type blake2b struct {
-	size int
 }
 
-func Blake2b(size int) Hasher {
-	return &blake2b{256}
+func Blake2b() Hasher {
+	return &blake2b{}
 }
 
-func (b *blake2b) Hash(key []byte) ([]byte, error) {
-	hash, err := b2b.New(b.size, key)
-	if err != nil {
-		return nil, err
-	}
+func (b *blake2b) Hash(key []byte) []byte {
+	hash := b2b.Sum256(key)
 
-	return hash.Sum(nil), nil
-}
+	return hash[:]
 
-func (b *blake2b) Validate(hash string) bool {
-	panic("implement me")
+	//hash, err := b2b.New256(key)
+	//if err != nil {
+	//	return nil, err
+	//}
+	//
+	//return hash.Sum(nil), nil
 }
