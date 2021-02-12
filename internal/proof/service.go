@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/enchainte/enchainte-sdk-go/config"
+	"github.com/enchainte/enchainte-sdk-go/internal/cloud"
 	"github.com/enchainte/enchainte-sdk-go/internal/message"
 	"github.com/enchainte/enchainte-sdk-go/pkg/blockchain"
 	"github.com/enchainte/enchainte-sdk-go/pkg/crypto"
@@ -13,11 +13,11 @@ import (
 )
 
 type service struct {
-	apiKey    string
-	http      http.Client
-	constants config.Constants
-	hasher    crypto.Hasher
-	bc        blockchain.Client
+	apiKey string
+	http   http.Client
+	params cloud.SdkParams
+	hasher crypto.Hasher
+	bc     blockchain.Client
 }
 
 type Service interface {
@@ -26,8 +26,8 @@ type Service interface {
 	CalculateRoot(proof *Proof) (string, error)
 }
 
-func NewService(apiKey string, http http.Client, constants config.Constants, hasher crypto.Hasher, bc blockchain.Client) Service {
-	return &service{apiKey, http, constants, hasher, bc}
+func NewService(apiKey string, http http.Client, params cloud.SdkParams, hasher crypto.Hasher, bc blockchain.Client) Service {
+	return &service{apiKey, http, params, hasher, bc}
 }
 
 func (s *service) Proof(hashesBytes [][]byte) (*Proof, error) {
@@ -46,7 +46,7 @@ func (s *service) Proof(hashesBytes [][]byte) (*Proof, error) {
 	}
 
 	// TODO sort necessary?
-	resp, err := s.http.Request(s.apiKey, "POST", fmt.Sprintf("%s%s", s.constants.Api.Host, s.constants.Api.Endpoints.MessageProof), nil, body)
+	resp, err := s.http.Request(s.apiKey, "POST", fmt.Sprintf("%s%s", s.params.Host, s.params.MessageProof), nil, body)
 	if err != nil {
 		return nil, err
 	}

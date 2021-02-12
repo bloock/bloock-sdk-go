@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/enchainte/enchainte-sdk-go/config"
+	"github.com/enchainte/enchainte-sdk-go/internal/cloud"
 	"github.com/enchainte/enchainte-sdk-go/pkg/http"
 	"time"
 )
@@ -15,9 +15,6 @@ type Service interface {
 	Wait(hashes [][]byte) (*Receipts, error)
 }
 
-// TODO from constants
-const period = 2 // seconds
-
 var (
 	messagesStack []Message
 	channel       chan SendResponse
@@ -25,17 +22,16 @@ var (
 )
 
 type service struct {
-	//channel chan SendResponse
-	apiKey    string
-	http      http.Client
-	constants config.Constants
+	apiKey string
+	http   http.Client
+	params cloud.SdkParams
 }
 
-func NewService(apiKey string, http http.Client, constants config.Constants) Service {
+func NewService(apiKey string, http http.Client, params cloud.SdkParams) Service {
 	channel = make(chan SendResponse)
 	done = make(chan bool)
-	s := &service{apiKey, http, constants}
-	go s.scheduler(period, done)
+	s := &service{apiKey, http, params}
+	go s.scheduler(done)
 	return s
 }
 
@@ -90,7 +86,7 @@ func (s *service) Search(messageBytes [][]byte) (*Receipts, error) {
 		Client: "",
 	}
 
-	resp, err := s.http.Request(s.apiKey, "POST", fmt.Sprintf("%s%s", s.constants.Api.Host, s.constants.Api.Endpoints.MessageFetch), nil, body)
+	resp, err := s.http.Request(s.apiKey, "POST", fmt.Sprintf("%s%s", s.params.Host, s.params.MessageFetch), nil, body)
 	if err != nil {
 		return nil, err
 	}
@@ -146,8 +142,7 @@ func (s *service) Wait(hashes [][]byte) (*Receipts, error) {
 			break
 		}
 
-		// TODO change by time and coef define in config
-		time.Sleep(time.Duration(3+(attempts*1)) * time.Second)
+		time.Sleep(time.Duration(s.params.WaitIntervalDefault+(attempts*s.params.WaitIntervalFactor)) * time.Second)
 
 		attempts++
 	}
@@ -171,7 +166,7 @@ func (s *service) send() (*WriteResponse, error) {
 		// TODO
 		Client: "",
 	}
-	resp, err := s.http.Request(s.apiKey, "POST", fmt.Sprintf("%s%s", s.constants.Api.Host, s.constants.Api.Endpoints.MessageWrite), nil, body)
+	resp, err := s.http.Request(s.apiKey, "POST", fmt.Sprintf("%s%s", s.params.Host, s.params.MessageWrite), nil, body)
 	if err != nil {
 		return nil, err
 	}
@@ -195,9 +190,9 @@ func (s *service) send() (*WriteResponse, error) {
 }
 
 // scheduler executes periodically the checkStack method
-func (s *service) scheduler(period time.Duration, done chan bool) {
+func (s *service) scheduler(done chan bool) {
 
-	ticker := time.NewTicker(time.Second * period)
+	ticker := time.NewTicker(time.Duration(s.params.WriteInterval) * time.Second)
 	for {
 		select {
 		case <-done:

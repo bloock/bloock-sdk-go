@@ -3,7 +3,7 @@ package proof_test
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/enchainte/enchainte-sdk-go/config"
+	"github.com/enchainte/enchainte-sdk-go/internal/cloud"
 	"github.com/enchainte/enchainte-sdk-go/internal/message"
 	"github.com/enchainte/enchainte-sdk-go/internal/mocks"
 	"github.com/enchainte/enchainte-sdk-go/internal/proof"
@@ -19,9 +19,9 @@ func TestProofServiceProof(t *testing.T) {
 
 	http := mocks.NewHttpClient(mockCtrl)
 	hasher := mocks.NewHasher(mockCtrl)
-	constants := config.Constants{}
+	sdkParams := cloud.SdkParams{}
 	bc := mocks.NewBlockchainClient(mockCtrl)
-	s := proof.NewService("", http, constants, hasher, bc)
+	s := proof.NewService("", http, sdkParams, hasher, bc)
 
 	var hashesBytes [][]byte
 	hashesBytes = append(hashesBytes, []byte("first hash"))
@@ -76,10 +76,10 @@ func TestProofServiceCalculateRoot(t *testing.T) {
 
 	http := mocks.NewHttpClient(mockCtrl)
 	hasher := crypto.Blake2b()
-	constants := config.Constants{}
+	sdkParams := cloud.SdkParams{}
 	bc := mocks.NewBlockchainClient(mockCtrl)
 
-	s := proof.NewService("", http, constants, hasher, bc)
+	s := proof.NewService("", http, sdkParams, hasher, bc)
 
 	proof, err := proof.New(leaves, nodes, depth, bitmap)
 	if err != nil {
@@ -119,10 +119,10 @@ func TestProofServiceVerify(t *testing.T) {
 
 	http := mocks.NewHttpClient(mockCtrl)
 	hasher := crypto.Blake2b()
-	constants := config.Constants{}
+	sdkParams := cloud.SdkParams{}
 	bc := mocks.NewBlockchainClient(mockCtrl)
 
-	s := proof.NewService("", http, constants, hasher, bc)
+	s := proof.NewService("", http, sdkParams, hasher, bc)
 
 	http.EXPECT().Request("", "POST", gomock.Any(), nil, gomock.Any()).Return([]byte(proofResponse), nil).Times(1)
 

@@ -3,7 +3,7 @@ package message_test
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/enchainte/enchainte-sdk-go/config"
+	"github.com/enchainte/enchainte-sdk-go/internal/cloud"
 	"github.com/enchainte/enchainte-sdk-go/internal/message"
 	"github.com/enchainte/enchainte-sdk-go/internal/mocks"
 	"github.com/golang/mock/gomock"
@@ -17,9 +17,12 @@ func TestMessageServiceSearch(t *testing.T) {
 	defer mockCtrl.Finish()
 
 	http := mocks.NewHttpClient(mockCtrl)
-	cts := config.Constants{}
-
-	s := message.NewService("", http, cts)
+	sdkParams := cloud.SdkParams{
+		WriteInterval:       1,
+		WaitIntervalFactor:  1,
+		WaitIntervalDefault: 1,
+	}
+	s := message.NewService("", http, sdkParams)
 
 	defer message.Done()
 
@@ -60,6 +63,7 @@ func TestMessageServiceSearch(t *testing.T) {
 		}}
 
 	jsonRes, _ := json.Marshal(res)
+
 	http.EXPECT().Request("", "POST", gomock.Any(), nil, body).Return(jsonRes, nil)
 
 	receipts, err := s.Search(messages)
@@ -75,9 +79,13 @@ func TestMessageServiceWait(t *testing.T) {
 	defer mockCtrl.Finish()
 
 	http := mocks.NewHttpClient(mockCtrl)
-	cts := config.Constants{}
 
-	s := message.NewService("", http, cts)
+	sdkParams := cloud.SdkParams{
+		WriteInterval:       1,
+		WaitIntervalFactor:  1,
+		WaitIntervalDefault: 1,
+	}
+	s := message.NewService("", http, sdkParams)
 
 	defer message.Done()
 
@@ -149,9 +157,13 @@ func TestMessageServiceWrite(t *testing.T) {
 	defer mockCtrl.Finish()
 
 	http := mocks.NewHttpClient(mockCtrl)
-	cts := config.Constants{}
 
-	s := message.NewService("", http, cts)
+	sdkParams := cloud.SdkParams{
+		WriteInterval:       1,
+		WaitIntervalFactor:  1,
+		WaitIntervalDefault: 1,
+	}
+	s := message.NewService("", http, sdkParams)
 
 	defer message.Done()
 

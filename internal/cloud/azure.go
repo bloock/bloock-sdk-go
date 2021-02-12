@@ -5,7 +5,6 @@ import (
 	"crypto/sha256"
 	"encoding/base64"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"github.com/enchainte/enchainte-sdk-go/config"
 	"github.com/enchainte/enchainte-sdk-go/pkg/http"
@@ -20,20 +19,34 @@ var (
 	secret        = "1UA2dijC0SIVyrPKUKG0gT0oXxkVaMrUfJuXkLr+i0c="
 )
 
-var params map[string]interface{}
+var sdkParams SdkParams
 
-type Services interface {
+type Service interface {
 	ConfigParameters() error
-	Parameters() map[string]interface{}
+	SdkParameters() SdkParams
 }
 
 type service struct {
-	http http.Client
+	http    http.Client
 	envVars config.Constants
 }
 
-func Azure(http http.Client, envVars config.Constants) Services {
+func Azure(http http.Client, envVars config.Constants) Service {
 	return &service{http, envVars}
+}
+
+type SdkParams struct {
+	Host                string `json:"SDK_HOST"`
+	MessageWrite        string `json:"SDK_WRITE_ENDPOINT"`
+	MessageFetch        string `json:"SDK_FETCH_ENDPOINT"`
+	MessageProof        string `json:"SDK_PROOF_ENDPOINT"`
+	SmartContract       string `json:"SDK_CONTRACT_ADDRESS"`
+	ContractAbi         string `json:"SDK_CONTRACT_ABI"`
+	Provider            string `json:"SDK_PROVIDER"`
+	WriteInterval       int    `json:"SDK_WRITE_INTERVAL"`
+	WaitIntervalFactor  int    `json:"SDK_WAIT_MESSAGE_INTERVAL_FACTOR"`
+	WaitIntervalDefault int    `json:"SDK_WAIT_MESSAGE_INTERVAL_DEFAULT"`
+	ConfigInterval      string `json:"SDK_CONFIG_INTERVAL"`
 }
 
 func (s *service) ConfigParameters() error {
@@ -55,27 +68,26 @@ func (s *service) ConfigParameters() error {
 		return err
 	}
 
-	var res map[string]interface{}
-	if err := json.Unmarshal(resp, &res); err != nil {
+	var sdkParams SdkParams
+	if err := json.Unmarshal(resp, &sdkParams); err != nil {
 		return err
 	}
 
-	items, ok := res["items"].(map[string]interface{})
-	if !ok {
-		return errors.New("res[items] is not a list")
-	}
-	for k, v := range items {
-		params[k] = v
-	}
+	//items, ok := res["items"].(map[string]interface{})
+	//if !ok {
+	//	return errors.New("res[items] is not a list")
+	//}
+	//for k, v := range items {
+	//	params[k] = v
+	//}
 	return nil
 }
 
-func (s *service) Parameters() map[string]interface{} {
-	return params
+func (s *service) SdkParameters() SdkParams {
+	return sdkParams
 }
 
-
-func (s *service) authHeaders(httpVerb, url, body string) (map[string]string, error){
+func (s *service) authHeaders(httpVerb, url, body string) (map[string]string, error) {
 	httpVerb = strings.ToUpper(httpVerb)
 	gmtDateTime := time.Now().UTC().Format(netHttp.TimeFormat)
 
@@ -93,11 +105,9 @@ func (s *service) authHeaders(httpVerb, url, body string) (map[string]string, er
 	hmac.Write([]byte(stringToSign))
 	signature := base64.StdEncoding.EncodeToString(h.Sum(nil))
 
-
-	 return map[string]string{
-		"x-ms-date": gmtDateTime,
-		"x-ms-content-sha256" : hashedContent,
-		"Authorization" : fmt.Sprintf("HMAC-SHA256 Credential=%s&SignedHeaders=%s&Signature=%s", credential, signedHeaders, signature),
+	return map[string]string{
+		"x-ms-date":           gmtDateTime,
+		"x-ms-content-sha256": hashedContent,
+		"Authorization":       fmt.Sprintf("HMAC-SHA256 Credential=%s&SignedHeaders=%s&Signature=%s", credential, signedHeaders, signature),
 	}, nil
 }
-
