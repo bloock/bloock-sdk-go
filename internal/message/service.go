@@ -5,7 +5,6 @@ import (
 	"errors"
 	"fmt"
 	"github.com/enchainte/enchainte-sdk-go/config"
-	"github.com/enchainte/enchainte-sdk-go/internal/proof"
 	"github.com/enchainte/enchainte-sdk-go/pkg/http"
 	"time"
 )
@@ -13,39 +12,39 @@ import (
 type Service interface {
 	Write(hash []byte) error
 	Search(hash [][]byte) (*Receipts, error)
-	Verify(hashes [][]byte) (bool, error)
 	Wait(hashes [][]byte) (*Receipts, error)
 }
 
+// TODO from constants
 const period = 2 // seconds
 
 var (
 	messagesStack []Message
+	channel       chan SendResponse
+	done          chan bool
 )
 
 type service struct {
-	channel chan SendResponse
-	apiKey string
-	http http.Client
+	//channel chan SendResponse
+	apiKey    string
+	http      http.Client
 	constants config.Constants
-	proof proof.Service
 }
 
-func NewService(ch chan SendResponse, apiKey string, http http.Client, constants config.Constants, proof proof.Service) Service {
-	return &service{ch,apiKey,http, constants, proof}
-}
-
-func (s *service) init() {
-	go s.scheduler(time.Second * period, s.channel)
+func NewService(apiKey string, http http.Client, constants config.Constants) Service {
+	channel = make(chan SendResponse)
+	done = make(chan bool)
+	s := &service{apiKey, http, constants}
+	go s.scheduler(period, done)
+	return s
 }
 
 type Receipts struct {
 	Messages []Receipt `json:"messages"`
 }
-//type Receipts []Receipt `json:"messages"`
 
 type Receipt struct {
-	Message string `json:"Message"`
+	Message string `json:"message"`
 	Anchor  int    `json:"anchor"`
 	Client  string `json:"client"`
 	Status  string `json:"status"`
@@ -60,8 +59,8 @@ type ReceiptOld struct {
 }
 
 type SendResponse struct {
-	body WriteResponse
-	err  error
+	Body  WriteResponse
+	Error error
 }
 
 func (s *service) Write(hash []byte) error {
@@ -91,7 +90,7 @@ func (s *service) Search(messageBytes [][]byte) (*Receipts, error) {
 		Client: "",
 	}
 
-	resp, err := s.http.Request(s.apiKey, "POST", fmt.Sprintf("%s%s",s.constants.Api.Host, s.constants.Api.Endpoints.MessageFetch), nil, body)
+	resp, err := s.http.Request(s.apiKey, "POST", fmt.Sprintf("%s%s", s.constants.Api.Host, s.constants.Api.Endpoints.MessageFetch), nil, body)
 	if err != nil {
 		return nil, err
 	}
@@ -114,16 +113,6 @@ func (s *service) Search(messageBytes [][]byte) (*Receipts, error) {
 	return &receipts, nil
 }
 
-func (s *service) Verify(hashes [][]byte) (bool, error) {
-
-	p, err := s.proof.Proof(hashes)
-	if err != nil {
-		return false, err
-	}
-
-	return s.proof.Verify(p.Leaves, p.Nodes, string(p.Depth), string(p.Bitmap))
-}
-
 func (s *service) Wait(hashes [][]byte) (*Receipts, error) {
 	var complete bool
 	var attempts int
@@ -140,7 +129,7 @@ func (s *service) Wait(hashes [][]byte) (*Receipts, error) {
 			return nil, err
 		}
 
-		if len(receipts.Messages) <= len(hashes) {
+		if len(receipts.Messages) < len(hashes) {
 			continue
 		}
 
@@ -182,7 +171,7 @@ func (s *service) send() (*WriteResponse, error) {
 		// TODO
 		Client: "",
 	}
-	resp, err := s.http.Request(s.apiKey, "POST", fmt.Sprintf("%s%s",s.constants.Api.Host, s.constants.Api.Endpoints.MessageWrite), nil, body)
+	resp, err := s.http.Request(s.apiKey, "POST", fmt.Sprintf("%s%s", s.constants.Api.Host, s.constants.Api.Endpoints.MessageWrite), nil, body)
 	if err != nil {
 		return nil, err
 	}
@@ -206,31 +195,48 @@ func (s *service) send() (*WriteResponse, error) {
 }
 
 // scheduler executes periodically the checkStack method
-func (s *service) scheduler(period time.Duration, ch chan SendResponse) {
+func (s *service) scheduler(period time.Duration, done chan bool) {
+
+	ticker := time.NewTicker(time.Second * period)
 	for {
-		c := time.Tick(period)
-		for range c {
-			s.checkStack(ch)
+		select {
+		case <-done:
+			ticker.Stop()
+			return
+		case <-ticker.C:
+			s.checkStack()
 		}
 	}
 }
 
 // checkStack executes the send method when the message stack is not empty and sends the result to the channel
-func (s *service) checkStack(ch chan SendResponse) {
+func (s *service) checkStack() {
 	if messagesStack == nil {
-		fmt.Println("Empty stack... leaving")
-		fmt.Println()
+		//fmt.Println("Empty stack... leaving")
+		//fmt.Println()
 		return
 	}
 
-	fmt.Println("Sending message stack...")
-	fmt.Println()
+	//fmt.Println("Sending message stack...")
+	//fmt.Println(messagesStack)
+	//fmt.Println()
 	resp, err := s.send()
 
 	messagesStack = nil
-	ch <- SendResponse{
-		body: *resp,
-		err:  err,
+
+	channel <- SendResponse{
+		Body:  *resp,
+		Error: err,
 	}
 	return
+}
+
+// Receive returns the value held by the channel
+func Receive() SendResponse {
+	return <-channel
+}
+
+// Done closes the Ticker channel
+func Done() {
+	done <- true
 }
