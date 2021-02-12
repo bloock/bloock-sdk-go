@@ -46,7 +46,7 @@ type SdkParams struct {
 	WriteInterval       int    `json:"SDK_WRITE_INTERVAL"`
 	WaitIntervalFactor  int    `json:"SDK_WAIT_MESSAGE_INTERVAL_FACTOR"`
 	WaitIntervalDefault int    `json:"SDK_WAIT_MESSAGE_INTERVAL_DEFAULT"`
-	ConfigInterval      string `json:"SDK_CONFIG_INTERVAL"`
+	ConfigInterval      int `json:"SDK_CONFIG_INTERVAL"`
 }
 
 func (s *service) ConfigParameters() error {
@@ -63,23 +63,15 @@ func (s *service) ConfigParameters() error {
 		return err
 	}
 	url := fmt.Sprintf("%s%s", s.envVars.Cloud.Azure.Host, path)
-	resp, err := s.http.Request("", "GET", url, headers, "")
+	resp, err := s.http.Request("", "GET", url, headers, nil)
 	if err != nil {
 		return err
 	}
 
-	var sdkParams SdkParams
 	if err := json.Unmarshal(resp, &sdkParams); err != nil {
 		return err
 	}
 
-	//items, ok := res["items"].(map[string]interface{})
-	//if !ok {
-	//	return errors.New("res[items] is not a list")
-	//}
-	//for k, v := range items {
-	//	params[k] = v
-	//}
 	return nil
 }
 
