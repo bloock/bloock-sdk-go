@@ -18,9 +18,9 @@ func TestMessageServiceSearch(t *testing.T) {
 
 	http := mocks.NewHttpClient(mockCtrl)
 	sdkParams := cloud.SdkParams{
-		WriteInterval:       1,
-		WaitIntervalFactor:  1,
-		WaitIntervalDefault: 1,
+		WriteInterval:       "1",
+		WaitIntervalFactor:  "1",
+		WaitIntervalDefault: "1",
 	}
 	s := message.NewService("", http, sdkParams)
 
@@ -43,7 +43,7 @@ func TestMessageServiceSearch(t *testing.T) {
 
 	body := message.FetchRequest{
 		Messages: hashes,
-		Client:   "",
+		Client:  "e7f97c33-ab8c-48b8-b349-fd3ef9ce974e" ,
 	}
 
 	res := message.Receipts{
@@ -64,7 +64,7 @@ func TestMessageServiceSearch(t *testing.T) {
 
 	jsonRes, _ := json.Marshal(res)
 
-	http.EXPECT().Request("", "POST", gomock.Any(), nil, body).Return(jsonRes, nil)
+	http.EXPECT().Request("", "POST", gomock.Any(), body).Return(jsonRes, nil)
 
 	receipts, err := s.Search(messages)
 	if err != nil {
@@ -81,9 +81,9 @@ func TestMessageServiceWait(t *testing.T) {
 	http := mocks.NewHttpClient(mockCtrl)
 
 	sdkParams := cloud.SdkParams{
-		WriteInterval:       1,
-		WaitIntervalFactor:  1,
-		WaitIntervalDefault: 1,
+		WriteInterval:       "1",
+		WaitIntervalFactor:  "1",
+		WaitIntervalDefault: "1",
 	}
 	s := message.NewService("", http, sdkParams)
 
@@ -131,7 +131,7 @@ func TestMessageServiceWait(t *testing.T) {
 	}
 
 	// should successfully return the receipts doing 1 iteration
-	http.EXPECT().Request("", "POST", gomock.Any(), nil, gomock.Any()).Return(bytesResp, nil).Times(1)
+	http.EXPECT().Request("", "POST", gomock.Any(), gomock.Any()).Return(bytesResp, nil).Times(1)
 
 	receipts, err := s.Wait(messages)
 	if err != nil {
@@ -141,8 +141,8 @@ func TestMessageServiceWait(t *testing.T) {
 
 
 	// should successfully return the receipts doing 2 iteration
-	http.EXPECT().Request("", "POST", gomock.Any(), nil, gomock.Any()).Return(bytes1It, nil).Times(1)
-	http.EXPECT().Request("", "POST", gomock.Any(), nil, gomock.Any()).Return(bytesResp, nil).Times(1)
+	http.EXPECT().Request("", "POST", gomock.Any(), gomock.Any()).Return(bytes1It, nil).Times(1)
+	http.EXPECT().Request("", "POST", gomock.Any(), gomock.Any()).Return(bytesResp, nil).Times(1)
 
 	receipts, err = s.Wait(messages)
 	if err != nil {
@@ -159,9 +159,9 @@ func TestMessageServiceWrite(t *testing.T) {
 	http := mocks.NewHttpClient(mockCtrl)
 
 	sdkParams := cloud.SdkParams{
-		WriteInterval:       1,
-		WaitIntervalFactor:  1,
-		WaitIntervalDefault: 1,
+		WriteInterval:       "1",
+		WaitIntervalFactor:  "1",
+		WaitIntervalDefault: "1",
 	}
 	s := message.NewService("", http, sdkParams)
 
@@ -176,7 +176,7 @@ func TestMessageServiceWrite(t *testing.T) {
 	if err != nil {
 		assert.FailNow(t, fmt.Sprintf("error marashaling: %s", err.Error()))
 	}
-	http.EXPECT().Request("", "POST", gomock.Any(), nil, gomock.Any()).Return(bytesResp, nil).Times(1)
+	http.EXPECT().Request("", "POST", gomock.Any(), gomock.Any()).Return(bytesResp, nil).Times(1)
 
 	for _, m := range messages {
 		if err := s.Write(m); err != nil {

@@ -33,18 +33,18 @@ func (m *HttpClient) EXPECT() *HttpClientMockRecorder {
 }
 
 // Request mocks base method
-func (m *HttpClient) Request(apiKey, verb, url string, headers map[string]string, body interface{}) ([]byte, error) {
+func (m *HttpClient) Request(apiKey, verb, url string, body interface{}) ([]byte, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Request", apiKey, verb, url, headers, body)
+	ret := m.ctrl.Call(m, "Request", apiKey, verb, url, body)
 	ret0, _ := ret[0].([]byte)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // Request indicates an expected call of Request
-func (mr *HttpClientMockRecorder) Request(apiKey, verb, url, headers, body interface{}) *gomock.Call {
+func (mr *HttpClientMockRecorder) Request(apiKey, verb, url, body interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Request", reflect.TypeOf((*HttpClient)(nil).Request), apiKey, verb, url, headers, body)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Request", reflect.TypeOf((*HttpClient)(nil).Request), apiKey, verb, url, body)
 }
 
 // PostRequest mocks base method
@@ -60,4 +60,19 @@ func (m *HttpClient) PostRequest(url string, body interface{}) ([]byte, error) {
 func (mr *HttpClientMockRecorder) PostRequest(url, body interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PostRequest", reflect.TypeOf((*HttpClient)(nil).PostRequest), url, body)
+}
+
+// GetRequest mocks base method
+func (m *HttpClient) GetRequest(url string, headers map[string]string) ([]byte, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetRequest", url, headers)
+	ret0, _ := ret[0].([]byte)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetRequest indicates an expected call of GetRequest
+func (mr *HttpClientMockRecorder) GetRequest(url, headers interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetRequest", reflect.TypeOf((*HttpClient)(nil).GetRequest), url, headers)
 }

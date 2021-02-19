@@ -5,6 +5,7 @@ import (
 	"crypto/sha256"
 	"encoding/base64"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"github.com/enchainte/enchainte-sdk-go/config"
 	"github.com/enchainte/enchainte-sdk-go/pkg/http"
@@ -13,8 +14,8 @@ import (
 	"time"
 )
 
-var (
-	signedHeaders = "x-ms-date;host;x-ms-content-sha256"
+const (
+	signedHeaders = "X-Ms-Date;Host;X-Ms-Content-Sha256"
 	credential    = "ihs8-l9-s0:JPRPUeiXJGsAzFiW9WDc"
 	secret        = "1UA2dijC0SIVyrPKUKG0gT0oXxkVaMrUfJuXkLr+i0c="
 )
@@ -22,7 +23,7 @@ var (
 var sdkParams SdkParams
 
 type Service interface {
-	ConfigParameters() error
+	RequestSdkParameters() error
 	SdkParameters() SdkParams
 }
 
@@ -36,40 +37,66 @@ func Azure(http http.Client, envVars config.Constants) Service {
 }
 
 type SdkParams struct {
-	Host                string `json:"SDK_HOST"`
-	MessageWrite        string `json:"SDK_WRITE_ENDPOINT"`
-	MessageFetch        string `json:"SDK_FETCH_ENDPOINT"`
-	MessageProof        string `json:"SDK_PROOF_ENDPOINT"`
-	SmartContract       string `json:"SDK_CONTRACT_ADDRESS"`
-	ContractAbi         string `json:"SDK_CONTRACT_ABI"`
-	Provider            string `json:"SDK_PROVIDER"`
-	WriteInterval       int    `json:"SDK_WRITE_INTERVAL"`
-	WaitIntervalFactor  int    `json:"SDK_WAIT_MESSAGE_INTERVAL_FACTOR"`
-	WaitIntervalDefault int    `json:"SDK_WAIT_MESSAGE_INTERVAL_DEFAULT"`
-	ConfigInterval      int `json:"SDK_CONFIG_INTERVAL"`
+	Host                 string `json:"SDK_HOST"`
+	MessageWrite         string `json:"SDK_WRITE_ENDPOINT"`
+	MessageFetch         string `json:"SDK_FETCH_ENDPOINT"`
+	MessageProof         string `json:"SDK_PROOF_ENDPOINT"`
+	SmartContractAddress string `json:"SDK_CONTRACT_ADDRESS"`
+	ContractAbi          string `json:"SDK_CONTRACT_ABI"`
+	Web3Provider         string `json:"SDK_PROVIDER"`
+	WriteInterval        string `json:"SDK_WRITE_INTERVAL"`
+	WaitIntervalFactor   string `json:"SDK_WAIT_MESSAGE_INTERVAL_FACTOR"`
+	WaitIntervalDefault  string `json:"SDK_WAIT_MESSAGE_INTERVAL_DEFAULT"`
+	ConfigInterval       string `json:"SDK_CONFIG_INTERVAL"`
 }
 
-func (s *service) ConfigParameters() error {
+type AzureParameters struct {
+	Items []Item `json:"items"`
+}
+
+type Item struct {
+	Key   string `json:"key"`
+	Value string `json:"value"`
+}
+
+func (s *service) RequestSdkParameters() error {
 	// check if test environment
-	var path string
+	var endpoint string
 	if s.envVars.Cloud.Azure.Test {
-		path = s.envVars.Cloud.Azure.PathTest
+		endpoint = s.envVars.Cloud.Azure.PathTest
 	} else {
-		path = s.envVars.Cloud.Azure.PathProd
+		endpoint = s.envVars.Cloud.Azure.PathProd
 	}
 
-	headers, err := s.authHeaders("GET", path, "")
-	if err != nil {
-		return err
-	}
-	url := fmt.Sprintf("%s%s", s.envVars.Cloud.Azure.Host, path)
-	resp, err := s.http.Request("", "GET", url, headers, nil)
+	headers, err := s.authHeaders("GET", endpoint, "")
 	if err != nil {
 		return err
 	}
 
-	if err := json.Unmarshal(resp, &sdkParams); err != nil {
+	url := fmt.Sprintf("%s%s", s.envVars.Cloud.Azure.Host, endpoint)
+
+	resp, err := s.http.GetRequest(fmt.Sprintf("https://%s", url), headers)
+	if err != nil {
 		return err
+	}
+
+	var res AzureParameters
+	if err := json.Unmarshal(resp, &res); err != nil {
+		return errors.New(fmt.Sprintf("error unmarshaling: %s", err.Error()))
+	}
+
+	items := make(map[string]string)
+	for _, item := range res.Items {
+		items[item.Key] = item.Value
+	}
+
+	bytes, err := json.Marshal(items)
+	if err != nil {
+		return errors.New(fmt.Sprintf("error marshaling: %s", err.Error()))
+	}
+
+	if err := json.Unmarshal(bytes, &sdkParams); err != nil {
+		return errors.New(fmt.Sprintf("error unmarshaling: %s", err.Error()))
 	}
 
 	return nil
@@ -79,27 +106,35 @@ func (s *service) SdkParameters() SdkParams {
 	return sdkParams
 }
 
-func (s *service) authHeaders(httpVerb, url, body string) (map[string]string, error) {
-	httpVerb = strings.ToUpper(httpVerb)
+func (s *service) authHeaders(httpVerb, endpoint, body string) (map[string]string, error) {
+
 	gmtDateTime := time.Now().UTC().Format(netHttp.TimeFormat)
 
-	h := sha256.New()
-	h.Write([]byte(body))
-	hashedContent := base64.StdEncoding.EncodeToString(h.Sum(nil))
-
-	stringToSign := fmt.Sprintf("%s\n%s\n%s;%s;%s", httpVerb, url, gmtDateTime, s.envVars.Cloud.Azure.Host, hashedContent)
+	hashedContent := contentHashBase64([]byte(body))
+	stringToSign := fmt.Sprintf("%s\n%s\n%s;%s;%s", strings.ToUpper(httpVerb), endpoint, gmtDateTime, s.envVars.Cloud.Azure.Host, hashedContent)
 
 	key, err := base64.StdEncoding.DecodeString(secret)
 	if err != nil {
 		return nil, err
 	}
-	hmac := hmac.New(sha256.New, key)
-	hmac.Write([]byte(stringToSign))
-	signature := base64.StdEncoding.EncodeToString(h.Sum(nil))
+
+	signature := getHmac(stringToSign, key)
 
 	return map[string]string{
 		"x-ms-date":           gmtDateTime,
 		"x-ms-content-sha256": hashedContent,
-		"Authorization":       fmt.Sprintf("HMAC-SHA256 Credential=%s&SignedHeaders=%s&Signature=%s", credential, signedHeaders, signature),
+		"Authorization":       fmt.Sprintf("HMAC-SHA256 Credential=%s, SignedHeaders=%s, Signature=%s", credential, signedHeaders, signature),
 	}, nil
+}
+
+func contentHashBase64(content []byte) string {
+	hasher := sha256.New()
+	hasher.Write(content)
+	return base64.StdEncoding.EncodeToString(hasher.Sum(nil))
+}
+
+func getHmac(content string, key []byte) string {
+	hmac := hmac.New(sha256.New, key)
+	hmac.Write([]byte(content))
+	return base64.StdEncoding.EncodeToString(hmac.Sum(nil))
 }

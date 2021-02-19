@@ -30,9 +30,9 @@ func NewService(apiKey string, http http.Client, params cloud.SdkParams, hasher 
 	return &service{apiKey, http, params, hasher, bc}
 }
 
-func (s *service) Proof(hashesBytes [][]byte) (*Proof, error) {
+func (s *service) Proof(messages [][]byte) (*Proof, error) {
 	var hashes []string
-	for _, h := range hashesBytes {
+	for _, h := range messages {
 		m, err := message.New(h)
 		if err != nil {
 			return nil, err
@@ -45,8 +45,8 @@ func (s *service) Proof(hashesBytes [][]byte) (*Proof, error) {
 		Client:   "",
 	}
 
-	// TODO sort necessary?
-	resp, err := s.http.Request(s.apiKey, "POST", fmt.Sprintf("%s%s", s.params.Host, s.params.MessageProof), nil, body)
+	resp, err := s.http.Request(s.apiKey, "POST", fmt.Sprintf("%s%s", "http://localhost:3000", "/v1/messages/proof"), body)
+	//resp, err := s.http.Request(s.apiKey, "POST", fmt.Sprintf("%s%s", s.params.Host, s.params.MessageProof), nil, body)
 	if err != nil {
 		return nil, err
 	}

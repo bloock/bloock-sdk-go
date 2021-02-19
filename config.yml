@@ -1,15 +1,9 @@
 env: "test"
 
-api:
-  host: "http://dev.enchainte.com:80"
-  endpoints:
-    message_write: "/v1/messages"
-    message_fetch: "/v1/messages/fetch"
-    message_proof: "/v1/messages/proof"
-
 cloud:
   azure:
-    test: true
-    host: "https://enchainte-config.azconfig.io"
-    path_prod: "/kv?key=SDK_*&label=PROD"
-    path_test: "/kv?key=SDK_*&label=TEST"
+    test: false
+    protocol: "https://"
+    host: "enchainte-config.azconfig.io"
+    pathProd: "/kv?key=SDK_*&label=PROD"
+    pathTest: "/kv?key=SDK_*&label=TEST"

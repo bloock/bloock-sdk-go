@@ -7,22 +7,10 @@ import (
 
 type Constants struct {
 	Env   Env
-	Api   Api
 	Cloud Cloud
 }
 
 type Env string
-
-type Api struct {
-	Host      string
-	Endpoints Endpoints
-}
-
-type Endpoints struct {
-	MessageWrite string
-	MessageFetch string
-	MessageProof string
-}
 
 type Cloud struct {
 	Azure Azure
@@ -38,7 +26,7 @@ type Azure struct {
 func EnvVariables() Constants {
 	viper.SetConfigName("config")
 	viper.SetConfigType("yml")
-	viper.AddConfigPath("./")
+	viper.AddConfigPath("../")
 	viper.AutomaticEnv()
 	if err := viper.ReadInConfig(); err != nil {
 		panic(fmt.Errorf("Fatal error config file: %s \n", err))

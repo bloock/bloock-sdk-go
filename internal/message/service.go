@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"github.com/enchainte/enchainte-sdk-go/internal/cloud"
 	"github.com/enchainte/enchainte-sdk-go/pkg/http"
+	"strconv"
 	"time"
 )
 
@@ -70,10 +71,11 @@ func (s *service) Write(hash []byte) error {
 }
 
 // TODO should receive client ID parameter
-func (s *service) Search(messageBytes [][]byte) (*Receipts, error) {
+// TODO messages should be: the message string in bytes or the message hash in bytes??
+func (s *service) Search(messages [][]byte) (*Receipts, error) {
 	var hashes []string
-	for _, mb := range messageBytes {
-		m, err := New(mb)
+	for _, message := range messages {
+		m, err := New(message)
 		if err != nil {
 			return nil, err
 		}
@@ -83,10 +85,12 @@ func (s *service) Search(messageBytes [][]byte) (*Receipts, error) {
 	body := FetchRequest{
 		Messages: hashes,
 		// TODO client id
-		Client: "",
+		Client: "e7f97c33-ab8c-48b8-b349-fd3ef9ce974e",
 	}
 
-	resp, err := s.http.Request(s.apiKey, "POST", fmt.Sprintf("%s%s", s.params.Host, s.params.MessageFetch), nil, body)
+	// TODO remove hardcoded
+	resp, err := s.http.Request(s.apiKey, "POST", fmt.Sprintf("%s%s", "http://localhost:3000", "/v1/messages/fetch"), body)
+	//resp, err := s.http.Request(s.apiKey, "POST", fmt.Sprintf("%s/v1%s", s.params.Host, s.params.MessageFetch), nil, body)
 	if err != nil {
 		return nil, err
 	}
@@ -109,32 +113,26 @@ func (s *service) Search(messageBytes [][]byte) (*Receipts, error) {
 	return &receipts, nil
 }
 
-func (s *service) Wait(hashes [][]byte) (*Receipts, error) {
+func (s *service) Wait(messages [][]byte) (*Receipts, error) {
 	var complete bool
 	var attempts int
 
-	var receipts Receipts
+	var receipts *Receipts
 	for !complete {
-		res, err := s.Search(hashes)
+		var err error
+		receipts, err = s.Search(messages)
 		if err != nil {
 			return nil, err
 		}
 
-		bytes, _ := json.Marshal(res)
-		if err := json.Unmarshal(bytes, &receipts); err != nil {
-			return nil, err
-		}
-
-		if len(receipts.Messages) < len(hashes) {
-			continue
-		}
-
-		for _, r := range receipts.Messages {
-			if r.Status == "success" || r.Status == "error" {
-				complete = true
-			} else {
-				complete = false
-				break
+		if len(receipts.Messages) >= len(messages) {
+			for _, r := range receipts.Messages {
+				if r.Status == "success" || r.Status == "error" {
+					complete = true
+				} else {
+					complete = false
+					break
+				}
 			}
 		}
 
@@ -142,12 +140,12 @@ func (s *service) Wait(hashes [][]byte) (*Receipts, error) {
 			break
 		}
 
-		time.Sleep(time.Duration(s.params.WaitIntervalDefault+(attempts*s.params.WaitIntervalFactor)) * time.Second)
-
-		attempts++
+		waitIntervalDefault, _ := strconv.Atoi(s.params.WaitIntervalDefault)
+		waitIntervalFactor, _ := strconv.Atoi(s.params.WaitIntervalFactor)
+		time.Sleep(time.Duration(waitIntervalDefault+(attempts*waitIntervalFactor)) * time.Millisecond)
 	}
 
-	return &receipts, nil
+	return receipts, nil
 }
 
 // send does a POST request to Enchainté's API to write all hashes stored in the message stack to the blockchain.
@@ -163,25 +161,27 @@ func (s *service) send() (*WriteResponse, error) {
 
 	body := WriteRequest{
 		Messages: hashes,
-		// TODO
+		// TODO add client id param
 		Client: "",
 	}
-	resp, err := s.http.Request(s.apiKey, "POST", fmt.Sprintf("%s%s", s.params.Host, s.params.MessageWrite), nil, body)
+	// TODO remove hardcoded
+	resp, err := s.http.Request(s.apiKey, "POST", fmt.Sprintf("%s%s", "http://localhost:3000", "/v1/messages"), body)
+	//resp, err := s.http.Request(s.apiKey, "POST", fmt.Sprintf("%s/v1%s", s.params.Host, s.params.MessageWrite), nil, body)
 	if err != nil {
 		return nil, err
 	}
 
-	var res map[string]interface{}
-	if err := json.Unmarshal(resp, &res); err != nil {
+	var respMap map[string]interface{}
+	if err := json.Unmarshal(resp, &respMap); err != nil {
 		return nil, err
 	}
 
-	if res["status"] == "error" {
-		return nil, errors.New(fmt.Sprintf("%v", res["message"]))
+	if respMap["status"] == "error" {
+		return nil, errors.New(fmt.Sprintf("%v", respMap["message"]))
 	}
 
 	var anchor WriteResponse
-	bytes, _ := json.Marshal(res)
+	bytes, _ := json.Marshal(respMap)
 	if err := json.Unmarshal(bytes, &anchor); err != nil {
 		return nil, err
 	}
@@ -191,8 +191,8 @@ func (s *service) send() (*WriteResponse, error) {
 
 // scheduler executes periodically the checkStack method
 func (s *service) scheduler(done chan bool) {
-
-	ticker := time.NewTicker(time.Duration(s.params.WriteInterval) * time.Second)
+	interval, _ := strconv.Atoi(s.params.WriteInterval)
+	ticker := time.NewTicker(time.Duration(interval) * time.Millisecond)
 	for {
 		select {
 		case <-done:

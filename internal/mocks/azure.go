@@ -34,9 +34,9 @@ func (m *CloudService) EXPECT() *CloudServiceMockRecorder {
 }
 
 // ConfigParameters mocks base method
-func (m *CloudService) ConfigParameters() error {
+func (m *CloudService) RequestSdkParameters() error {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "ConfigParameters")
+	ret := m.ctrl.Call(m, "RequestSdkParameters")
 	ret0, _ := ret[0].(error)
 	return ret0
 }
@@ -44,7 +44,7 @@ func (m *CloudService) ConfigParameters() error {
 // ConfigParameters indicates an expected call of ConfigParameters
 func (mr *CloudServiceMockRecorder) ConfigParameters() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ConfigParameters", reflect.TypeOf((*CloudService)(nil).ConfigParameters))
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RequestSdkParameters", reflect.TypeOf((*CloudService)(nil).RequestSdkParameters))
 }
 
 // SdkParameters mocks base method

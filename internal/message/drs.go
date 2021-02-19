@@ -3,7 +3,7 @@ package message
 
 type FetchRequest struct {
 	Messages []string `json:"messages"`
-	Client   string   `json:"client"`
+	Client   string   `json:"client_id"`
 }
 
 type WriteRequest struct {

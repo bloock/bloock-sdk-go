@@ -49,7 +49,7 @@ func TestProofServiceProof(t *testing.T) {
 	}
 
 	jsonRes, _ := json.Marshal(res)
-	http.EXPECT().Request("", "POST", gomock.Any(), nil, body).Return(jsonRes, nil).Times(1)
+	http.EXPECT().Request("", "POST", gomock.Any(), body).Return(jsonRes, nil).Times(1)
 
 	p, err := s.Proof(hashesBytes)
 	if err != nil {
@@ -124,7 +124,7 @@ func TestProofServiceVerify(t *testing.T) {
 
 	s := proof.NewService("", http, sdkParams, hasher, bc)
 
-	http.EXPECT().Request("", "POST", gomock.Any(), nil, gomock.Any()).Return([]byte(proofResponse), nil).Times(1)
+	http.EXPECT().Request("", "POST", gomock.Any(), gomock.Any()).Return([]byte(proofResponse), nil).Times(1)
 
 	bc.EXPECT().ValidateRoot(root).Return(true, nil).Times(1)
 
