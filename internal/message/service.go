@@ -40,6 +40,11 @@ type Receipts struct {
 	Messages []Receipt `json:"messages"`
 }
 
+// Receipt contains the information related to a message:
+// - Message is the hexadecimal representation of a message hash
+// - Anchor is the value of the anchor in which the message is contained
+// - Client is the client uuid that sent the message
+// - Status shows the current message status
 type Receipt struct {
 	Message string `json:"message"`
 	Anchor  int    `json:"anchor"`
@@ -72,6 +77,8 @@ func (s *service) Write(hash []byte) error {
 
 // TODO should receive client ID parameter
 // TODO messages should be: the message string in bytes or the message hash in bytes??
+// Search retrieves the information related to the provided messages. It takes an array bytes as parameter and returns
+// a Receipts struct or an error if something goes wrong.
 func (s *service) Search(messages [][]byte) (*Receipts, error) {
 	var hashes []string
 	for _, message := range messages {
@@ -113,6 +120,8 @@ func (s *service) Search(messages [][]byte) (*Receipts, error) {
 	return &receipts, nil
 }
 
+// Wait takes an array of messages and returns the corresponding Receipts once the messages have been processed. The
+// status of a processed message can be either "success" or "error".
 func (s *service) Wait(messages [][]byte) (*Receipts, error) {
 	var complete bool
 	var attempts int

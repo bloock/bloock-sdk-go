@@ -36,11 +36,14 @@ func Azure(http http.Client, envVars config.Constants) Service {
 	return &service{http, envVars}
 }
 
+// TODO Add GetAnchor and delete API key endpoint
 type SdkParams struct {
 	Host                 string `json:"SDK_HOST"`
 	MessageWrite         string `json:"SDK_WRITE_ENDPOINT"`
 	MessageFetch         string `json:"SDK_FETCH_ENDPOINT"`
 	MessageProof         string `json:"SDK_PROOF_ENDPOINT"`
+	AnchorGet            string `json:"SDK_GET_ANCHOR_ENDPOINT"`
+	CredentialDelete     string `json:"SDK_DELETE_API_KEY_ENDPOINT"`
 	SmartContractAddress string `json:"SDK_CONTRACT_ADDRESS"`
 	ContractAbi          string `json:"SDK_CONTRACT_ABI"`
 	Web3Provider         string `json:"SDK_PROVIDER"`
@@ -59,6 +62,7 @@ type Item struct {
 	Value string `json:"value"`
 }
 
+// RequestSdkParameters make a request to Azure Web Services to get the parameters used in the SDK.
 func (s *service) RequestSdkParameters() error {
 	// check if test environment
 	var endpoint string

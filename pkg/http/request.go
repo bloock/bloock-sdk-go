@@ -21,6 +21,7 @@ func NewClient() Client {
 	return &httpClient{}
 }
 
+// TODO Add version
 func (c *httpClient) Request(apiKey, verb, url string, body interface{}) ([]byte, error) {
 
 	jsonBytes, err := json.Marshal(body)

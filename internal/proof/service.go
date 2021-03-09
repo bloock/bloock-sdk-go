@@ -45,6 +45,7 @@ func (s *service) Proof(messages [][]byte) (*Proof, error) {
 		Client:   "",
 	}
 
+	// TODO
 	resp, err := s.http.Request(s.apiKey, "POST", fmt.Sprintf("%s%s", "http://localhost:3000", "/v1/messages/proof"), body)
 	//resp, err := s.http.Request(s.apiKey, "POST", fmt.Sprintf("%s%s", s.params.Host, s.params.MessageProof), nil, body)
 	if err != nil {
