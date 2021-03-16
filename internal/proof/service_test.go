@@ -41,13 +41,15 @@ func TestProofServiceProof(t *testing.T) {
 		Client:   "",
 	}
 
-	res := proof.Proof{
-		Leaves: []string{"72aae7e86eb51f61a620831320475d9d61cbd52749dbf18fa942b1b97f50aee9"},
-		Nodes:  []string{"359b5206452a4ca5058129727fb48f0860a36c0afee0ec62baa874927e9d4b99"},
-		Depth:  "020304050501",
-		Bitmap: "f4",
+	res := proof.ProofResponse{
+		Success: true,
+		Data: &proof.Proof{
+			Leaves: []string{"72aae7e86eb51f61a620831320475d9d61cbd52749dbf18fa942b1b97f50aee9"},
+			Nodes:  []string{"359b5206452a4ca5058129727fb48f0860a36c0afee0ec62baa874927e9d4b99"},
+			Depth:  "020304050501",
+			Bitmap: "f4",
+		},
 	}
-
 	jsonRes, _ := json.Marshal(res)
 	http.EXPECT().Request("", "POST", gomock.Any(), body).Return(jsonRes, nil).Times(1)
 
@@ -55,7 +57,7 @@ func TestProofServiceProof(t *testing.T) {
 	if err != nil {
 		assert.Fail(t, "no error expected executing Proof service")
 	}
-	assert.Equal(t, &res, p)
+	assert.Equal(t, res.Data, p)
 }
 
 func TestProofServiceCalculateRoot(t *testing.T) {
@@ -97,20 +99,21 @@ func TestProofServiceCalculateRoot(t *testing.T) {
 
 func TestProofServiceVerify(t *testing.T) {
 
-	var proofResponse = `{
-			   "leaves":[
-				  "72aae7e86eb51f61a620831320475d9d61cbd52749dbf18fa942b1b97f50aee9"
-			   ],
-			   "nodes":[
-				  "359b5206452a4ca5058129727fb48f0860a36c0afee0ec62baa874927e9d4b99",
-				  "707cb86e449cd3990c85fb3ae9ec967ee12b82f21eae9e6ea35180e6c331c3e8",
-				  "23950edeb3ca719e814d8b04d63d90d39327b49b7df5baf2f72305c1f2b260b7",
-				  "72aae7e86eb50f61a620831320475d9d61cbd52749dbf18fa942b1b97f50aee9",
-				  "517e320992fb35553575750153992d6360268d04a1e4d9e2cae7e5c3736ac627"
-			   ],
-			   "depth":"020304050501",
-			   "bitmap":"f4"
-			}`
+	var proofResponse = proof.ProofResponse{
+		Success: true,
+		Data: &proof.Proof{
+			Leaves: []string{"72aae7e86eb51f61a620831320475d9d61cbd52749dbf18fa942b1b97f50aee9"},
+			Nodes: []string{
+				"359b5206452a4ca5058129727fb48f0860a36c0afee0ec62baa874927e9d4b99",
+				"707cb86e449cd3990c85fb3ae9ec967ee12b82f21eae9e6ea35180e6c331c3e8",
+				"23950edeb3ca719e814d8b04d63d90d39327b49b7df5baf2f72305c1f2b260b7",
+				"72aae7e86eb50f61a620831320475d9d61cbd52749dbf18fa942b1b97f50aee9",
+				"517e320992fb35553575750153992d6360268d04a1e4d9e2cae7e5c3736ac627",
+			},
+			Depth:  "020304050501",
+			Bitmap: "f4",
+		},
+	}
 
 	var root = "6608fd2c5d9c28124b41d6e441d552ad811a51fc6fdae0f33aa64bf3f43ca699"
 
@@ -124,7 +127,8 @@ func TestProofServiceVerify(t *testing.T) {
 
 	s := proof.NewService("", http, sdkParams, hasher, bc)
 
-	http.EXPECT().Request("", "POST", gomock.Any(), gomock.Any()).Return([]byte(proofResponse), nil).Times(1)
+	jsonRes, _ := json.Marshal(proofResponse)
+	http.EXPECT().Request("", "POST", gomock.Any(), gomock.Any()).Return(jsonRes, nil).Times(1)
 
 	bc.EXPECT().ValidateRoot(root).Return(true, nil).Times(1)
 

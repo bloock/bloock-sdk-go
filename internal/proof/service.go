@@ -42,7 +42,7 @@ func (s *service) Proof(messages [][]byte) (*Proof, error) {
 
 	body := ApiProofRequestBody{
 		Messages: hashes,
-		Client:   "",
+		//Client:   "",
 	}
 
 	// TODO
@@ -51,27 +51,24 @@ func (s *service) Proof(messages [][]byte) (*Proof, error) {
 	if err != nil {
 		return nil, err
 	}
-
 	var res map[string]interface{}
 	if err := json.Unmarshal(resp, &res); err != nil {
 		return nil, err
 	}
-
 	if res["status"] == "error" {
 		return nil, errors.New(fmt.Sprintf("%v", res["message"]))
 	}
 
-	var proof Proof
+	var proofResp ProofResponse
 	bytes, _ := json.Marshal(res)
-	if err := json.Unmarshal(bytes, &proof); err != nil {
+	if err := json.Unmarshal(bytes, &proofResp); err != nil {
 		return nil, err
 	}
 
-	return &proof, nil
+	return proofResp.Data, nil
 }
 
 func (s *service) Verify(hashes [][]byte) (bool, error) {
-
 	proof, err := s.Proof(hashes)
 	if err != nil {
 		return false, err
@@ -87,7 +84,6 @@ func (s *service) Verify(hashes [][]byte) (bool, error) {
 }
 
 func (s *service) CalculateRoot(proof *Proof) (string, error) {
-
 	lsb := proof.Leaves.Bytes()
 	nsb := proof.Nodes.Bytes()
 	db := proof.Depth.Bytes()

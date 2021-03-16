@@ -6,10 +6,14 @@ import (
 	"fmt"
 	"github.com/enchainte/enchainte-sdk-go/internal/cloud"
 	"github.com/enchainte/enchainte-sdk-go/pkg/http"
+	"strconv"
+	"strings"
+	"time"
 )
 
 type Service interface {
 	Get(id int) (*GetAnchorResponse, error)
+	Wait(anchorId int) (bool, error)
 }
 
 type service struct {	
@@ -44,4 +48,32 @@ func (s *service) Get(id int) (*GetAnchorResponse, error) {
 		return nil, err
 	}
 	return &data, nil
+}
+
+func (s *service) Wait(anchorId int) (bool, error) {
+	var complete bool
+	var attempts int
+
+	var anchorResp *GetAnchorResponse
+	for !complete {
+		var err error
+		anchorResp, err = s.Get(anchorId)
+		if err != nil {
+			return false, err
+		}
+
+		if strings.ToLower(anchorResp.Data.Status) == "success" {
+			complete = true
+		}
+
+		if complete {
+			break
+		}
+
+		waitIntervalDefault, _ := strconv.Atoi(s.params.WaitIntervalDefault)
+		waitIntervalFactor, _ := strconv.Atoi(s.params.WaitIntervalFactor)
+		time.Sleep(time.Duration(waitIntervalDefault+(attempts*waitIntervalFactor)) * time.Millisecond)
+	}
+
+	return true, nil
 }

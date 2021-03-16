@@ -24,7 +24,6 @@ func main() {
 	go func() {
 		var count int
 		for {
-			fmt.Println(message.Receive())
 			count++
 			if count == 4 {
 				message.Done()

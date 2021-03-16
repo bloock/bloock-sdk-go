@@ -1,7 +1,7 @@
 package anchor
 
 type GetAnchorResponse struct {
-	Success bool                  `json:"success"`
+	Success bool                   `json:"success"`
 	Data    *getAnchorDataResponse `json:"data"`
 }
 
@@ -10,6 +10,7 @@ type getAnchorDataResponse struct {
 	BlockRoots []string  `json:"block_roots"`
 	Networks   []network `json:"networks"`
 	Root       string    `json:"root"`
+	Status     string    `json:"status"`
 }
 
 type network struct {

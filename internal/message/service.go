@@ -12,7 +12,7 @@ import (
 
 type Service interface {
 	Write(hash []byte) error
-	Search(hash [][]byte) (*Receipts, error)
+	Search(hash [][]byte) (*[]Receipt, error)
 	Wait(hashes [][]byte) (*Receipts, error)
 }
 
@@ -36,30 +36,6 @@ func NewService(apiKey string, http http.Client, params cloud.SdkParams) Service
 	return s
 }
 
-type Receipts struct {
-	Messages []Receipt `json:"messages"`
-}
-
-// Receipt contains the information related to a message:
-// - Message is the hexadecimal representation of a message hash
-// - Anchor is the value of the anchor in which the message is contained
-// - Client is the client uuid that sent the message
-// - Status shows the current message status
-type Receipt struct {
-	Message string `json:"message"`
-	Anchor  int    `json:"anchor"`
-	Client  string `json:"client"`
-	Status  string `json:"status"`
-}
-
-type ReceiptOld struct {
-	Root    string
-	Message string
-	TxHash  string
-	Status  string
-	Error   string
-}
-
 type SendResponse struct {
 	Body  WriteResponse
 	Error error
@@ -79,20 +55,21 @@ func (s *service) Write(hash []byte) error {
 // TODO messages should be: the message string in bytes or the message hash in bytes??
 // Search retrieves the information related to the provided messages. It takes an array bytes as parameter and returns
 // a Receipts struct or an error if something goes wrong.
-func (s *service) Search(messages [][]byte) (*Receipts, error) {
+func (s *service) Search(messages [][]byte) (*[]Receipt, error) {
 	var hashes []string
 	for _, message := range messages {
 		m, err := New(message)
 		if err != nil {
 			return nil, err
 		}
-		hashes = append(hashes, m.hash)
+		hashes = append(hashes, m.Hash())
 	}
 
+	// TODO client id
 	body := FetchRequest{
 		Messages: hashes,
 		// TODO client id
-		Client: "e7f97c33-ab8c-48b8-b349-fd3ef9ce974e",
+		//Client: "e7f97c33-ab8c-48b8-b349-fd3ef9ce974e",
 	}
 
 	// TODO remove hardcoded
@@ -111,50 +88,50 @@ func (s *service) Search(messages [][]byte) (*Receipts, error) {
 		return nil, errors.New(fmt.Sprintf("%v", res["message"]))
 	}
 
-	var receipts Receipts
+	var searchMessage SearchMessageResponse
 	bytes, _ := json.Marshal(res)
-	if err := json.Unmarshal(bytes, &receipts); err != nil {
-		return nil, err
-	}
+	if err := json.Unmarshal(bytes, &searchMessage); err != nil {
+			return nil, err
+		}
 
-	return &receipts, nil
+	return searchMessage.Data, nil
 }
 
 // Wait takes an array of messages and returns the corresponding Receipts once the messages have been processed. The
 // status of a processed message can be either "success" or "error".
 func (s *service) Wait(messages [][]byte) (*Receipts, error) {
-	var complete bool
-	var attempts int
+	//var complete bool
+	//var attempts int
+	//
+	//var receipts *Receipts
+	//for !complete {
+	//	var err error
+	//	receipts, err = s.Search(messages)
+	//	if err != nil {
+	//		return nil, err
+	//	}
+	//
+	//	if len(receipts.Messages) >= len(messages) {
+	//		for _, r := range receipts.Messages {
+	//			if strings.ToLower(r.Status) == "success" || strings.ToLower(r.Status) == "error" {
+	//				complete = true
+	//			} else {
+	//				complete = false
+	//				break
+	//			}
+	//		}
+	//	}
+	//
+	//	if complete {
+	//		break
+	//	}
+	//
+	//	waitIntervalDefault, _ := strconv.Atoi(s.params.WaitIntervalDefault)
+	//	waitIntervalFactor, _ := strconv.Atoi(s.params.WaitIntervalFactor)
+	//	time.Sleep(time.Duration(waitIntervalDefault+(attempts*waitIntervalFactor)) * time.Millisecond)
+	//}
 
-	var receipts *Receipts
-	for !complete {
-		var err error
-		receipts, err = s.Search(messages)
-		if err != nil {
-			return nil, err
-		}
-
-		if len(receipts.Messages) >= len(messages) {
-			for _, r := range receipts.Messages {
-				if r.Status == "success" || r.Status == "error" {
-					complete = true
-				} else {
-					complete = false
-					break
-				}
-			}
-		}
-
-		if complete {
-			break
-		}
-
-		waitIntervalDefault, _ := strconv.Atoi(s.params.WaitIntervalDefault)
-		waitIntervalFactor, _ := strconv.Atoi(s.params.WaitIntervalFactor)
-		time.Sleep(time.Duration(waitIntervalDefault+(attempts*waitIntervalFactor)) * time.Millisecond)
-	}
-
-	return receipts, nil
+	return nil, nil
 }
 
 // send does a POST request to Enchainté's API to write all hashes stored in the message stack to the blockchain.
@@ -185,8 +162,8 @@ func (s *service) send() (*WriteResponse, error) {
 		return nil, err
 	}
 
-	if respMap["status"] == "error" {
-		return nil, errors.New(fmt.Sprintf("%v", respMap["message"]))
+	if respMap["success"] == false {
+		return nil, errors.New(fmt.Sprintf("%v", respMap["error"].(map[string]interface{})["message"]))
 	}
 
 	var anchor WriteResponse
@@ -221,9 +198,6 @@ func (s *service) checkStack() {
 		return
 	}
 
-	//fmt.Println("Sending message stack...")
-	//fmt.Println(messagesStack)
-	//fmt.Println()
 	resp, err := s.send()
 
 	messagesStack = nil
@@ -238,6 +212,10 @@ func (s *service) checkStack() {
 // Receive returns the value held by the channel
 func Receive() SendResponse {
 	return <-channel
+}
+// Receive returns the value held by the channel
+func Channel() chan SendResponse {
+	return channel
 }
 
 // Done closes the Ticker channel
