@@ -2,191 +2,251 @@ package message_test
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"github.com/enchainte/enchainte-sdk-go/internal/cloud"
 	"github.com/enchainte/enchainte-sdk-go/internal/message"
 	"github.com/enchainte/enchainte-sdk-go/internal/mocks"
 	"github.com/golang/mock/gomock"
-	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 	"testing"
 )
 
-func TestMessageServiceSearch(t *testing.T) {
+func TestMessageServiceWrite(t *testing.T) {
+	var datasets = [][]byte{[]byte("message 1"), []byte("message 2")}
+	var smtErr = errors.New("smt error")
+	var httpErr = errors.New("something went wrong")
 
-	mockCtrl := gomock.NewController(t)
-	defer mockCtrl.Finish()
-
-	http := mocks.NewHttpClient(mockCtrl)
-	sdkParams := cloud.SdkParams{
-		WriteInterval:       "1",
-		WaitIntervalFactor:  "1",
-		WaitIntervalDefault: "1",
-	}
-	s := message.NewService("", http, sdkParams)
-	defer message.Done()
-
-	// should successfully return the receipts
-	var messages [][]byte
-	messages = append(messages, []byte("first Message"))
-	messages = append(messages, []byte("second Message"))
-
-	var hashes []string
-	for _, mb := range messages {
-		m, err := message.New(mb)
-		if err != nil {
-			assert.Fail(t, fmt.Sprintf("error not expected: %s", err.Error()))
-		}
-		hashes = append(hashes, m.Hash())
-	}
-
-	body := message.FetchRequest{
-		Messages: hashes,
-	}
-
-	res := message.SearchMessageResponse{
-		Success: true,
-		Data: &[]message.Receipt{
-			{
-				Message: "13aae7e862151f61a64183a322475d0d60cbd52719dbf28f0942b1b97f50aee0",
-				Anchor:  1,
-				Client:  "9281b537-b78b-4d2b-8f7d-9421a9f0ffbd",
-				Status:  "success",
+	testCases := []struct {
+		name        string
+		inDatasets  [][]byte
+		buildStubs  func(mocks.HttpClient)
+		outExpected func(*message.WriteResponse, error)
+	}{
+		{
+			name:       "success",
+			inDatasets: datasets,
+			buildStubs: func(http mocks.HttpClient) {
+				var hashes []string
+				for _, data := range datasets {
+					m, err := message.New(data)
+					if err != nil {
+						require.Nil(t, err)
+					}
+					hashes = append(hashes, m.Hash())
+				}
+				body := message.WriteRequest{
+					Messages: hashes,
+				}
+				wr := message.WriteResponse{
+					Success: true,
+					Data:    &message.WriteResponseData{Anchor: 1},
+				}
+				apiResp, err := json.Marshal(wr)
+				require.Nil(t, err)
+				http.EXPECT().Request(gomock.Any(), "POST", "http://localhost:3000/v1/messages", body).Return(apiResp, nil).Times(1)
 			},
-			{
-				Message: "13aae7e862151f61a64183a322475d0d60cbd52719dbf28f0942b1b97f50aee0",
-				Anchor:  2,
-				Client:  "9281b537-b78b-4d2b-8f7d-9421a9f0ffbd",
-				Status:  "success",
+			outExpected: func(resp *message.WriteResponse, err error) {
+				require.Nil(t, err)
+
+				require.True(t, resp.Success)
+				require.Equal(t, "int", fmt.Sprintf("%T", resp.Data.Anchor))
+				require.Equal(t, 1, resp.Data.Anchor)
+			},
+		},
+		{
+			name:       "anchor_failure",
+			inDatasets: datasets,
+			buildStubs: func(http mocks.HttpClient) {
+				var hashes []string
+				for _, data := range datasets {
+					m, err := message.New(data)
+					if err != nil {
+						require.Nil(t, err)
+					}
+					hashes = append(hashes, m.Hash())
+				}
+				body := message.WriteRequest{
+					Messages: hashes,
+				}
+				wr := map[string]interface{}{
+					"success": false,
+					"error": map[string]interface{}{
+						"message": "smt error",
+					},
+				}
+				apiResp, err := json.Marshal(wr)
+				require.Nil(t, err)
+				http.EXPECT().Request(gomock.Any(), "POST", "http://localhost:3000/v1/messages", body).Return(apiResp, nil).Times(1)
+			},
+			outExpected: func(resp *message.WriteResponse, err error) {
+				require.Nil(t, resp)
+				require.Equal(t, smtErr, err)
+			},
+		},
+		{
+			name:       "error_http_request",
+			inDatasets: datasets,
+			buildStubs: func(http mocks.HttpClient) {
+				var hashes []string
+				for _, data := range datasets {
+					m, err := message.New(data)
+					if err != nil {
+						require.Nil(t, err)
+					}
+					hashes = append(hashes, m.Hash())
+				}
+				body := message.WriteRequest{
+					Messages: hashes,
+				}
+				http.EXPECT().Request(gomock.Any(), "POST", "http://localhost:3000/v1/messages", body).Return(nil, httpErr).Times(1)
+			},
+			outExpected: func(resp *message.WriteResponse, err error) {
+				require.Nil(t, resp)
+
+				require.NotNil(t, err)
+				require.Equal(t, httpErr, err)
 			},
 		},
 	}
 
-		jsonRes, _ := json.Marshal(res)
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			mockCtrl := gomock.NewController(t)
+			defer mockCtrl.Finish()
 
-		http.EXPECT().Request("", "POST", gomock.Any(), body).Return(jsonRes, nil)
+			http := mocks.NewHttpClient(mockCtrl)
+			sdkParams := cloud.SdkParams{}
+			s := message.NewService("", http, sdkParams)
 
-		receipts, err := s.Search(messages)
-		if err != nil{
-		assert.Fail(t, fmt.Sprintf("error not expected searching messages: %s", err.Error()))
+			tc.buildStubs(*http)
+			resp, err := s.Write(tc.inDatasets)
+			tc.outExpected(resp, err)
+		})
 	}
-		assert.Equal(t, res.Data, receipts)
+}
+
+func TestMessageServiceFetch(t *testing.T) {
+	var datasets = [][]byte{[]byte("message 1"), []byte("message 2")}
+	var receipts = []message.Receipt{
+		{
+			Message: "13aae7e862151f61a64183a322475d0d60cbd52719dbf28f0942b1b97f50aee0",
+			Anchor:  1,
+			Client:  "9281b537-b78b-4d2b-8f7d-9421a9f0ffbd",
+			Status:  "success",
+		},
+		{
+			Message: "987ae7e862151f61a64183a322475d0d60cbd52719dbf28f0942b1b97f50a123",
+			Anchor:  2,
+			Client:  "9281b537-b78b-4d2b-8f7d-9421a9f0ffbd",
+			Status:  "success",
+		},
 	}
-	//
-	//func TestMessageServiceWait(t *testing.T) {
-	//
-	//	mockCtrl := gomock.NewController(t)
-	//	defer mockCtrl.Finish()
-	//
-	//	http := mocks.NewHttpClient(mockCtrl)
-	//
-	//	sdkParams := cloud.SdkParams{
-	//		WriteInterval:       "1",
-	//		WaitIntervalFactor:  "1",
-	//		WaitIntervalDefault: "1",
-	//	}
-	//	s := message.NewService("", http, sdkParams)
-	//
-	//	defer message.Done()
-	//
-	//
-	//	var messages [][]byte
-	//	messages = append(messages, []byte("first Message"))
-	//	messages = append(messages, []byte("second Message"))
-	//
-	//	var search1ItResp = message.Receipts{
-	//		Messages: []message.Receipt{
-	//			{
-	//				Message: "13aae7e862151f61a64183a322475d0d60cbd52719dbf28f0942b1b97f50aee0",
-	//				Anchor:  1,
-	//				Client:  "9281b537-b78b-4d2b-8f7d-9421a9f0ffbd",
-	//				Status:  "success",
-	//			},
-	//		},
-	//	}
-	//	bytes1It, err := json.Marshal(search1ItResp)
-	//	if err != nil {
-	//		assert.FailNow(t, fmt.Sprintf("error marashaling: %s", err.Error()))
-	//	}
-	//
-	//	var searchResp = message.Receipts{
-	//		Messages: []message.Receipt{
-	//			{
-	//				Message: "13aae7e862151f61a64183a322475d0d60cbd52719dbf28f0942b1b97f50aee0",
-	//				Anchor:  1,
-	//				Client:  "9281b537-b78b-4d2b-8f7d-9421a9f0ffbd",
-	//				Status:  "success",
-	//			},
-	//			{
-	//				Message: "13aae7e862151f61a64183a322475d0d60cbd52719dbf28f0942b1b97f50aee0",
-	//				Anchor:  2,
-	//				Client:  "9281b537-b78b-4d2b-8f7d-9421a9f0ffbd",
-	//				Status:  "success",
-	//			},
-	//		},
-	//	}
-	//	bytesResp, err := json.Marshal(searchResp)
-	//	if err != nil {
-	//		assert.FailNow(t, fmt.Sprintf("error marashaling: %s", err.Error()))
-	//	}
-	//
-	//	// should successfully return the receipts doing 1 iteration
-	//	http.EXPECT().Request("", "POST", gomock.Any(), gomock.Any()).Return(bytesResp, nil).Times(1)
-	//
-	//	receipts, err := s.Wait(messages)
-	//	if err != nil {
-	//		assert.Fail(t, fmt.Sprintf("error not expected searching messages: %s", err.Error()))
-	//	}
-	//	assert.Equal(t, &searchResp, receipts)
-	//
-	//
-	//	// should successfully return the receipts doing 2 iteration
-	//	http.EXPECT().Request("", "POST", gomock.Any(), gomock.Any()).Return(bytes1It, nil).Times(1)
-	//	http.EXPECT().Request("", "POST", gomock.Any(), gomock.Any()).Return(bytesResp, nil).Times(1)
-	//
-	//	receipts, err = s.Wait(messages)
-	//	if err != nil {
-	//		assert.Fail(t, fmt.Sprintf("error not expected searching messages: %s", err.Error()))
-	//	}
-	//	assert.Equal(t, &searchResp, receipts)
-	//}
+	var smtErr = errors.New("smt error")
+	var httpErr = errors.New("something went wrong")
 
-	func TestMessageServiceWrite(t *testing.T) {
-
-		mockCtrl := gomock.NewController(t)
-		defer mockCtrl.Finish()
-
-		http := mocks.NewHttpClient(mockCtrl)
-
-		sdkParams := cloud.SdkParams{
-			WriteInterval:       "1",
-			WaitIntervalFactor:  "1",
-			WaitIntervalDefault: "1",
-		}
-		s := message.NewService("", http, sdkParams)
-
-		defer message.Done()
-
-		var messages [][]byte
-		messages = append(messages, []byte("first Message"))
-		messages = append(messages, []byte("second Message"))
-
-		writeResponse := message.WriteResponse{
-			Success: true,
-			Data:    &message.WriteResponseData{Anchor: 2},
-		}
-		bytesResp, err := json.Marshal(writeResponse)
-		if err != nil {
-			assert.FailNow(t, fmt.Sprintf("error marashaling: %s", err.Error()))
-		}
-		http.EXPECT().Request("", "POST", gomock.Any(), gomock.Any()).Return(bytesResp, nil).Times(1)
-
-		for _, m := range messages {
-			if err := s.Write(m); err != nil {
-				assert.FailNow(t, fmt.Sprintf("unexpected error: %s", err.Error()))
-			}
-		}
-		sendResponse := message.SendResponse{Body: writeResponse}
-
-		res := message.Receive()
-		assert.Equal(t, sendResponse, res)
+	testCases := []struct {
+		name        string
+		inDatasets  [][]byte
+		buildStubs  func(mocks.HttpClient)
+		outExpected func(*[]message.Receipt, error)
+	}{
+		{
+			name:       "success",
+			inDatasets: datasets,
+			buildStubs: func(http mocks.HttpClient) {
+				var hashes []string
+				for _, data := range datasets {
+					m, err := message.New(data)
+					if err != nil {
+						require.Nil(t, err)
+					}
+					hashes = append(hashes, m.Hash())
+				}
+				body := message.FetchRequest{
+					Messages: hashes,
+				}
+				sr := message.SearchMessageResponse{
+					Success: true,
+					Data:    &receipts,
+				}
+				apiResp, err := json.Marshal(sr)
+				require.Nil(t, err)
+				http.EXPECT().Request(gomock.Any(), "POST", "http://localhost:3000/v1/messages/fetch", body).Return(apiResp, nil).Times(1)
+			},
+			outExpected: func(resp *[]message.Receipt, err error) {
+				require.Nil(t, err)
+				require.Equal(t, &receipts, resp)
+			},
+		},
+		{
+			name:       "fetch_message_failure",
+			inDatasets: datasets,
+			buildStubs: func(http mocks.HttpClient) {
+				var hashes []string
+				for _, data := range datasets {
+					m, err := message.New(data)
+					if err != nil {
+						require.Nil(t, err)
+					}
+					hashes = append(hashes, m.Hash())
+				}
+				body := message.FetchRequest{
+					Messages: hashes,
+				}
+				sr := map[string]interface{}{
+					"success": false,
+					"error": map[string]interface{}{
+						"message": "smt error",
+					},
+				}
+				apiResp, err := json.Marshal(sr)
+				require.Nil(t, err)
+				http.EXPECT().Request(gomock.Any(), "POST", "http://localhost:3000/v1/messages/fetch", body).Return(apiResp, nil).Times(1)
+			},
+			outExpected: func(resp *[]message.Receipt, err error) {
+				require.Nil(t, resp)
+				require.NotNil(t, err)
+				require.Equal(t, smtErr, err)
+			},
+		},
+		{
+			name:       "http_request_error",
+			inDatasets: datasets,
+			buildStubs: func(http mocks.HttpClient) {
+				var hashes []string
+				for _, data := range datasets {
+					m, err := message.New(data)
+					if err != nil {
+						require.Nil(t, err)
+					}
+					hashes = append(hashes, m.Hash())
+				}
+				body := message.FetchRequest{
+					Messages: hashes,
+				}
+				http.EXPECT().Request(gomock.Any(), "POST", "http://localhost:3000/v1/messages/fetch", body).Return(nil, httpErr).Times(1)
+			},
+			outExpected: func(resp *[]message.Receipt, err error) {
+				require.Nil(t, resp)
+				require.NotNil(t, err)
+				require.Equal(t, httpErr, err)
+			},
+		},
 	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			mockCtrl := gomock.NewController(t)
+			defer mockCtrl.Finish()
+
+			http := mocks.NewHttpClient(mockCtrl)
+			sdkParams := cloud.SdkParams{}
+			s := message.NewService("", http, sdkParams)
+
+			tc.buildStubs(*http)
+			resp, err := s.Search(tc.inDatasets)
+			tc.outExpected(resp, err)
+		})
+	}
+}

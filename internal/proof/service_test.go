@@ -38,7 +38,7 @@ func TestProofServiceProof(t *testing.T) {
 
 	body := proof.ApiProofRequestBody{
 		Messages: hashes,
-		Client:   "",
+		//Client:   "",
 	}
 
 	res := proof.ProofResponse{
