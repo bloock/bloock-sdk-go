@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/enchainte/enchainte-sdk-go/config"
 	"github.com/enchainte/enchainte-sdk-go/internal/anchor"
@@ -12,26 +13,10 @@ import (
 	"github.com/enchainte/enchainte-sdk-go/pkg/crypto"
 	"github.com/enchainte/enchainte-sdk-go/pkg/http"
 	"log"
-	"math/rand"
-	"time"
 )
 
 func main() {
-	cli := EnchainteClient("")
-	//cli.Message.Write([]byte("helloo"))
 
-	go dataCollector(cli.Message.Write)
-	go func() {
-		var count int
-		for {
-			count++
-			if count == 4 {
-				message.Done()
-				return
-			}
-		}
-	}()
-	fmt.Scanln()
 }
 
 type Services struct {
@@ -60,14 +45,34 @@ func EnchainteClient(apiKey string) Services {
 	}
 }
 
-// TODO remove
-func dataCollector(write func([]byte) error) {
-	for {
-		c := time.Tick(time.Second)
-		for range c {
-			write([]byte(words[rand.Intn(len(words)-1)]))
-		}
+// JsonRemarshal takes a json string and returns the byte representation of that json with the fields alphabetically sorted by key
+func JsonRemarshal(data string) ([]byte, error) {
+	var ifce interface{}
+	err := json.Unmarshal([]byte(data), &ifce)
+	if err != nil {
+		return []byte{}, err
 	}
+	output, err := json.Marshal(ifce)
+	if err != nil {
+		return []byte{}, err
+	}
+	return output, nil
 }
 
-var words = []string{"Lebuffic", "Caming", "Unizans", "Nantilien", "Losychle", "Deping", "Subsce", "Shemon", "Unhyle", "Reighthes"}
+// ToSortedJson takes a map or struct as parameter and returns its byte representation with the fields alphabetically sorted by key
+func ToSortedJson(data interface{}) ([]byte, error) {
+	bytes, err := json.Marshal(data)
+	if err != nil {
+		return nil, err
+	}
+	var ifce interface{}
+	err = json.Unmarshal(bytes, &ifce)
+	if err != nil {
+		return []byte{}, err
+	}
+	output, err := json.Marshal(ifce)
+	if err != nil {
+		return []byte{}, err
+	}
+	return output, nil
+}

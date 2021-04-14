@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"github.com/enchainte/enchainte-sdk-go/internal/message"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"testing"
@@ -15,29 +14,24 @@ func TestE2e(t *testing.T) {
 	sdk := EnchainteClient(apiKey)
 
 	msg := []byte("message 1")
-	if err := sdk.Message.Write(msg); err != nil {
+	msgs := [][]byte{msg}
+	wResp, err := sdk.Message.Write(msgs)
+	if err != nil {
 		assert.FailNow(t, fmt.Sprintf("failed to write message: %s", err.Error()))
 	}
 	fmt.Println(">> message sent")
-	var anchorId int
-
-	select {
-	case AddMessageResp := <- message.Channel():
-		anchorId = AddMessageResp.Body.Data.Anchor
-	}
 
 	fmt.Println(">> waiting...")
-	messages := [][]byte{msg}
-	_, err := sdk.Anchor.Wait(anchorId)
+	_, err = sdk.Anchor.Wait(wResp.Data.Anchor)
 	require.Nil(t, err, "failed while waiting message receipts: %v", err)
 
 	fmt.Println(">> fetching messages...")
-	receipts, err := sdk.Message.Search(messages)
+	receipts, err := sdk.Message.Search(msgs)
 	require.Nil(t, err)
 	require.NotNil(t, receipts)
 
 	fmt.Println(">> getting proof...")
-	proof, err := sdk.Proof.Proof(messages)
+	proof, err := sdk.Proof.Proof(msgs)
 	require.Nil(t, err)
 	require.NotNil(t, proof)
 
@@ -45,7 +39,7 @@ func TestE2e(t *testing.T) {
 
 	for !done {
 		fmt.Println(">> verifying...")
-		valid, err := sdk.Proof.Verify(messages)
+		valid, err := sdk.Proof.Verify(msgs)
 		require.Nil(t, err)
 		require.True(t, valid)
 
