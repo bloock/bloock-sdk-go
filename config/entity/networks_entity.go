@@ -1,10 +1,7 @@
 package entity
 
-type Network string
-
 const (
-	EthereumMainnet Network = "EthereumMainnet"
+	EthereumMainnet = "EthereumMainnet"
 	EthereumRinkeby = "EthereumRinkeby"
-	BloockChain = "Bloockchain"
+	BloockChain     = "Bloockchain"
 )
-

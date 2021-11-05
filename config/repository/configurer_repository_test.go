@@ -8,7 +8,7 @@ import (
 
 func TestGetNetworkConfigurationRepo(t *testing.T) {
 	cd := NewConfigData()
-	r := NewConfigRepositoryImpl(cd)
+	r := NewConfigRepository(cd)
 
 	t.Run("Given a valid network and root should return a network configuration", func(t *testing.T) {
 		netConfig := r.GetNetworkConfiguration(entity.EthereumMainnet)

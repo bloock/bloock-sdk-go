@@ -12,12 +12,12 @@ func TestGetNetworkConfigurationService(t *testing.T) {
 	crtl := gomock.NewController(t)
 	defer crtl.Finish()
 
-	cr := mockconfig.NewMockConfigRepository(crtl)
+	cr := mockconfig.NewMockConfigurerRepository(crtl)
 
 	t.Run("Given a network should return a network configuration", func(t *testing.T) {
 		cr.EXPECT().GetNetworkConfiguration(gomock.Any()).Times(1)
 
-		netConfig := NewConfigServiceImpl(cr).GetNetworkConfiguration(entity.EthereumMainnet)
+		netConfig := NewConfigService(cr).GetNetworkConfiguration(entity.EthereumMainnet)
 		assert.NotNil(t, netConfig)
 	})
 }

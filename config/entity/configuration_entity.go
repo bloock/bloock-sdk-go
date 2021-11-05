@@ -9,21 +9,21 @@ type NetworkConfiguration struct {
 func NewNetworkConfiguration(contractAddress, contractABI, httpProvider string) NetworkConfiguration {
 	return NetworkConfiguration{
 		ContractAddress: contractAddress,
-		ContractABI: contractABI,
-		HttpProvider: httpProvider,
+		ContractABI:     contractABI,
+		HttpProvider:    httpProvider,
 	}
 }
 
 type Configuration struct {
-	host 					   string `default:""`
-	waitMessageIntervalFactor  int
-	waitMessageIntervalDefault int
+	host                       string `default:""`
+	waitMessageIntervalFactor  int    `default:"2"`
+	waitMessageIntervalDefault int    `default:"100"`
 }
 
-func NewConfiguration(host string) Configuration {
+func NewConfiguration(host string, waitMsgFactor, waitMsgDefault int) Configuration {
 	return Configuration{
-		host: host,
-		waitMessageIntervalFactor: 2,
-		waitMessageIntervalDefault: 1000,
+		host:                       host,
+		waitMessageIntervalFactor:  waitMsgFactor,
+		waitMessageIntervalDefault: waitMsgDefault,
 	}
 }

@@ -6,7 +6,7 @@ import (
 
 type ConfigData struct {
 	config entity.Configuration
-	networksConfig map[entity.Network]entity.NetworkConfiguration
+	networksConfig map[string]entity.NetworkConfiguration
 }
 
 func NewConfigData() ConfigData {
@@ -25,18 +25,18 @@ func NewConfigData() ConfigData {
 	ethConfig := entity.NewNetworkConfiguration(ethContract, ethABI, ethProv)
 	rinkebyConfig := entity.NewNetworkConfiguration(rinkebyContract, rinkebyABI, rinkebyProv)
 	bloockConfig := entity.NewNetworkConfiguration(bloockContract, bloockABI, bloockProv)
-	configMap := make(map[entity.Network] entity.NetworkConfiguration)
+	configMap := make(map[string] entity.NetworkConfiguration)
 	configMap[entity.EthereumMainnet] = ethConfig
 	configMap[entity.EthereumRinkeby] = rinkebyConfig
 	configMap[entity.BloockChain] = bloockConfig
 
 	return ConfigData{
-		config: entity.NewConfiguration("https://api.bloock.com"),
+		config: entity.NewConfiguration("https://api.bloock.com", 2, 100),
 		networksConfig: configMap,
 	}
 }
 
-func(c ConfigData) getNetworkConfiguration(network entity.Network) entity.NetworkConfiguration {
+func(c ConfigData) getNetworkConfiguration(network string) entity.NetworkConfiguration {
 	config := c.networksConfig[network]
 	if config == (entity.NetworkConfiguration{}) {
 		config = c.networksConfig[entity.EthereumMainnet]

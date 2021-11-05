@@ -21,8 +21,8 @@ import (
 
 func main() {
 	configData := repository.NewConfigData()
-	configRepo := repository.NewConfigRepositoryImpl(configData)
-	configService := service.NewConfigServiceImpl(configRepo)
+	configRepo := repository.NewConfigRepository(configData)
+	configService := service.NewConfigService(configRepo)
 	web3 := blockchain2.NewWeb3(configService)
 
 	timestamp, err := web3.ValidateRoot(entity.EthereumRinkeby, "c7afe76d6dabae68c10c32e5673ed20535ebb00436e615eccc208f14c0993744")

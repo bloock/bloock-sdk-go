@@ -1,8 +1,20 @@
 package service
 
-import "github.com/enchainte/enchainte-sdk-go/config/entity"
+import (
+	"github.com/enchainte/enchainte-sdk-go/config/entity"
+	"github.com/enchainte/enchainte-sdk-go/config/repository"
+)
 
-//go:generate mockgen -source=config/service/config_service.go -destination config/mockconfig/mocks_config_service.go -package=mockconfig
-type ConfigService interface {
-	GetNetworkConfiguration(network entity.Network) entity.NetworkConfiguration
+type ConfigService struct {
+	configRepository repository.ConfigurerRepository
+}
+
+func NewConfigService(configRepo repository.ConfigurerRepository) ConfigService {
+	return ConfigService{
+		configRepository: configRepo,
+	}
+}
+
+func(c ConfigService) GetNetworkConfiguration(network string) entity.NetworkConfiguration {
+	return c.configRepository.GetNetworkConfiguration(network)
 }

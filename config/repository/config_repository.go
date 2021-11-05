@@ -2,7 +2,16 @@ package repository
 
 import "github.com/enchainte/enchainte-sdk-go/config/entity"
 
-//go:generate mockgen -source=config/repository/config_repository.go -destination config/mockconfig/mock_config_repository.go -package=mockconfig
-type ConfigRepository interface {
-	GetNetworkConfiguration(network entity.Network) entity.NetworkConfiguration
+type ConfigRepository struct {
+	configData ConfigData
+}
+
+func NewConfigRepository(configData ConfigData) ConfigRepository {
+	return ConfigRepository{
+		configData: configData,
+	}
+}
+
+func(c ConfigRepository) GetNetworkConfiguration(network string) entity.NetworkConfiguration {
+	return c.configData.getNetworkConfiguration(network)
 }
