@@ -15,15 +15,15 @@ func NewNetworkConfiguration(contractAddress, contractABI, httpProvider string) 
 }
 
 type Configuration struct {
-	host                       string `default:""`
-	waitMessageIntervalFactor  int    `default:"2"`
-	waitMessageIntervalDefault int    `default:"100"`
+	Host                       string `default:""`
+	WaitMessageIntervalFactor  int    `default:"2"`
+	WaitMessageIntervalDefault int    `default:"100"`
 }
 
 func NewConfiguration(host string, waitMsgFactor, waitMsgDefault int) Configuration {
 	return Configuration{
-		host:                       host,
-		waitMessageIntervalFactor:  waitMsgFactor,
-		waitMessageIntervalDefault: waitMsgDefault,
+		Host:                       host,
+		WaitMessageIntervalFactor:  waitMsgFactor,
+		WaitMessageIntervalDefault: waitMsgDefault,
 	}
 }

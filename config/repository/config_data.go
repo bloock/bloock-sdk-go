@@ -45,4 +45,8 @@ func(c ConfigData) getNetworkConfiguration(network string) entity.NetworkConfigu
 	return config
 }
 
+func(c ConfigData) getConfiguration() entity.Configuration {
+	return c.config
+}
+
 

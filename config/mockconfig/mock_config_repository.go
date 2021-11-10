@@ -34,6 +34,20 @@ func (m *MockConfigurerRepository) EXPECT() *MockConfigurerRepositoryMockRecorde
 	return m.recorder
 }
 
+// GetConfiguration mocks base method.
+func (m *MockConfigurerRepository) GetConfiguration() entity.Configuration {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetConfiguration")
+	ret0, _ := ret[0].(entity.Configuration)
+	return ret0
+}
+
+// GetConfiguration indicates an expected call of GetConfiguration.
+func (mr *MockConfigurerRepositoryMockRecorder) GetConfiguration() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetConfiguration", reflect.TypeOf((*MockConfigurerRepository)(nil).GetConfiguration))
+}
+
 // GetNetworkConfiguration mocks base method.
 func (m *MockConfigurerRepository) GetNetworkConfiguration(network string) entity.NetworkConfiguration {
 	m.ctrl.T.Helper()

@@ -34,6 +34,20 @@ func (m *MockConfigurerService) EXPECT() *MockConfigurerServiceMockRecorder {
 	return m.recorder
 }
 
+// GetApiBaseUrl mocks base method.
+func (m *MockConfigurerService) GetApiBaseUrl() string {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetApiBaseUrl")
+	ret0, _ := ret[0].(string)
+	return ret0
+}
+
+// GetApiBaseUrl indicates an expected call of GetApiBaseUrl.
+func (mr *MockConfigurerServiceMockRecorder) GetApiBaseUrl() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetApiBaseUrl", reflect.TypeOf((*MockConfigurerService)(nil).GetApiBaseUrl))
+}
+
 // GetNetworkConfiguration mocks base method.
 func (m *MockConfigurerService) GetNetworkConfiguration(network string) entity.NetworkConfiguration {
 	m.ctrl.T.Helper()
