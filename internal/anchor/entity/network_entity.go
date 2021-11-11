@@ -1,9 +1,9 @@
 package entity
 
 type Network struct {
-	name   string
-	state  string
-	txHash string
+	name   string `json:"name"`
+	state  string `json:"state"`
+	txHash string `json:"tx_hash"`
 }
 
 func NewNetwork(name, state, txHash string) Network {

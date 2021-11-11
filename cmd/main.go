@@ -4,23 +4,19 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/enchainte/enchainte-sdk-go/config"
-	"github.com/enchainte/enchainte-sdk-go/config/entity"
-	"github.com/enchainte/enchainte-sdk-go/config/repository"
-	"github.com/enchainte/enchainte-sdk-go/config/service"
-	"github.com/enchainte/enchainte-sdk-go/internal/anchor"
 	"github.com/enchainte/enchainte-sdk-go/internal/cloud"
 	"github.com/enchainte/enchainte-sdk-go/internal/credential"
-	blockchain2 "github.com/enchainte/enchainte-sdk-go/internal/infrastructure/blockchain"
 	"github.com/enchainte/enchainte-sdk-go/internal/message"
 	"github.com/enchainte/enchainte-sdk-go/internal/proof"
 	"github.com/enchainte/enchainte-sdk-go/pkg/blockchain"
 	"github.com/enchainte/enchainte-sdk-go/pkg/crypto"
 	"github.com/enchainte/enchainte-sdk-go/pkg/http"
 	"log"
+	"time"
 )
 
 func main() {
-	configData := repository.NewConfigData()
+	/*configData := repository.NewConfigData()
 	configRepo := repository.NewConfigRepository(configData)
 	configService := service.NewConfigService(configRepo)
 	web3 := blockchain2.NewWeb3(configService)
@@ -29,7 +25,14 @@ func main() {
 	if err != nil {
 		log.Fatal(err.Error())
 	}
-	fmt.Println(timestamp)
+	fmt.Println(timestamp)*/
+
+
+	var start = time.Now()
+	log.Println(start)
+	var nextTry = start.Add(time.Duration(2))
+	log.Println(nextTry)
+
 
 }
 
@@ -37,7 +40,6 @@ type Services struct {
 	Message    message.Service
 	Proof      proof.Service
 	Credential credential.Service
-	Anchor     anchor.Service
 }
 
 func EnchainteClient(apiKey string) Services {
@@ -55,7 +57,6 @@ func EnchainteClient(apiKey string) Services {
 		Message:    message.NewService(apiKey, http, azureService.SdkParameters()),
 		Proof:      proof.NewService(apiKey, http, azureService.SdkParameters(), hasher, bc),
 		Credential: credential.NewService(apiKey, http, azureService.SdkParameters()),
-		Anchor:     anchor.NewService(apiKey, http, azureService.SdkParameters()),
 	}
 }
 
