@@ -47,7 +47,7 @@ func(a AnchorService) WaitAnchor(anchorId int, limit int) (entity.Anchor, error)
 		return entity.Anchor{}, exception.NewInvalidArgumentException()
 	}
 
-	var attemps = 0
+	var attempts = 0
 	var start = time.Now().Unix()
 	var nextTry = start + int64(a.configService.GetConfiguration().WaitMessageIntervalFactor)
 	var timeout = start + int64(timeLimit)
@@ -73,9 +73,9 @@ func(a AnchorService) WaitAnchor(anchorId int, limit int) (entity.Anchor, error)
 		if currentTime > timeout {
 			return entity.Anchor{}, exception2.NewWaitAnchorTimeoutException()
 		}
-		nextTry += int64(attemps * a.configService.GetConfiguration().WaitMessageIntervalFactor +
+		nextTry += int64(attempts* a.configService.GetConfiguration().WaitMessageIntervalFactor +
 			a.configService.GetConfiguration().WaitMessageIntervalDefault)
-		attemps += 1
+		attempts += 1
 
 		if currentTime > timeout {
 			return entity.Anchor{}, exception2.NewWaitAnchorTimeoutException()

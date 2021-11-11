@@ -48,6 +48,20 @@ func (mr *MockConfigurerServiceMockRecorder) GetApiBaseUrl() *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetApiBaseUrl", reflect.TypeOf((*MockConfigurerService)(nil).GetApiBaseUrl))
 }
 
+// GetConfiguration mocks base method.
+func (m *MockConfigurerService) GetConfiguration() entity.Configuration {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetConfiguration")
+	ret0, _ := ret[0].(entity.Configuration)
+	return ret0
+}
+
+// GetConfiguration indicates an expected call of GetConfiguration.
+func (mr *MockConfigurerServiceMockRecorder) GetConfiguration() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetConfiguration", reflect.TypeOf((*MockConfigurerService)(nil).GetConfiguration))
+}
+
 // GetNetworkConfiguration mocks base method.
 func (m *MockConfigurerService) GetNetworkConfiguration(network string) entity.NetworkConfiguration {
 	m.ctrl.T.Helper()
