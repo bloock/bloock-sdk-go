@@ -1,15 +1,8 @@
 package entity
 
 type Network struct {
-	name   string `json:"name"`
-	state  string `json:"state"`
-	txHash string `json:"tx_hash"`
+	Name   string `json:"name"`
+	State  string `json:"state"`
+	TxHash string `json:"tx_hash"`
 }
 
-func NewNetwork(name, state, txHash string) Network {
-	return Network{
-		name:   name,
-		state:  state,
-		txHash: txHash,
-	}
-}

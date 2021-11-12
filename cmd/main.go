@@ -4,34 +4,39 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/enchainte/enchainte-sdk-go/config"
+	repository2 "github.com/enchainte/enchainte-sdk-go/config/repository"
+	"github.com/enchainte/enchainte-sdk-go/config/service"
+	"github.com/enchainte/enchainte-sdk-go/internal/anchor/repository"
+	service2 "github.com/enchainte/enchainte-sdk-go/internal/anchor/service"
 	"github.com/enchainte/enchainte-sdk-go/internal/cloud"
 	"github.com/enchainte/enchainte-sdk-go/internal/credential"
+	http2 "github.com/enchainte/enchainte-sdk-go/internal/infrastructure/http"
 	"github.com/enchainte/enchainte-sdk-go/internal/message"
 	"github.com/enchainte/enchainte-sdk-go/internal/proof"
 	"github.com/enchainte/enchainte-sdk-go/pkg/blockchain"
 	"github.com/enchainte/enchainte-sdk-go/pkg/crypto"
 	"github.com/enchainte/enchainte-sdk-go/pkg/http"
 	"log"
-	"time"
 )
 
 func main() {
-	/*configData := repository.NewConfigData()
-	configRepo := repository.NewConfigRepository(configData)
+	configData := repository2.NewConfigData()
+	configRepo := repository2.NewConfigRepository(configData)
 	configService := service.NewConfigService(configRepo)
-	web3 := blockchain2.NewWeb3(configService)
 
-	timestamp, err := web3.ValidateRoot(entity.EthereumRinkeby, "c7afe76d6dabae68c10c32e5673ed20535ebb00436e615eccc208f14c0993744")
+
+	api := http2.NewDataHttp("C1vfvhN2mPUeX0KikgGHVIUSofZIfX6Q4bx0kf7DuAHMt3cuELO2UGdYLUw9bS29")
+	httpClient := http2.NewHttp(api)
+	anchorRepo := repository.NewAnchorRepository(httpClient, configService)
+	anchorService := service2.NewAnchorService(anchorRepo, configService)
+
+	//anchor, err := anchorService.WaitAnchor(1, 100)
+	anchor2, err := anchorService.WaitAnchor(1111111, 100)
 	if err != nil {
-		log.Fatal(err.Error())
+		log.Println(err)
 	}
-	fmt.Println(timestamp)*/
-
-
-	var start = time.Now()
-	log.Println(start)
-	var nextTry = start.Add(time.Duration(2))
-	log.Println(nextTry)
+	//log.Println(anchor)
+	log.Println(anchor2)
 
 
 }

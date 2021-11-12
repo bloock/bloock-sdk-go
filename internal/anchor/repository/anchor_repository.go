@@ -6,14 +6,15 @@ import (
 	"github.com/enchainte/enchainte-sdk-go/config/service"
 	"github.com/enchainte/enchainte-sdk-go/internal/anchor/entity"
 	"github.com/enchainte/enchainte-sdk-go/internal/anchor/entity/dto"
+	"github.com/enchainte/enchainte-sdk-go/internal/infrastructure"
 )
 
 type AnchorRepository struct {
-	httpClient HttpClient
+	httpClient infrastructure.HttpClient
 	configService service.ConfigService
 }
 
-func NewAnchorRepository(httpClient HttpClient, configService service.ConfigService) AnchorRepository{
+func NewAnchorRepository(httpClient infrastructure.HttpClient, configService service.ConfigService) AnchorRepository{
 	return AnchorRepository{
 		httpClient: httpClient,
 		configService: configService,
@@ -22,7 +23,10 @@ func NewAnchorRepository(httpClient HttpClient, configService service.ConfigServ
 
 func(a AnchorRepository) GetAnchor(anchor int) (entity.Anchor, error) {
 	url := fmt.Sprintf("%s/core/anchor/%d", a.configService.GetApiBaseUrl(), anchor)
-	var response interface{}
+	response, err := a.httpClient.Get(url, nil)
+	if err != nil {
+		return entity.Anchor{}, err
+	}
 
 	var makeMap map[string]interface{}
 	resToBytes, err := json.Marshal(response)

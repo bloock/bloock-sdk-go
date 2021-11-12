@@ -6,6 +6,7 @@ import (
 	exception2 "github.com/enchainte/enchainte-sdk-go/internal/anchor/entity/exception"
 	"github.com/enchainte/enchainte-sdk-go/internal/anchor/repository"
 	"github.com/enchainte/enchainte-sdk-go/internal/shared/entity/exception"
+	"log"
 	"reflect"
 	"time"
 )
@@ -58,6 +59,7 @@ func(a AnchorService) WaitAnchor(anchorId int, limit int) (entity.Anchor, error)
 			return entity.Anchor{}, err
 		}
 		if anchor.Status() == "Success" {
+			log.Println(anchor)
 			return anchor, nil
 		}
 		currentTime := time.Now().Unix()

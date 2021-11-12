@@ -31,7 +31,7 @@ func NewConfigData() ConfigData {
 	configMap[entity.BloockChain] = bloockConfig
 
 	return ConfigData{
-		config: entity.NewConfiguration("https://api.bloock.com", 2, 100),
+		config: entity.NewConfiguration("https://api.bloock.dev", 2, 100),
 		networksConfig: configMap,
 	}
 }
