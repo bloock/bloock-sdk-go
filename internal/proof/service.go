@@ -6,7 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/enchainte/enchainte-sdk-go/internal/cloud"
-	"github.com/enchainte/enchainte-sdk-go/internal/message"
+	"github.com/enchainte/enchainte-sdk-go/internal/record"
 	"github.com/enchainte/enchainte-sdk-go/pkg/blockchain"
 	"github.com/enchainte/enchainte-sdk-go/pkg/crypto"
 	"github.com/enchainte/enchainte-sdk-go/pkg/http"
@@ -56,7 +56,7 @@ func (s *service) Proof(messages [][]byte) (*Proof, error) {
 		return nil, err
 	}
 	if res["status"] == "error" {
-		return nil, errors.New(fmt.Sprintf("%v", res["message"]))
+		return nil, errors.New(fmt.Sprintf("%v", res["record"]))
 	}
 
 	var proofResp ProofResponse

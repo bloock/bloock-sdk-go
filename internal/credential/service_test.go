@@ -41,7 +41,7 @@ func TestCredentialServiceDeleteApiKey(t *testing.T) {
 	assert.Nil(t, err)
 
 	// should return an error if the anchor does not exist
-	bytes, err = json.Marshal(map[string]interface{}{"success": false, "error": map[string]interface{}{"message": "api key not found"}})
+	bytes, err = json.Marshal(map[string]interface{}{"success": false, "error": map[string]interface{}{"record": "api key not found"}})
 	if err != nil {
 		assert.FailNow(t, fmt.Sprintf("unexpected marshaling error: %s", err.Error()))
 	}

@@ -13,17 +13,17 @@ func TestE2e(t *testing.T) {
 	apiKey := "api-key"
 	sdk := EnchainteClient(apiKey)
 
-	msg := []byte("message 1")
+	msg := []byte("record 1")
 	msgs := [][]byte{msg}
 	wResp, err := sdk.Message.Write(msgs)
 	if err != nil {
-		assert.FailNow(t, fmt.Sprintf("failed to write message: %s", err.Error()))
+		assert.FailNow(t, fmt.Sprintf("failed to write record: %s", err.Error()))
 	}
-	fmt.Println(">> message sent")
+	fmt.Println(">> record sent")
 
 	fmt.Println(">> waiting...")
 	_, err = sdk.Anchor.Wait(wResp.Data.Anchor)
-	require.Nil(t, err, "failed while waiting message receipts: %v", err)
+	require.Nil(t, err, "failed while waiting record receipts: %v", err)
 
 	fmt.Println(">> fetching messages...")
 	receipts, err := sdk.Message.Search(msgs)

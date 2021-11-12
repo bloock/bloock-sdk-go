@@ -37,7 +37,7 @@ func (s *service) Delete(apiKey, id string) error {
 	}
 
 	if !res["success"].(bool) {
-		return errors.New(fmt.Sprintf("%v", res["error"].(map[string]interface{})["message"]))
+		return errors.New(fmt.Sprintf("%v", res["error"].(map[string]interface{})["record"]))
 	}
 
 	return nil

@@ -39,7 +39,7 @@ func TestAnchorServiceGetAnchor(t *testing.T) {
 	assert.IsType(t, &anchor.GetAnchorResponse{}, anchorData)
 
 	// should return an error if the anchor does not exist
-	bytes, err = json.Marshal(map[string]interface{}{"success": false, "error": map[string]interface{}{"message": "anchor does not exist"} })
+	bytes, err = json.Marshal(map[string]interface{}{"success": false, "error": map[string]interface{}{"record": "anchor does not exist"} })
 	if err != nil {
 		assert.FailNow(t, fmt.Sprintf("unexpected marshaling error: %s", err.Error()))
 	}

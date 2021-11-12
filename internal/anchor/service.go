@@ -39,7 +39,7 @@ func (s *service) Get(id int) (*GetAnchorResponse, error) {
 	}
 
 	if !res["success"].(bool) {
-		return nil, errors.New(fmt.Sprintf("%v", res["error"].(map[string]interface{})["message"]))
+		return nil, errors.New(fmt.Sprintf("%v", res["error"].(map[string]interface{})["record"]))
 	}
 
 	var data GetAnchorResponse
