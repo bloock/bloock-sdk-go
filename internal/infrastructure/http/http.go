@@ -34,10 +34,10 @@ func (h Http) request(method, url string, headers map[string]string, body interf
 		return nil, fmt.Errorf("http.marshal: %s", err)
 	}
 
-	client := http.Client{ Timeout: time.Second * 10 }
+	client := http.Client{ Timeout: time.Second * 60 }
 	req, err := http.NewRequest(method, url, bytes.NewBuffer(jsonBytes))
 	if err != nil {
-		return nil, fmt.Errorf("http.request: %s", err)
+		return nil, exception.NewHttpRequestException(err.Error())
 	}
 
 	for k,v := range headers {
@@ -52,12 +52,12 @@ func (h Http) request(method, url string, headers map[string]string, body interf
 
 	respByte, err := io.ReadAll(response.Body)
 	if err != nil {
-		return nil, fmt.Errorf("http.readAll: %s", err)
+		return nil, exception.NewHttpRequestException(err.Error())
 	}
 
 	var resp interface{}
 	if err := json.Unmarshal(respByte, &resp); err != nil {
-		return nil, fmt.Errorf("http.unmarshal: %s", err)
+		return nil, exception.NewHttpRequestException(err.Error())
 	}
 	return resp, nil
 }
