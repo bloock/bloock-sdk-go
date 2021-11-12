@@ -4,13 +4,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/enchainte/enchainte-sdk-go/config"
-	"github.com/enchainte/enchainte-sdk-go/config/entity"
-	"github.com/enchainte/enchainte-sdk-go/config/repository"
-	"github.com/enchainte/enchainte-sdk-go/config/service"
 	"github.com/enchainte/enchainte-sdk-go/internal/anchor"
 	"github.com/enchainte/enchainte-sdk-go/internal/cloud"
 	"github.com/enchainte/enchainte-sdk-go/internal/credential"
-	blockchain2 "github.com/enchainte/enchainte-sdk-go/internal/infrastructure/blockchain"
 	"github.com/enchainte/enchainte-sdk-go/internal/message"
 	"github.com/enchainte/enchainte-sdk-go/internal/proof"
 	"github.com/enchainte/enchainte-sdk-go/pkg/blockchain"
@@ -20,17 +16,6 @@ import (
 )
 
 func main() {
-	configData := repository.NewConfigData()
-	configRepo := repository.NewConfigRepository(configData)
-	configService := service.NewConfigService(configRepo)
-	web3 := blockchain2.NewWeb3(configService)
-
-	timestamp, err := web3.ValidateRoot(entity.EthereumRinkeby, "c7afe76d6dabae68c10c32e5673ed20535ebb00436e615eccc208f14c0993744")
-	if err != nil {
-		log.Fatal(err.Error())
-	}
-	fmt.Println(timestamp)
-
 }
 
 type Services struct {

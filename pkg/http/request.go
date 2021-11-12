@@ -83,6 +83,7 @@ func (c *httpClient) GetRequest(url string, headers map[string]string) ([]byte, 
 		req.Header.Set(k, v)
 	}
 
+
 	resp, err := client.Do(req)
 	if err != nil {
 		return nil, err
