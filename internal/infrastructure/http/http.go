@@ -34,13 +34,13 @@ func (h Http) request(method, url string, headers map[string]string, body interf
 		return nil, fmt.Errorf("http.marshal: %s", err)
 	}
 
-	client := http.Client{ Timeout: time.Second * 60 }
+	client := http.Client{Timeout: time.Second * 60}
 	req, err := http.NewRequest(method, url, bytes.NewBuffer(jsonBytes))
 	if err != nil {
 		return nil, exception.NewHttpRequestException(err.Error())
 	}
 
-	for k,v := range headers {
+	for k, v := range headers {
 		req.Header.Set(k, v)
 	}
 	req.Header.Set("X-API-KEY", h.httpData.GetApiKey())

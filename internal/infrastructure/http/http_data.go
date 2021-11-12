@@ -1,6 +1,6 @@
 package http
 
-type DataHttp struct{
+type DataHttp struct {
 	apiKey string
 }
 
@@ -10,8 +10,6 @@ func NewDataHttp(apiKey string) DataHttp {
 	}
 }
 
-func(d DataHttp) GetApiKey() string {
+func (d DataHttp) GetApiKey() string {
 	return d.apiKey
 }
-
-

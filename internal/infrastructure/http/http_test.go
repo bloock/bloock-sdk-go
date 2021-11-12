@@ -12,7 +12,6 @@ import (
 func TestHttp(t *testing.T) {
 	apiKey := "123456789abcdef"
 
-
 	t.Run("Given an api key in a get request should return that api key", func(t *testing.T) {
 		testServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			w.WriteHeader(http.StatusOK)
@@ -65,7 +64,7 @@ func TestHttp(t *testing.T) {
 
 		data := NewDataHttp(apiKey)
 		httpClient := NewHttp(data)
-		resp, err := httpClient.Post(testServer.URL,"", nil)
+		resp, err := httpClient.Post(testServer.URL, "", nil)
 		assert.NotNil(t, err)
 		assert.Nil(t, resp)
 		assert.IsType(t, exception.HttpRequestException{}, err)
