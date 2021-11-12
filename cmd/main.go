@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/enchainte/enchainte-sdk-go/config"
-	"github.com/enchainte/enchainte-sdk-go/internal/anchor"
 	"github.com/enchainte/enchainte-sdk-go/internal/cloud"
 	"github.com/enchainte/enchainte-sdk-go/internal/credential"
 	"github.com/enchainte/enchainte-sdk-go/internal/message"
