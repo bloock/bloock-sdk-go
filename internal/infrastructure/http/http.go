@@ -39,7 +39,6 @@ func (h Http) request(method, url string, headers map[string]string, body interf
 	if err != nil {
 		return nil, exception.NewHttpRequestException(err.Error())
 	}
-
 	for k, v := range headers {
 		req.Header.Set(k, v)
 	}

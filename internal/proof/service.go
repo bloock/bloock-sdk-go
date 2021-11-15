@@ -1,18 +1,6 @@
 package proof
 
-import (
-	"encoding/hex"
-	"encoding/json"
-	"errors"
-	"fmt"
-	"github.com/enchainte/enchainte-sdk-go/internal/cloud"
-	"github.com/enchainte/enchainte-sdk-go/internal/record"
-	"github.com/enchainte/enchainte-sdk-go/pkg/blockchain"
-	"github.com/enchainte/enchainte-sdk-go/pkg/crypto"
-	"github.com/enchainte/enchainte-sdk-go/pkg/http"
-)
-
-type service struct {
+/*type service struct {
 	apiKey string
 	http   http.Client
 	params cloud.SdkParams
@@ -139,4 +127,4 @@ func (s *service) merge(hashes ...[]byte) ([]byte, error) {
 	newHash := s.hasher.Hash(concat)
 
 	return newHash, nil
-}
+}*/

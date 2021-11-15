@@ -41,7 +41,7 @@ func(m RecordEntity) fromUint8Array(array []byte) RecordEntity {
 	return NewRecordEntity(m.hashAlgorithm.GenerateHash(array))
 }
 
-func(m RecordEntity) isValid(record RecordEntity) bool {
+func(m RecordEntity) IsValid(record RecordEntity) bool {
 	if isType(record) {
 		record := m.GetHash()
 		if len(record) == 64 && shared.IsHex(record) {
@@ -62,4 +62,12 @@ func isType(t interface{}) bool {
 	default:
 		return false
 	}
+}
+
+func MapHashToStringArray(records []RecordEntity) []string {
+	recordArray := make([]string, 0)
+	for _, m := range records {
+		recordArray = append(recordArray, m.GetHash())
+	}
+	return recordArray
 }

@@ -4,24 +4,43 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/enchainte/enchainte-sdk-go/config"
+	"github.com/enchainte/enchainte-sdk-go/config/repository"
+	"github.com/enchainte/enchainte-sdk-go/config/service"
 	"github.com/enchainte/enchainte-sdk-go/internal/anchor"
 	"github.com/enchainte/enchainte-sdk-go/internal/cloud"
 	"github.com/enchainte/enchainte-sdk-go/internal/credential"
-	"github.com/enchainte/enchainte-sdk-go/internal/message"
-	blockchain2 "github.com/enchainte/enchainte-sdk-go/internal/infrastructure/blockchain"
-	"github.com/enchainte/enchainte-sdk-go/internal/proof"
-	"github.com/enchainte/enchainte-sdk-go/pkg/blockchain"
-	"github.com/enchainte/enchainte-sdk-go/pkg/crypto"
+	http2 "github.com/enchainte/enchainte-sdk-go/internal/infrastructure/http"
+	"github.com/enchainte/enchainte-sdk-go/internal/record/entity"
+	repository2 "github.com/enchainte/enchainte-sdk-go/internal/record/repository"
+	service2 "github.com/enchainte/enchainte-sdk-go/internal/record/service"
 	"github.com/enchainte/enchainte-sdk-go/pkg/http"
 	"log"
 )
 
 func main() {
+	configData := repository.NewConfigData()
+	configRepo := repository.NewConfigRepository(configData)
+	configService := service.NewConfigService(configRepo)
+
+	arrRecords := make([]entity.RecordEntity, 0)
+	arrRecords = append(arrRecords, entity.NewRecordEntity("6a83f545cb5693a32b5d56fb4a0530f7054df0c7e2e6b0a9fef36e26a2a96b04"))
+
+	httpData := http2.NewDataHttp("C1vfvhN2mPUeX0KikgGHVIUSofZIfX6Q4bx0kf7DuAHMt3cuELO2UGdYLUw9bS29")
+	httpClient := http2.NewHttp(httpData)
+	recordRepo := repository2.NewRecordRepository(httpClient, configService)
+	recordService := service2.NewRecordService(recordRepo)
+
+	resp, err := recordService.GetRecords(arrRecords)
+	if err != nil {
+		log.Println(err)
+	}
+
+	log.Println(resp)
+
+
 }
 
 type Services struct {
-	Message    message.Service
-	Proof      proof.Service
 	Credential credential.Service
 	Anchor     anchor.Service
 }
@@ -34,12 +53,7 @@ func EnchainteClient(apiKey string) Services {
 		log.Fatalf(fmt.Sprintf("fatal error: something went wrong when requesting the SDK paramaters to Azure:: %s", err.Error()))
 	}
 
-	hasher := crypto.Blake2b()
-	bc := blockchain.Web3(constants, azureService.SdkParameters())
-
 	return Services{
-		Message:    message.NewService(apiKey, http, azureService.SdkParameters()),
-		Proof:      proof.NewService(apiKey, http, azureService.SdkParameters(), hasher, bc),
 		Credential: credential.NewService(apiKey, http, azureService.SdkParameters()),
 		Anchor:     anchor.NewService(apiKey, http, azureService.SdkParameters()),
 	}
