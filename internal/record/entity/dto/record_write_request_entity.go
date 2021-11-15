@@ -1,11 +1,11 @@
 package dto
 
 type RecordWriteRequest struct {
-	messages []string `json:"messages"`
+	Messages []string `json:"messages"`
 }
 
 func NewRecordWriteRequest(records []string) RecordWriteRequest {
 	return RecordWriteRequest{
-		messages: records,
+		Messages: records,
 	}
 }

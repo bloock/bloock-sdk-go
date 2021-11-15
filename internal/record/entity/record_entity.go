@@ -1,12 +1,12 @@
 package entity
 
 import (
-	"github.com/enchainte/enchainte-sdk-go/internal/infrastructure"
+	"github.com/enchainte/enchainte-sdk-go/internal/infrastructure/hashing"
 	"github.com/enchainte/enchainte-sdk-go/internal/shared"
 )
 
 type RecordEntity struct {
-	hashAlgorithm infrastructure.HashingClient
+	hashAlgorithm hashing.Keccak
 	hash string
 }
 
@@ -48,6 +48,7 @@ func(m RecordEntity) IsValid(record RecordEntity) bool {
 			return true
 		}
 	}
+
 	return false
 }
 

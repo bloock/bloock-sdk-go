@@ -39,6 +39,6 @@ func Stringify(data interface{}) string {
 }
 
 func IsHex(h string) bool {
-	regexp, _ := regexp.MatchString(`^[0-9a-fA-F]+$`, h)
+	regexp, _ := regexp.MatchString("^[0-9a-fA-F]+$", h)
 	return regexp
 }
