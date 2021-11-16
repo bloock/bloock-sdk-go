@@ -3,6 +3,8 @@ package entity
 import (
 	"github.com/enchainte/enchainte-sdk-go/internal/infrastructure/hashing"
 	"github.com/enchainte/enchainte-sdk-go/internal/shared"
+	"sort"
+	"strings"
 )
 
 type RecordEntity struct {
@@ -39,6 +41,13 @@ func(m RecordEntity) FromString(string string) RecordEntity {
 
 func(m RecordEntity) FromUint8Array(array []byte) RecordEntity {
 	return NewRecordEntity(m.hashAlgorithm.GenerateHash(array))
+}
+
+func(m RecordEntity) Sort(records []RecordEntity) []RecordEntity {
+	sort.SliceStable(records, func(i, j int) bool {
+		return strings.ToUpper(records[i].GetHash()) < strings.ToUpper(records[j].GetHash())
+	})
+	return records
 }
 
 func(m RecordEntity) IsValid(record RecordEntity) bool {
