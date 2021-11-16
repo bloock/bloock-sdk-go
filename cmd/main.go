@@ -30,12 +30,10 @@ func main() {
 	anchorRepo := repository.NewAnchorRepository(httpClient, configService)
 	anchorService := service2.NewAnchorService(anchorRepo, configService)
 
-	//anchor, err := anchorService.WaitAnchor(1, 100)
-	anchor2, err := anchorService.WaitAnchor(1111111, 100)
+	anchor2, err := anchorService.GetAnchor(1)
 	if err != nil {
 		log.Println(err)
 	}
-	//log.Println(anchor)
 	log.Println(anchor2)
 
 

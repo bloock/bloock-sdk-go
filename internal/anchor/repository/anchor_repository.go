@@ -11,10 +11,10 @@ import (
 
 type AnchorRepository struct {
 	httpClient infrastructure.HttpClient
-	configService service.ConfigService
+	configService service.ConfigurerService
 }
 
-func NewAnchorRepository(httpClient infrastructure.HttpClient, configService service.ConfigService) AnchorRepository{
+func NewAnchorRepository(httpClient infrastructure.HttpClient, configService service.ConfigurerService) AnchorRepository{
 	return AnchorRepository{
 		httpClient: httpClient,
 		configService: configService,
