@@ -11,10 +11,10 @@ import (
 
 type RecordRepository struct {
 	httpClient infrastructure.HttpClient
-	configService service.ConfigService
+	configService service.ConfigurerService
 }
 
-func NewRecordRepository(httpClient infrastructure.HttpClient, configService service.ConfigService) RecordRepository {
+func NewRecordRepository(httpClient infrastructure.HttpClient, configService service.ConfigurerService) RecordRepository {
 	return RecordRepository{
 		httpClient: httpClient,
 		configService: configService,

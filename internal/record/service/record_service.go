@@ -9,10 +9,10 @@ import (
 )
 
 type RecordService struct {
-	recordRepository repository.RecordRepository
+	recordRepository repository.RecorderRepository
 }
 
-func NewRecordService(recordRepo repository.RecordRepository) RecordService {
+func NewRecordService(recordRepo repository.RecorderRepository) RecordService {
 	return RecordService{
 		recordRepository: recordRepo,
 	}

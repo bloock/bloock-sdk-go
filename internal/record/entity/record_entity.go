@@ -16,15 +16,15 @@ func NewRecordEntity(hash string) RecordEntity {
 	}
 }
 
-func(m RecordEntity) fromObject(data interface{}) RecordEntity {
-	return m.fromString(shared.Stringify(data))
+func(m RecordEntity) FromObject(data interface{}) RecordEntity {
+	return m.FromString(shared.Stringify(data))
 }
 
-func(m RecordEntity) fromHash(hash string) RecordEntity {
+func(m RecordEntity) FromHash(hash string) RecordEntity {
 	return NewRecordEntity(hash)
 }
 
-func(m RecordEntity) fromHex(hex string) (RecordEntity, error) {
+func(m RecordEntity) FromHex(hex string) (RecordEntity, error) {
 	dataArray, err := shared.HexToBytes(hex)
 	if err != nil {
 		return RecordEntity{}, err
@@ -32,12 +32,12 @@ func(m RecordEntity) fromHex(hex string) (RecordEntity, error) {
 	return NewRecordEntity(m.hashAlgorithm.GenerateHash(dataArray)), nil
 }
 
-func(m RecordEntity) fromString(string string) RecordEntity {
+func(m RecordEntity) FromString(string string) RecordEntity {
 	dataArray := shared.StringToBytes(string)
 	return NewRecordEntity(m.hashAlgorithm.GenerateHash(dataArray))
 }
 
-func(m RecordEntity) fromUint8Array(array []byte) RecordEntity {
+func(m RecordEntity) FromUint8Array(array []byte) RecordEntity {
 	return NewRecordEntity(m.hashAlgorithm.GenerateHash(array))
 }
 

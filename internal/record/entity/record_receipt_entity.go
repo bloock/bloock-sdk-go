@@ -1,18 +1,18 @@
 package entity
 
 type RecordReceipt struct {
-	anchor int
-	client string
-	record string
-	status string
+	Anchor int
+	Client string
+	Record string
+	Status string
 }
 
 func NewRecordReceipt(anchor int, client, record, status string) RecordReceipt {
 	return RecordReceipt{
-		anchor: anchor,
-		client: client,
-		record: record,
-		status: status,
+		Anchor: anchor,
+		Client: client,
+		Record: record,
+		Status: status,
 	}
 }
 
