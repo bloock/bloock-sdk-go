@@ -61,6 +61,7 @@ func TestHttp(t *testing.T) {
 		json.Unmarshal(resp, &err)
 		assert.NotNil(t, err)
 		assert.IsType(t, exception.HttpRequestException{}, err)
+		assert.Equal(t, "HttpClient was not successful: ", err.Error())
 	})
 	t.Run("Given an invalid JSON response should raise an HttpRequestException", func(t *testing.T) {
 		testServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -77,6 +78,7 @@ func TestHttp(t *testing.T) {
 		json.Unmarshal(resp, &err)
 		assert.NotNil(t, err)
 		assert.IsType(t, exception.HttpRequestException{}, err)
+		assert.Equal(t, "HttpClient was not successful: ", err.Error())
 	})
 
 }
