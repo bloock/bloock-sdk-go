@@ -20,15 +20,15 @@ func NewHttp(data DataHttp) Http {
 	}
 }
 
-func (h Http) Get(url string, headers map[string]string) (interface{}, error) {
+func (h Http) Get(url string, headers map[string]string) ([]byte, error) {
 	return h.request("GET", url, headers, nil)
 }
 
-func (h Http) Post(url string, body interface{}, headers map[string]string) (interface{}, error) {
+func (h Http) Post(url string, body interface{}, headers map[string]string) ([]byte, error) {
 	return h.request("POST", url, headers, body)
 }
 
-func (h Http) request(method, url string, headers map[string]string, body interface{}) (interface{}, error) {
+func (h Http) request(method, url string, headers map[string]string, body interface{}) ([]byte, error) {
 	jsonBytes, err := json.Marshal(body)
 	if err != nil {
 		return nil, fmt.Errorf("http.marshal: %s", err)
@@ -55,10 +55,5 @@ func (h Http) request(method, url string, headers map[string]string, body interf
 		return nil, exception.NewHttpRequestException(err.Error())
 	}
 
-	var resp interface{}
-	if err := json.Unmarshal(respByte, &resp); err != nil {
-		return nil, exception.NewHttpRequestException(err.Error())
-	}
-
-	return resp, nil
+	return respByte, nil
 }

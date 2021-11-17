@@ -31,12 +31,7 @@ func(m RecordRepository) SendRecords(records []entity.RecordEntity) (dto.RecordW
 	}
 
 	var recWriteResp dto.RecordWriteResponse
-	respToBytes, err := json.Marshal(resp)
-	if err != nil {
-		return dto.RecordWriteResponse{}, err
-	}
-
-	if err := json.Unmarshal(respToBytes, &recWriteResp); err != nil {
+	if err := json.Unmarshal(resp, &recWriteResp); err != nil {
 		return dto.RecordWriteResponse{}, err
 	}
 
@@ -53,12 +48,7 @@ func(m RecordRepository) FetchRecords(records []entity.RecordEntity) ([]dto.Reco
 	}
 
 	var recRetrieveResp []dto.RecordRetrieveResponse
-	respToBytes, err := json.Marshal(resp)
-	if err != nil {
-		return []dto.RecordRetrieveResponse{}, err
-	}
-
-	if err := json.Unmarshal(respToBytes, &recRetrieveResp); err != nil {
+	if err := json.Unmarshal(resp, &recRetrieveResp); err != nil {
 		return []dto.RecordRetrieveResponse{}, err
 	}
 

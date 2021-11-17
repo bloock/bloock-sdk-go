@@ -1,12 +1,14 @@
 package repository
 
 import (
+	"encoding/json"
 	"github.com/enchainte/enchainte-sdk-go/config/mockconfig"
 	"github.com/enchainte/enchainte-sdk-go/internal/infrastructure/http/mockhttp"
 	"github.com/enchainte/enchainte-sdk-go/internal/record/entity"
 	"github.com/enchainte/enchainte-sdk-go/internal/record/entity/dto"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 	"log"
 	"testing"
 )
@@ -26,7 +28,10 @@ func TestSendRecordsRepository(t *testing.T) {
 			Messages: []string{"02aae7e86eb50f61a62083a320475d9d60cbd52749dbf08fa942b1b97f50aee5"},
 			Status: "Pending",
 		}
-		hc.EXPECT().Post(gomock.Any(), gomock.Any(), gomock.Any()).Return(resp, nil).Times(1)
+		respByte, err := json.Marshal(resp)
+		require.Nil(t, err)
+
+		hc.EXPECT().Post(gomock.Any(), gomock.Any(), gomock.Any()).Return(respByte, nil).Times(1)
 		//cs.EXPECT() getApiUrl
 
 		actual, err := rr.SendRecords([]entity.RecordEntity{})
@@ -39,7 +44,11 @@ func TestSendRecordsRepository(t *testing.T) {
 	})
 
 	t.Run("Given an empty record, should return empty fields", func(t *testing.T) {
-		hc.EXPECT().Post(gomock.Any(), gomock.Any(), gomock.Any()).Return(dto.RecordWriteResponse{}, nil).Times(1)
+		resp := dto.RecordWriteResponse{}
+		respByte, err := json.Marshal(resp)
+		require.Nil(t, err)
+
+		hc.EXPECT().Post(gomock.Any(), gomock.Any(), gomock.Any()).Return(respByte, nil).Times(1)
 		//cs.EXPECT() getApiUrl
 
 		actual, err := rr.SendRecords([]entity.RecordEntity{})
@@ -70,7 +79,10 @@ func TestFetchRecords(t *testing.T) {
 			Status: "Pending",
 			},
 		}
-		hc.EXPECT().Post(gomock.Any(), gomock.Any(), gomock.Any()).Return(resp, nil).Times(1)
+		respByte, err := json.Marshal(resp)
+		require.Nil(t, err)
+
+		hc.EXPECT().Post(gomock.Any(), gomock.Any(), gomock.Any()).Return(respByte, nil).Times(1)
 		//cs.EXPECT() getApiUrl
 
 		actual, err := rr.FetchRecords([]entity.RecordEntity{})
@@ -83,7 +95,11 @@ func TestFetchRecords(t *testing.T) {
 	})
 
 	t.Run("Given an empty record retrieve, should return empty fields", func(t *testing.T) {
-		hc.EXPECT().Post(gomock.Any(), gomock.Any(), gomock.Any()).Return([]dto.RecordRetrieveResponse{}, nil).Times(1)
+		resp := make([]dto.RecordRetrieveResponse, 0)
+		respByte, err := json.Marshal(resp)
+		require.Nil(t, err)
+
+		hc.EXPECT().Post(gomock.Any(), gomock.Any(), gomock.Any()).Return(respByte, nil).Times(1)
 		//cs.EXPECT() getApiUrl
 
 		actual, err := rr.FetchRecords([]entity.RecordEntity{})
