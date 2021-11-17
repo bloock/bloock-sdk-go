@@ -43,3 +43,39 @@ func TestHexToBytes32(t *testing.T) {
 		assert.IsType(t, [32]byte{}, bytes32, "The two types should be [32]byte")
 	})
 }
+
+func TestIsHex(t *testing.T) {
+	hex := "abcdefg"
+	
+	t.Run("Given an invalid regexp should return false", func(t *testing.T) {
+		exp := IsHex(hex)
+		assert.False(t, exp)
+	})
+}
+
+func TestStringify(t *testing.T) {
+	i := 123456789
+	s := "test"
+	arr := []int{1,2,3,4}
+	b := true
+
+	t.Run("Given an int value, should convert to string", func(t *testing.T) {
+		res := Stringify(i)
+		assert.Equal(t, "123456789", res)
+	})
+
+	t.Run("Given a string value, should convert to string", func(t *testing.T) {
+		res := Stringify(s)
+		assert.Equal(t, "test", res)
+	})
+
+	t.Run("Given array value, should convert to string", func(t *testing.T) {
+		res := Stringify(arr)
+		assert.Equal(t, "[1 2 3 4]", res)
+	})
+
+	t.Run("Given boolean value, should convert to string", func(t *testing.T) {
+		res := Stringify(b)
+		assert.Equal(t, "true", res)
+	})
+}
