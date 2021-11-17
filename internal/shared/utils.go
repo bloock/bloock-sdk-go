@@ -3,6 +3,7 @@ package shared
 import (
 	"encoding/hex"
 	"fmt"
+	"regexp"
 )
 
 func BytesToHex (array []byte) string {
@@ -31,4 +32,9 @@ func HexToBytes32 (data string) ([32]byte, error) {
 	copy(bytes32[:], bytes)
 
 	return bytes32, nil
+}
+
+func IsHex(h string) bool {
+	regexp, _ := regexp.MatchString("^[0-9a-fA-F]+$", h)
+	return regexp
 }

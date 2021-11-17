@@ -43,3 +43,12 @@ func TestHexToBytes32(t *testing.T) {
 		assert.IsType(t, [32]byte{}, bytes32, "The two types should be [32]byte")
 	})
 }
+
+func TestIsHex(t *testing.T) {
+	hex := "abcdefg"
+
+	t.Run("Given an invalid regexp should return false", func(t *testing.T) {
+		exp := IsHex(hex)
+		assert.False(t, exp)
+	})
+}
