@@ -22,7 +22,7 @@ func NewRecordRepository(httpClient infrastructure.HttpClient, configService ser
 }
 
 func(m RecordRepository) SendRecords(records []entity.RecordEntity) (dto.RecordWriteResponse, error) {
-	url := fmt.Sprintf("%s/core/messages", "https://api.bloock.dev")
+	url := fmt.Sprintf("%s/core/messages", m.configService.GetApiBaseUrl())
 	recordArray := entity.MapHashToStringArray(records)
 	body := dto.NewRecordWriteRequest(recordArray)
 	resp, err := m.httpClient.Post(url, body, nil)
@@ -39,7 +39,7 @@ func(m RecordRepository) SendRecords(records []entity.RecordEntity) (dto.RecordW
 }
 
 func(m RecordRepository) FetchRecords(records []entity.RecordEntity) ([]dto.RecordRetrieveResponse, error) {
-	url := fmt.Sprintf("%s/core/messages/fetch", "https://api.bloock.dev")
+	url := fmt.Sprintf("%s/core/messages/fetch", m.configService.GetApiBaseUrl())
 	recordArray := entity.MapHashToStringArray(records)
 	body := dto.NewRecordRetrieveRequest(recordArray)
 	resp, err := m.httpClient.Post(url, body, nil)
