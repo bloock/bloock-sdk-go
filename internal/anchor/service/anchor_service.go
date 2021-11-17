@@ -6,17 +6,16 @@ import (
 	exception2 "github.com/enchainte/enchainte-sdk-go/internal/anchor/entity/exception"
 	"github.com/enchainte/enchainte-sdk-go/internal/anchor/repository"
 	"github.com/enchainte/enchainte-sdk-go/internal/shared/entity/exception"
-	"log"
 	"reflect"
 	"time"
 )
 
 type AnchorService struct {
-	anchorRepository repository.AnchorRepository
-	configService service.ConfigService
+	anchorRepository repository.AnchorerRepository
+	configService service.ConfigurerService
 }
 
-func NewAnchorService(ar repository.AnchorRepository, conf service.ConfigService) AnchorService {
+func NewAnchorService(ar repository.AnchorerRepository, conf service.ConfigurerService) AnchorService {
 	return AnchorService{
 		anchorRepository: ar,
 		configService: conf,
@@ -51,7 +50,7 @@ func(a AnchorService) WaitAnchor(anchorId int, limit int) (entity.Anchor, error)
 	var attempts = 0
 	var start = time.Now().Unix()
 	var nextTry = start + int64(a.configService.GetConfiguration().WaitMessageIntervalFactor)
-	var timeout = start + int64(timeLimit)
+	var timeout = start + int64(limit)
 
 	for true {
 		anchor, err := a.anchorRepository.GetAnchor(anchorId)
@@ -59,7 +58,6 @@ func(a AnchorService) WaitAnchor(anchorId int, limit int) (entity.Anchor, error)
 			return entity.Anchor{}, err
 		}
 		if anchor.Status() == "Success" {
-			log.Println(anchor)
 			return anchor, nil
 		}
 		currentTime := time.Now().Unix()
@@ -75,7 +73,7 @@ func(a AnchorService) WaitAnchor(anchorId int, limit int) (entity.Anchor, error)
 		if currentTime > timeout {
 			return entity.Anchor{}, exception2.NewWaitAnchorTimeoutException()
 		}
-		nextTry += int64(attempts* a.configService.GetConfiguration().WaitMessageIntervalFactor +
+		nextTry += int64(attempts * a.configService.GetConfiguration().WaitMessageIntervalFactor +
 			a.configService.GetConfiguration().WaitMessageIntervalDefault)
 		attempts += 1
 
