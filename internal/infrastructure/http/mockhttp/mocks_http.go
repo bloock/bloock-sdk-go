@@ -34,10 +34,10 @@ func (m *MockHttpClient) EXPECT() *MockHttpClientMockRecorder {
 }
 
 // Get mocks base method.
-func (m *MockHttpClient) Get(url string, headers map[string]string) (interface{}, error) {
+func (m *MockHttpClient) Get(url string, headers map[string]string) ([]byte, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Get", url, headers)
-	ret0, _ := ret[0].(interface{})
+	ret0, _ := ret[0].([]byte)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -49,10 +49,10 @@ func (mr *MockHttpClientMockRecorder) Get(url, headers interface{}) *gomock.Call
 }
 
 // Post mocks base method.
-func (m *MockHttpClient) Post(url string, body interface{}, headers map[string]string) (interface{}, error) {
+func (m *MockHttpClient) Post(url string, body interface{}, headers map[string]string) ([]byte, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Post", url, body, headers)
-	ret0, _ := ret[0].(interface{})
+	ret0, _ := ret[0].([]byte)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
