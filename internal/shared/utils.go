@@ -35,7 +35,7 @@ func HexToBytes32 (data string) ([32]byte, error) {
 }
 
 func Stringify(data interface{}) string {
-	return Stringify(data)
+	return fmt.Sprintf("%v", data)
 }
 
 func IsHex(h string) bool {
