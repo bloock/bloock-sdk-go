@@ -6,10 +6,10 @@ import (
 )
 
 type Proof struct {
-	Leaves []string
-	Nodes []string
-	Depth string
-	Bitmap string
+	Leaves []string `json:"leaves"`
+	Nodes []string `json:"nodes"`
+	Depth string `json:"depth"`
+	Bitmap string `json:"bitmap"`
 }
 
 func NewProof(leaves, nodes []string, depth, bitmap string) Proof {

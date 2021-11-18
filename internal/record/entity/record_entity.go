@@ -43,7 +43,7 @@ func(m RecordEntity) FromUint8Array(array []byte) RecordEntity {
 	return NewRecordEntity(m.hashAlgorithm.GenerateHash(array))
 }
 
-func(m RecordEntity) Sort(records []RecordEntity) []RecordEntity {
+func Sort(records []RecordEntity) []RecordEntity {
 	sort.SliceStable(records, func(i, j int) bool {
 		return strings.ToUpper(records[i].GetHash()) < strings.ToUpper(records[j].GetHash())
 	})

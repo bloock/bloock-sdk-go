@@ -66,7 +66,7 @@ func TestRecordEntity(t *testing.T) {
 		rec = append(rec, NewRecordEntity("cadc5a160b48bde5727b08e1f8d1b8fe08704ff3cc730bf4919a2ef10ae6e291"))
 		rec = append(rec, NewRecordEntity("db6d0af6e743ca02954f1feb7dec3033fe4f86d429b8dd5b7dd654b794d71dee"))
 
-		result := record.Sort(rec)
+		result := Sort(rec)
 		assert.Equal(t, "2d9130eb0900a08f22dee5e0330672861e6035eb858e1d1ac0d0d5d98a676800", result[0].GetHash())
 		assert.Equal(t, "6a83f545cb5693a32b5d56fb4a0530f7054df0c7e2e6b0a9fef36e26a2a96b04", result[1].GetHash())
 		assert.Equal(t, "cadc5a160b48bde5727b08e1f8d1b8fe08704ff3cc730bf4919a2ef10ae6e291", result[2].GetHash())
