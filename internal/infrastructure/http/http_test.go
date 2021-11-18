@@ -1,6 +1,7 @@
 package http
 
 import (
+	"encoding/json"
 	"github.com/enchainte/enchainte-sdk-go/internal/infrastructure/http/exception"
 	"github.com/stretchr/testify/assert"
 	"io"
@@ -47,27 +48,37 @@ func TestHttp(t *testing.T) {
 	})
 	t.Run("Given an invalid JSON response should raise an HttpRequestException", func(t *testing.T) {
 		testServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			w.WriteHeader(http.StatusBadRequest)
+			err := exception.NewHttpRequestException("")
+			w.Write([]byte(err.Error()))
 		}))
 		defer func() { testServer.Close() }()
 
 		data := NewDataHttp(apiKey)
 		httpClient := NewHttp(data)
-		resp, err := httpClient.Get(testServer.URL, nil)
+		resp, _ := httpClient.Get(testServer.URL, nil)
+		var err exception.HttpRequestException
+		json.Unmarshal(resp, &err)
 		assert.NotNil(t, err)
-		assert.Nil(t, resp)
 		assert.IsType(t, exception.HttpRequestException{}, err)
+		assert.Equal(t, "HttpClient was not successful: ", err.Error())
 	})
 	t.Run("Given an invalid JSON response should raise an HttpRequestException", func(t *testing.T) {
 		testServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			w.WriteHeader(http.StatusBadRequest)
+			err := exception.NewHttpRequestException("")
+			w.Write([]byte(err.Error()))
 		}))
 		defer func() { testServer.Close() }()
 
 		data := NewDataHttp(apiKey)
 		httpClient := NewHttp(data)
-		resp, err := httpClient.Post(testServer.URL, "", nil)
+		resp, _ := httpClient.Post(testServer.URL, "", nil)
+		var err exception.HttpRequestException
+		json.Unmarshal(resp, &err)
 		assert.NotNil(t, err)
-		assert.Nil(t, resp)
 		assert.IsType(t, exception.HttpRequestException{}, err)
+		assert.Equal(t, "HttpClient was not successful: ", err.Error())
 	})
 
 }

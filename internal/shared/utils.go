@@ -34,6 +34,10 @@ func HexToBytes32 (data string) ([32]byte, error) {
 	return bytes32, nil
 }
 
+func Stringify(data interface{}) string {
+	return fmt.Sprintf("%v", data)
+}
+
 func IsHex(h string) bool {
 	regexp, _ := regexp.MatchString("^[0-9a-fA-F]+$", h)
 	return regexp
