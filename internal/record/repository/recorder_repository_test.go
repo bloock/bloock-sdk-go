@@ -9,7 +9,6 @@ import (
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"log"
 	"testing"
 )
 
@@ -103,7 +102,6 @@ func TestFetchRecordsRepository(t *testing.T) {
 		hc.EXPECT().Post(gomock.Any(), gomock.Any(), gomock.Any()).Return(respByte, nil).Times(1)
 
 		actual, err := rr.FetchRecords([]entity.RecordEntity{})
-		log.Println(actual)
 		assert.Nil(t, err)
 		assert.Equal(t, []dto.RecordRetrieveResponse{}, actual)
 	})
