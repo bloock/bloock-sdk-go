@@ -18,3 +18,11 @@ func NewConfigService(configRepo repository.ConfigurerRepository) ConfigService 
 func(c ConfigService) GetNetworkConfiguration(network string) entity.NetworkConfiguration {
 	return c.configRepository.GetNetworkConfiguration(network)
 }
+
+func(c ConfigService) GetApiBaseUrl() string {
+	return c.configRepository.GetConfiguration().Host
+}
+
+func(c ConfigService) GetConfiguration() entity.Configuration {
+	return c.configRepository.GetConfiguration()
+}

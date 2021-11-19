@@ -7,7 +7,6 @@ import (
 	"github.com/enchainte/enchainte-sdk-go/internal/record/mockrecord"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
-	"reflect"
 	"testing"
 )
 
@@ -33,7 +32,6 @@ func TestSendRecordsService(t *testing.T) {
 
 		actual, err := rs.SendRecords(arr)
 		assert.Nil(t, err)
-		assert.IsType(t, reflect.Array, reflect.TypeOf(actual).Kind())
 		assert.IsType(t, entity.RecordReceipt{}, actual[0])
 		assert.Equal(t, 80, actual[0].Anchor)
 		assert.Equal(t, "ce10c769-022b-405e-8e7c-3b52eeb2a4ea", actual[0].Client)
