@@ -22,7 +22,7 @@ func(m RecordEntity) FromObject(data interface{}) RecordEntity {
 	return m.FromString(shared.Stringify(data))
 }
 
-func(m RecordEntity) FromHash(hash string) RecordEntity {
+func FromHash(hash string) RecordEntity {
 	return NewRecordEntity(hash)
 }
 
@@ -63,6 +63,14 @@ func(m RecordEntity) IsValid(record RecordEntity) bool {
 
 func(m RecordEntity) GetHash() string {
 	return m.hash
+}
+
+func(m RecordEntity) GetByteArray() ([]byte, error) {
+	ret, err := shared.HexToBytes(m.hash)
+	if err != nil {
+		return nil, err
+	}
+	return ret, nil
 }
 
 func isType(t interface{}) bool {

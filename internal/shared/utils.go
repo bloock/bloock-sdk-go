@@ -2,6 +2,7 @@ package shared
 
 import (
 	"encoding/hex"
+	"errors"
 	"fmt"
 	"regexp"
 )
@@ -11,6 +12,11 @@ func BytesToHex (array []byte) string {
 }
 
 func HexToBytes (data string) ([]byte, error) {
+	if !IsHex(data) {
+		return []byte{}, errors.New("parameter is not hexadecimal")
+	} else if len(data) %2 == 1 {
+		return []byte{}, errors.New("parameter is missing last character to be represented in bytes")
+	}
 	bytes, err := hex.DecodeString(data)
 	if err != nil {
 		return []byte{}, fmt.Errorf("utils.HexToBytes: %s",err)

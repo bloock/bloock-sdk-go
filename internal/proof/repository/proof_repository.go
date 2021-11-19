@@ -8,6 +8,7 @@ import (
 	entity2 "github.com/enchainte/enchainte-sdk-go/internal/proof/entity"
 	"github.com/enchainte/enchainte-sdk-go/internal/proof/entity/dto"
 	"github.com/enchainte/enchainte-sdk-go/internal/record/entity"
+	"github.com/enchainte/enchainte-sdk-go/internal/shared"
 )
 
 type ProofRepository struct {
@@ -42,7 +43,62 @@ func(p ProofRepository) RetrieveProof(records []entity.RecordEntity) (entity2.Pr
 }
 
 func(p ProofRepository) VerifyProof(proof entity2.Proof) (entity.RecordEntity, error) {
+	/*leaves, hashes, depth, bitmap, err := initializeVariables(proof)
+	if err != nil {
+		return entity.RecordEntity{}, err
+	}
+
+	itHashes := 0
+	itLeaves := 0
+
+	for len(hashes) > itHashes || len(leaves) > itLeaves {
+		actDepth := depth[itHashes + itLeaves]
+		var actHash []byte
+
+		if (bitmap[int(math.Floor(float64((itHashes+itLeaves)/8)))] & 1 << (7 - ((itHashes + itLeaves) % 8))) > 0 {
+			actHash = hashes[itHashes]
+			itHashes += 1
+		} else {
+			actHash = leaves[itLeaves]
+			itLeaves += 1
+		}
+	}*/
+
+
+
+
+
 	return entity.RecordEntity{}, nil
+}
+
+func initializeVariables(proof entity2.Proof) (l, h, d, b []byte, err error) {
+	var leaves []byte
+	for _, p := range proof.Leaves {
+		b := entity.FromHash(p)
+		r, err := b.GetByteArray()
+		if err != nil {
+			return nil, nil, nil, nil, err
+		}
+		leaves = r
+	}
+	var hashes []byte
+	for _, n := range proof.Nodes {
+		h, err := shared.HexToBytes(n)
+		if err != nil {
+			return nil, nil, nil, nil, err
+		}
+		hashes = h
+	}
+	depth, err := shared.HexToBytes(proof.Depth)
+	if err != nil {
+		return nil, nil, nil, nil, err
+	}
+	bitmap, err := shared.HexToBytes(proof.Bitmap)
+	if err != nil {
+		return nil, nil, nil, nil, err
+	}
+
+	return leaves, hashes, depth, bitmap, nil
 }
 
 func(p ProofRepository) ValidateRoot(network string, record entity.RecordEntity) (int, error) {

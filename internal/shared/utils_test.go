@@ -15,12 +15,19 @@ func TestBytesToHex(t *testing.T) {
 }
 
 func TestHexToBytes(t *testing.T) {
-	data := "c7afe76d6dabae68c10c32e5673ed20535ebb00436e615eccc208f14c0993744"
+	data := "0100"
+	invalidData := "0G100"
 
 	t.Run("Given an hexadecimal string should return an array of byte", func(t *testing.T){
 		bytes, err := HexToBytes(data)
 		assert.Nil(t, err)
 		assert.IsType(t, []byte{}, bytes, "Type should be []byte")
+	})
+
+	t.Run("Given an invalid hexadecimal string, should return an error", func(t *testing.T) {
+		_, err := HexToBytes(invalidData)
+		assert.NotNil(t, err)
+		assert.Equal(t, "parameter is not hexadecimal", err.Error())
 	})
 }
 

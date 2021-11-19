@@ -10,7 +10,7 @@ func TestRecordEntity(t *testing.T) {
 	var record RecordEntity
 
 	t.Run("Given a valid hash should return that hash", func(t *testing.T) {
-		r := record.FromHash("test_hash")
+		r := FromHash("test_hash")
 
 		assert.Equal(t, "test_hash", r.GetHash())
 	})
@@ -42,19 +42,19 @@ func TestRecordEntity(t *testing.T) {
 	})
 
 	t.Run("Given a valid hash, should be valid", func(t *testing.T) {
-		r := record.FromHash("1010101010101010101010101010101010101010101010101010101010101010")
+		r := FromHash("1010101010101010101010101010101010101010101010101010101010101010")
 
 		assert.True(t, r.IsValid(r))
 	})
 
 	t.Run("Given a hash with missing char, should be invalid", func(t *testing.T) {
-		r := record.FromHash("010101010101010101010101010101010101010101010101010101010101010")
+		r := FromHash("010101010101010101010101010101010101010101010101010101010101010")
 
 		assert.False(t, r.IsValid(r))
 	})
 
 	t.Run("Given a hash with wrong char, should be invalid", func(t *testing.T) {
-		r := record.FromHash("G010101010101010101010101010101010101010101010101010101010101010")
+		r := FromHash("G010101010101010101010101010101010101010101010101010101010101010")
 
 		assert.False(t, r.IsValid(r))
 	})

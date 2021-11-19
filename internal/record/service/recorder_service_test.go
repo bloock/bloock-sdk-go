@@ -26,8 +26,7 @@ func TestSendRecordsService(t *testing.T) {
 			Status: "Pending",
 		}
 		arr := make([]entity.RecordEntity, 0)
-		var rec entity.RecordEntity
-		rec = rec.FromHash("02aae7e86eb50f61a62083a320475d9d60cbd52749dbf08fa942b1b97f50aee5")
+		rec := entity.FromHash("02aae7e86eb50f61a62083a320475d9d60cbd52749dbf08fa942b1b97f50aee5")
 		arr = append(arr, rec)
 
 		rr.EXPECT().SendRecords(gomock.Any()).Return(resp, nil).Times(1)
@@ -44,8 +43,7 @@ func TestSendRecordsService(t *testing.T) {
 	
 	t.Run("Given an invalid record, should return an error", func(t *testing.T) {
 		arr := make([]entity.RecordEntity, 0)
-		var rec entity.RecordEntity
-		rec = rec.FromHash("record")
+		rec := entity.FromHash("record")
 		arr = append(arr, rec)
 
 		actual, err := rs.SendRecords(arr)
