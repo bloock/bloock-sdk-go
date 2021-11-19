@@ -44,6 +44,7 @@ func (h Http) request(method, url string, headers map[string]string, body interf
 	}
 	req.Header.Set("X-API-KEY", h.httpData.GetApiKey())
 	req.Header.Set("Content-Type", "application/json")
+
 	response, err := client.Do(req)
 	if err != nil {
 		return nil, exception.NewHttpRequestException(err.Error())

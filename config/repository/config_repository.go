@@ -15,3 +15,7 @@ func NewConfigRepository(configData ConfigData) ConfigRepository {
 func(c ConfigRepository) GetNetworkConfiguration(network string) entity.NetworkConfiguration {
 	return c.configData.getNetworkConfiguration(network)
 }
+
+func(c ConfigRepository) GetConfiguration() entity.Configuration {
+	return c.configData.getConfiguration()
+}

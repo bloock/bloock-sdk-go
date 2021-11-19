@@ -4,8 +4,6 @@ import (
 	"github.com/enchainte/enchainte-sdk-go/internal/record/entity"
 	"github.com/enchainte/enchainte-sdk-go/internal/record/entity/exception"
 	"github.com/enchainte/enchainte-sdk-go/internal/record/repository"
-	exception2 "github.com/enchainte/enchainte-sdk-go/internal/shared/entity/exception"
-	"reflect"
 )
 
 type RecordService struct {
@@ -21,11 +19,6 @@ func NewRecordService(recordRepo repository.RecorderRepository) RecordService {
 func(m RecordService) SendRecords(records []entity.RecordEntity) ([]entity.RecordReceipt, error) {
 	if len(records) == 0 {
 		return []entity.RecordReceipt{}, nil
-	}
-
-	typeOfRecords := reflect.TypeOf(records).Kind()
-	if typeOfRecords != reflect.Slice {
-		return []entity.RecordReceipt{}, exception2.NewInvalidArgumentException()
 	}
 
 	for _, r := range records {
@@ -50,11 +43,6 @@ func(m RecordService) SendRecords(records []entity.RecordEntity) ([]entity.Recor
 func(m RecordService) GetRecords(records []entity.RecordEntity) ([]entity.RecordReceipt, error) {
 	if len(records) == 0 {
 		return []entity.RecordReceipt{}, nil
-	}
-
-	typeOfRecords := reflect.TypeOf(records).Kind()
-	if typeOfRecords != reflect.Slice {
-		return []entity.RecordReceipt{}, nil //Retornar error tipus InvalidArgumentException
 	}
 
 	for _, r := range records {

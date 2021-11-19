@@ -9,7 +9,6 @@ import (
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"log"
 	"testing"
 )
 
@@ -31,8 +30,8 @@ func TestSendRecordsRepository(t *testing.T) {
 		respByte, err := json.Marshal(resp)
 		require.Nil(t, err)
 
+		cs.EXPECT().GetApiBaseUrl().Return("api").Times(1)
 		hc.EXPECT().Post(gomock.Any(), gomock.Any(), gomock.Any()).Return(respByte, nil).Times(1)
-		//cs.EXPECT() getApiUrl
 
 		actual, err := rr.SendRecords([]entity.RecordEntity{})
 		assert.Nil(t, err)
@@ -48,8 +47,8 @@ func TestSendRecordsRepository(t *testing.T) {
 		respByte, err := json.Marshal(resp)
 		require.Nil(t, err)
 
+		cs.EXPECT().GetApiBaseUrl().Return("api").Times(1)
 		hc.EXPECT().Post(gomock.Any(), gomock.Any(), gomock.Any()).Return(respByte, nil).Times(1)
-		//cs.EXPECT() getApiUrl
 
 		actual, err := rr.SendRecords([]entity.RecordEntity{})
 		assert.Nil(t, err)
@@ -63,7 +62,7 @@ func TestSendRecordsRepository(t *testing.T) {
 	})
 }
 
-func TestFetchRecords(t *testing.T) {
+func TestFetchRecordsRepository(t *testing.T) {
 	crtl := gomock.NewController(t)
 	defer crtl.Finish()
 
@@ -82,8 +81,8 @@ func TestFetchRecords(t *testing.T) {
 		respByte, err := json.Marshal(resp)
 		require.Nil(t, err)
 
+		cs.EXPECT().GetApiBaseUrl().Return("api").Times(1)
 		hc.EXPECT().Post(gomock.Any(), gomock.Any(), gomock.Any()).Return(respByte, nil).Times(1)
-		//cs.EXPECT() getApiUrl
 
 		actual, err := rr.FetchRecords([]entity.RecordEntity{})
 		assert.Nil(t, err)
@@ -99,11 +98,10 @@ func TestFetchRecords(t *testing.T) {
 		respByte, err := json.Marshal(resp)
 		require.Nil(t, err)
 
+		cs.EXPECT().GetApiBaseUrl().Return("api").Times(1)
 		hc.EXPECT().Post(gomock.Any(), gomock.Any(), gomock.Any()).Return(respByte, nil).Times(1)
-		//cs.EXPECT() getApiUrl
 
 		actual, err := rr.FetchRecords([]entity.RecordEntity{})
-		log.Println(actual)
 		assert.Nil(t, err)
 		assert.Equal(t, []dto.RecordRetrieveResponse{}, actual)
 	})
