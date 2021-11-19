@@ -28,17 +28,8 @@ func(a AnchorRepository) GetAnchor(anchor int) (entity.Anchor, error) {
 		return entity.Anchor{}, err
 	}
 
-	var makeMap map[string]interface{}
-	if err := json.Unmarshal(response, &makeMap); err != nil {
-		return entity.Anchor{}, fmt.Errorf("getAnchor.unmarshall2: %s", err)
-	}
-
 	var r = dto.AnchorRetrieveResponse{}
-	mapToBytes, err := json.Marshal(makeMap)
-	if err != nil {
-		return entity.Anchor{}, fmt.Errorf("getAnchor.marshal2: %s", err)
-	}
-	if err = json.Unmarshal(mapToBytes, &r); err != nil {
+	if err = json.Unmarshal(response, &r); err != nil {
 		return entity.Anchor{}, fmt.Errorf("getAnchor.unmarshall2: %s", err)
 	}
 

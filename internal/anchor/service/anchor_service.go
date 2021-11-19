@@ -5,8 +5,6 @@ import (
 	"github.com/enchainte/enchainte-sdk-go/internal/anchor/entity"
 	exception2 "github.com/enchainte/enchainte-sdk-go/internal/anchor/entity/exception"
 	"github.com/enchainte/enchainte-sdk-go/internal/anchor/repository"
-	"github.com/enchainte/enchainte-sdk-go/internal/shared/entity/exception"
-	"reflect"
 	"time"
 )
 
@@ -23,11 +21,6 @@ func NewAnchorService(ar repository.AnchorerRepository, conf service.ConfigurerS
 }
 
 func(a AnchorService) GetAnchor(anchorId int) (entity.Anchor, error) {
-	id := reflect.TypeOf(anchorId).Kind()
-	if id != reflect.Int {
-		return entity.Anchor{}, exception.NewInvalidArgumentException()
-	}
-
 	anchor, err := a.anchorRepository.GetAnchor(anchorId)
 	if err != nil {
 		return entity.Anchor{}, err
@@ -41,12 +34,6 @@ func(a AnchorService) GetAnchor(anchorId int) (entity.Anchor, error) {
 }
 
 func(a AnchorService) WaitAnchor(anchorId int, limit int) (entity.Anchor, error) {
-	id := reflect.TypeOf(anchorId).Kind()
-	timeLimit := reflect.TypeOf(limit).Kind()
-	if id != reflect.Int || timeLimit != reflect.Int {
-		return entity.Anchor{}, exception.NewInvalidArgumentException()
-	}
-
 	waitDefault := a.configService.GetConfiguration().WaitMessageIntervalDefault
 	waitFactor := a.configService.GetConfiguration().WaitMessageIntervalFactor
 
