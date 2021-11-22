@@ -25,6 +25,24 @@ func HexToBytes (data string) ([]byte, error) {
 	return bytes, nil
 }
 
+func HexToBytes16(data string) ([]uint16, error) {
+	if len(data) % 4 != 0 {
+		return []uint16{}, errors.New("parameter is missing last characters to be represented in uint16")
+	}
+
+	bytes, err := HexToBytes(data)
+	if err != nil {
+		return []uint16{}, err
+	}
+
+	result := make([]uint16, len(bytes) / 2)
+	for i := 0; i < len(result); i++ {
+		result[i] = uint16(bytes[i*2+1]) | uint16(bytes[i*2])<<8
+	}
+
+	return result, nil
+}
+
 func StringToBytes (data string) []byte {
 	return []byte(data)
 }

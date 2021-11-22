@@ -2,6 +2,7 @@ package repository
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"github.com/enchainte/enchainte-sdk-go/config/service"
 	"github.com/enchainte/enchainte-sdk-go/internal/infrastructure"
@@ -9,6 +10,8 @@ import (
 	"github.com/enchainte/enchainte-sdk-go/internal/proof/entity/dto"
 	"github.com/enchainte/enchainte-sdk-go/internal/record/entity"
 	"github.com/enchainte/enchainte-sdk-go/internal/shared"
+	"log"
+	"math"
 )
 
 type ProofRepository struct {
@@ -26,9 +29,10 @@ func NewProofRepository(h infrastructure.HttpClient, b infrastructure.Blockchain
 }
 
 func(p ProofRepository) RetrieveProof(records []entity.RecordEntity) (entity2.Proof, error) {
-	url := fmt.Sprintf("%s/core/proof", "https://api.bloock.dev")
+	url := fmt.Sprintf("%s/core/proof", p.configService.GetApiBaseUrl())
 	recordArray := entity.MapHashToStringArray(records)
 	body := dto.NewProofRetrieveRequest(recordArray)
+
 	resp, err := p.httpClient.Post(url, body, nil)
 	if err != nil {
 		return entity2.Proof{}, err
@@ -42,54 +46,85 @@ func(p ProofRepository) RetrieveProof(records []entity.RecordEntity) (entity2.Pr
 	return proof, nil
 }
 
+type Stack struct {
+	depth int
+	hash []byte
+}
+
 func(p ProofRepository) VerifyProof(proof entity2.Proof) (entity.RecordEntity, error) {
-	/*leaves, hashes, depth, bitmap, err := initializeVariables(proof)
+	leaves, hashes, bitmap, depth, err := initializeVariables(proof)
 	if err != nil {
 		return entity.RecordEntity{}, err
 	}
 
 	itHashes := 0
 	itLeaves := 0
+	stack := make([]Stack, 0)
+	log.Printf("Actual hashes: %+v leaves %+v\n depth %+v bitmap %+v", len(hashes), len(leaves), len(depth), bitmap)
 
 	for len(hashes) > itHashes || len(leaves) > itLeaves {
-		actDepth := depth[itHashes + itLeaves]
+		actDepth := int(depth[itHashes + itLeaves])
+
+		log.Printf("actDepth %+v depth position %+v", actDepth, itHashes+itLeaves)
 		var actHash []byte
 
-		if (bitmap[int(math.Floor(float64((itHashes+itLeaves)/8)))] & 1 << (7 - ((itHashes + itLeaves) % 8))) > 0 {
-			actHash = hashes[itHashes]
+		log.Printf("evaluate bitmap %+v", bitmap[int(math.Floor(float64((itHashes+itLeaves)/8)))] & (1 << (7 - ((itHashes + itLeaves) % 8))))
+		if (bitmap[int(math.Floor(float64((itHashes+itLeaves)/8)))] & (1 << (7 - ((itHashes + itLeaves) % 8)))) > 0 {
+			actHash = append(actHash, hashes[itHashes]...)
+			log.Printf("enter if actualHash %+v", actHash)
 			itHashes += 1
 		} else {
-			actHash = leaves[itLeaves]
+				actHash = append(actHash, leaves[itLeaves]...)
+			log.Printf("enter else actualHash %+v", actHash)
 			itLeaves += 1
 		}
-	}*/
+		log.Println(len(stack))
+		for len(stack) > 0 && stack[len(stack)-1].depth == actDepth {
+			log.Printf("stck depth %+v hash %+v",stack[len(stack)-1].depth,stack[len(stack)-1].hash)
+			lastHash := stack[len(stack)-1].hash
+			if lastHash == nil {
+				return entity.RecordEntity{}, errors.New("verify: Stack got empty before capturing its value")
+			}
+			actHash, err = entity.Merge(lastHash, actHash)
+			if err != nil {
+				return entity.RecordEntity{}, err
+			}
+			actDepth -= 1
+		}
+		log.Printf("push to stack actdepth: %+v actHash: %+v",actDepth, actHash)
+		stack = append(stack, Stack{depth: actDepth, hash: actHash})
+		fmt.Printf("stack %+v\n", stack)
+	}
 
-
-
-
-
-	return entity.RecordEntity{}, nil
+	result := entity.FromHash(shared.BytesToHex(stack[0].hash))
+	return result, nil
 }
 
-func initializeVariables(proof entity2.Proof) (l, h, d, b []byte, err error) {
-	var leaves []byte
+func(p ProofRepository) ValidateRoot(network string, record entity.RecordEntity) (int, error) {
+	log.Printf("Root: %+v", record.GetHash())
+	r, err := p.blockchainClient.ValidateRoot(network, record.GetHash())
+	return int(r), err
+}
+
+func initializeVariables(proof entity2.Proof) (l, h [][]byte, b []byte, d []uint16, err error) {
+	leaves := make([][]byte, 0)
 	for _, p := range proof.Leaves {
 		b := entity.FromHash(p)
 		r, err := b.GetByteArray()
 		if err != nil {
 			return nil, nil, nil, nil, err
 		}
-		leaves = r
+		leaves = append(leaves, r)
 	}
-	var hashes []byte
+	hashes := make([][]byte, 0)
 	for _, n := range proof.Nodes {
 		h, err := shared.HexToBytes(n)
 		if err != nil {
 			return nil, nil, nil, nil, err
 		}
-		hashes = h
+		hashes = append(hashes, h)
 	}
-	depth, err := shared.HexToBytes(proof.Depth)
+	depth, err := shared.HexToBytes16(proof.Depth)
 	if err != nil {
 		return nil, nil, nil, nil, err
 	}
@@ -98,10 +133,5 @@ func initializeVariables(proof entity2.Proof) (l, h, d, b []byte, err error) {
 		return nil, nil, nil, nil, err
 	}
 
-	return leaves, hashes, depth, bitmap, nil
-}
-
-func(p ProofRepository) ValidateRoot(network string, record entity.RecordEntity) (int, error) {
-	r, err := p.blockchainClient.ValidateRoot(network, record.GetHash())
-	return int(r), err
+	return leaves, hashes, bitmap, depth, nil
 }

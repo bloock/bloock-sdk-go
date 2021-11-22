@@ -89,3 +89,12 @@ func MapHashToStringArray(records []RecordEntity) []string {
 	}
 	return recordArray
 }
+
+func Merge(left, right []byte) ([]byte, error) {
+	concat := make([]byte, len(left) + len(right))
+	concat = append(concat, left...)
+	concat = append(concat, right...)
+
+	r := NewRecordEntity("")
+	return r.FromUint8Array(concat).GetByteArray()
+}

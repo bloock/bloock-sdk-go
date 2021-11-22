@@ -1,11 +1,11 @@
 package dto
 
 type ProofRetrieveRequest struct {
-	messages []string
+	Messages []string `json:"messages"`
 }
 
 func NewProofRetrieveRequest(messages []string) ProofRetrieveRequest {
 	return ProofRetrieveRequest{
-		messages: messages,
+		Messages: messages,
 	}
 }

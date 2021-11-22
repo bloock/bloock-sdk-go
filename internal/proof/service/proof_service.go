@@ -6,8 +6,6 @@ import (
 	"github.com/enchainte/enchainte-sdk-go/internal/proof/repository"
 	"github.com/enchainte/enchainte-sdk-go/internal/record/entity"
 	exception2 "github.com/enchainte/enchainte-sdk-go/internal/record/entity/exception"
-	"github.com/enchainte/enchainte-sdk-go/internal/shared/entity/exception"
-	"reflect"
 )
 
 type ProofService struct {
@@ -21,11 +19,6 @@ func NewProofService(pr repository.ProoferRepository) ProofService {
 }
 
 func(p ProofService) RetrieveProof(records []entity.RecordEntity) (entity2.Proof, error) {
-	to := reflect.TypeOf(records).Kind()
-	if to != reflect.Slice || len(records) == 0 {
-		return entity2.Proof{}, exception.NewInvalidArgumentException()
-	}
-
 	for _, r := range records {
 		if !r.IsValid(r) {
 			return entity2.Proof{}, exception2.NewInvalidRecordException()
@@ -38,11 +31,6 @@ func(p ProofService) RetrieveProof(records []entity.RecordEntity) (entity2.Proof
 }
 
 func(p ProofService) VerifyRecords(records []entity.RecordEntity, network string) (int, error) {
-	to := reflect.TypeOf(records).Kind()
-	if to != reflect.Slice || len(records) == 0 {
-		return -1, exception.NewInvalidArgumentException()
-	}
-
 	for _, r := range records {
 		if !r.IsValid(r) {
 			return -1, exception2.NewInvalidRecordException()

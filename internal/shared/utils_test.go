@@ -31,6 +31,16 @@ func TestHexToBytes(t *testing.T) {
 	})
 }
 
+func TestHexToBytes16(t *testing.T) {
+	hex := "0100"
+
+	t.Run("Given an hexadecimal, should return an []uint16", func(t *testing.T) {
+		bytes, err := HexToBytes16(hex)
+		assert.Nil(t, err)
+		assert.Equal(t, []uint16{256}, bytes)
+	})
+}
+
 func TestStringToBytes(t *testing.T) {
 	data := "Bloock"
 
