@@ -18,7 +18,7 @@ func NewProofService(pr repository.ProoferRepository) ProofService {
 	}
 }
 
-func(p ProofService) RetrieveProof(records []entity.RecordEntity) (entity2.Proof, error) {
+func (p ProofService) RetrieveProof(records []entity.RecordEntity) (entity2.Proof, error) {
 	for _, r := range records {
 		if !r.IsValid(r) {
 			return entity2.Proof{}, exception2.NewInvalidRecordException()
@@ -30,7 +30,7 @@ func(p ProofService) RetrieveProof(records []entity.RecordEntity) (entity2.Proof
 	return p.proofRepository.RetrieveProof(sorted)
 }
 
-func(p ProofService) VerifyRecords(records []entity.RecordEntity, network string) (int, error) {
+func (p ProofService) VerifyRecords(records []entity.RecordEntity, network string) (int, error) {
 	for _, r := range records {
 		if !r.IsValid(r) {
 			return -1, exception2.NewInvalidRecordException()
@@ -48,7 +48,7 @@ func(p ProofService) VerifyRecords(records []entity.RecordEntity, network string
 	return p.VerifyProof(proof, network)
 }
 
-func(p ProofService) VerifyProof(proof entity2.Proof, network string) (int, error) {
+func (p ProofService) VerifyProof(proof entity2.Proof, network string) (int, error) {
 	root, err := p.proofRepository.VerifyProof(proof)
 	if err != nil {
 		return -1, err

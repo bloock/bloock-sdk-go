@@ -22,11 +22,11 @@ func TestGetAnchorRepository(t *testing.T) {
 
 	t.Run("Given an existing anchor, should return that anchor", func(t *testing.T) {
 		resp := dto.AnchorRetrieveResponse{
-			AnchorId: 1,
+			AnchorId:   1,
 			BlockRoots: []string{"block_root"},
-			Networks: []entity.Network{},
-			Root: "root",
-			Status: "Success",
+			Networks:   []entity.Network{},
+			Root:       "root",
+			Status:     "Success",
 		}
 		respByte, err := json.Marshal(resp)
 		require.Nil(t, err)

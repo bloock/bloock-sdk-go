@@ -19,10 +19,10 @@ func TestSendRecordsService(t *testing.T) {
 
 	t.Run("Given a valid record request, should send with success", func(t *testing.T) {
 		resp := dto.RecordWriteResponse{
-			Anchor: 80,
-			Client: "ce10c769-022b-405e-8e7c-3b52eeb2a4ea",
+			Anchor:   80,
+			Client:   "ce10c769-022b-405e-8e7c-3b52eeb2a4ea",
 			Messages: []string{"02aae7e86eb50f61a62083a320475d9d60cbd52749dbf08fa942b1b97f50aee5"},
-			Status: "Pending",
+			Status:   "Pending",
 		}
 		arr := make([]entity.RecordEntity, 0)
 		rec := entity.FromHash("02aae7e86eb50f61a62083a320475d9d60cbd52749dbf08fa942b1b97f50aee5")
@@ -38,7 +38,7 @@ func TestSendRecordsService(t *testing.T) {
 		assert.Equal(t, "02aae7e86eb50f61a62083a320475d9d60cbd52749dbf08fa942b1b97f50aee5", actual[0].Record)
 		assert.Equal(t, "Pending", actual[0].Status)
 	})
-	
+
 	t.Run("Given an invalid record, should return an error", func(t *testing.T) {
 		arr := make([]entity.RecordEntity, 0)
 		rec := entity.FromHash("record")
@@ -60,10 +60,10 @@ func TestGetRecordsService(t *testing.T) {
 
 	t.Run("Given a valid record request, should get records with success", func(t *testing.T) {
 		resp := []dto.RecordRetrieveResponse{{
-			Anchor: 80,
-			Client: "ce10c769-022b-405e-8e7c-3b52eeb2a4ea",
+			Anchor:  80,
+			Client:  "ce10c769-022b-405e-8e7c-3b52eeb2a4ea",
 			Message: "02aae7e86eb50f61a62083a320475d9d60cbd52749dbf08fa942b1b97f50aee5",
-			Status: "Pending",
+			Status:  "Pending",
 		},
 		}
 		arr := make([]entity.RecordEntity, 0)

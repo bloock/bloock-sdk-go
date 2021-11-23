@@ -16,11 +16,11 @@ type AnchorService struct {
 func NewAnchorService(ar repository.AnchorerRepository, conf service.ConfigurerService) AnchorService {
 	return AnchorService{
 		anchorRepository: ar,
-		configService: conf,
+		configService:    conf,
 	}
 }
 
-func(a AnchorService) GetAnchor(anchorId int) (entity.Anchor, error) {
+func (a AnchorService) GetAnchor(anchorId int) (entity.Anchor, error) {
 	anchor, err := a.anchorRepository.GetAnchor(anchorId)
 	if err != nil {
 		return entity.Anchor{}, err
@@ -33,7 +33,7 @@ func(a AnchorService) GetAnchor(anchorId int) (entity.Anchor, error) {
 	return anchor, nil
 }
 
-func(a AnchorService) WaitAnchor(anchorId int, limit int) (entity.Anchor, error) {
+func (a AnchorService) WaitAnchor(anchorId int, limit int) (entity.Anchor, error) {
 	waitDefault := a.configService.GetConfiguration().WaitMessageIntervalDefault
 	waitFactor := a.configService.GetConfiguration().WaitMessageIntervalFactor
 
@@ -64,7 +64,7 @@ func(a AnchorService) WaitAnchor(anchorId int, limit int) (entity.Anchor, error)
 		if currentTime > timeout {
 			return entity.Anchor{}, exception2.NewWaitAnchorTimeoutException()
 		}
-		nextTry += int64(attempts * waitFactor + waitDefault)
+		nextTry += int64(attempts*waitFactor + waitDefault)
 		attempts += 1
 
 		if currentTime > timeout {

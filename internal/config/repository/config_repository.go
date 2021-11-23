@@ -14,18 +14,18 @@ func NewConfigRepository(configData ConfigData) ConfigRepository {
 	}
 }
 
-func(c ConfigRepository) GetNetworkConfiguration(network string) entity.NetworkConfiguration {
+func (c ConfigRepository) GetNetworkConfiguration(network string) entity.NetworkConfiguration {
 	return c.configData.getNetworkConfiguration(network)
 }
 
-func(c ConfigRepository) GetConfiguration() entity.Configuration {
+func (c ConfigRepository) GetConfiguration() entity.Configuration {
 	return c.configData.getConfiguration()
 }
 
-func(c *ConfigRepository) SetNetworkConfiguration(network string, config entity.NetworkConfiguration) {
+func (c *ConfigRepository) SetNetworkConfiguration(network string, config entity.NetworkConfiguration) {
 	c.configData.setNetworkConfiguration(network, config)
 }
 
-func(c *ConfigRepository) SetApiHost(host string) {
+func (c *ConfigRepository) SetApiHost(host string) {
 	c.configData.setApiHost(host)
 }

@@ -7,26 +7,26 @@ import (
 	"regexp"
 )
 
-func BytesToHex (array []byte) string {
+func BytesToHex(array []byte) string {
 	return hex.EncodeToString(array)
 }
 
-func HexToBytes (data string) ([]byte, error) {
+func HexToBytes(data string) ([]byte, error) {
 	if !IsHex(data) {
 		return []byte{}, errors.New("parameter is not hexadecimal")
-	} else if len(data) %2 == 1 {
+	} else if len(data)%2 == 1 {
 		return []byte{}, errors.New("parameter is missing last character to be represented in bytes")
 	}
 	bytes, err := hex.DecodeString(data)
 	if err != nil {
-		return []byte{}, fmt.Errorf("utils.HexToBytes: %s",err)
+		return []byte{}, fmt.Errorf("utils.HexToBytes: %s", err)
 	}
 
 	return bytes, nil
 }
 
 func HexToBytes16(data string) ([]uint16, error) {
-	if len(data) % 4 != 0 {
+	if len(data)%4 != 0 {
 		return []uint16{}, errors.New("parameter is missing last characters to be represented in uint16")
 	}
 
@@ -35,7 +35,7 @@ func HexToBytes16(data string) ([]uint16, error) {
 		return []uint16{}, err
 	}
 
-	result := make([]uint16, len(bytes) / 2)
+	result := make([]uint16, len(bytes)/2)
 	for i := 0; i < len(result); i++ {
 		result[i] = uint16(bytes[i*2+1]) | uint16(bytes[i*2])<<8
 	}
@@ -43,11 +43,11 @@ func HexToBytes16(data string) ([]uint16, error) {
 	return result, nil
 }
 
-func StringToBytes (data string) []byte {
+func StringToBytes(data string) []byte {
 	return []byte(data)
 }
 
-func HexToBytes32 (data string) ([32]byte, error) {
+func HexToBytes32(data string) ([32]byte, error) {
 	bytes, err := HexToBytes(data)
 	if err != nil {
 		return [32]byte{}, fmt.Errorf("utils.HexToBytes32: %s", err)

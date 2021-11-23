@@ -8,10 +8,10 @@ import (
 func TestIsValid(t *testing.T) {
 	t.Run("Given a valid Proof, should return true", func(t *testing.T) {
 		p := NewProof([]string{"02aae7e86eb50f61a62083a320475d9d60cbd52749dbf08fa942b1b97f50aee5"},
-		[]string{"bb6986853646d083929d1d92638f3d4741a3b7149bd2b63c6bfedd32e3c684d3",
+			[]string{"bb6986853646d083929d1d92638f3d4741a3b7149bd2b63c6bfedd32e3c684d3",
 				"0616067c793ac533815ae2d48d785d339e0330ce5bb5345b5e6217dd9d1dbeab",
 				"68b8f6b25cc700e64ed3e3d33f2f246e24801f93d29786589fbbab3b11f5bcee"},
-				"0004000600060005", "bfdf7000")
+			"0004000600060005", "bfdf7000")
 
 		r := IsValid(p)
 		assert.True(t, r)
@@ -19,8 +19,8 @@ func TestIsValid(t *testing.T) {
 
 	t.Run("Given a minimalist test, should return true", func(t *testing.T) {
 		p := NewProof([]string{"02aae7e86eb50f61a62083a320475d9d60cbd52749dbf08fa942b1b97f50aee5"},
-		[]string{},
-		"0004", "bf")
+			[]string{},
+			"0004", "bf")
 
 		r := IsValid(p)
 		assert.True(t, r)
@@ -28,9 +28,9 @@ func TestIsValid(t *testing.T) {
 
 	t.Run("Given invalid hex leaves, should return false", func(t *testing.T) {
 		p := NewProof([]string{"02aae7e86eb50f61a62083a320475d9d60cbd52749dbf08fa942b1b97f50aeeg"},
-		[]string{"bb6986853646d083929d1d92638f3d4741a3b7149bd2b63c6bfedd32e3c684d3",
-			"0616067c793ac533815ae2d48d785d339e0330ce5bb5345b5e6217dd9d1dbeab",
-			"68b8f6b25cc700e64ed3e3d33f2f246e24801f93d29786589fbbab3b11f5bcee"},
+			[]string{"bb6986853646d083929d1d92638f3d4741a3b7149bd2b63c6bfedd32e3c684d3",
+				"0616067c793ac533815ae2d48d785d339e0330ce5bb5345b5e6217dd9d1dbeab",
+				"68b8f6b25cc700e64ed3e3d33f2f246e24801f93d29786589fbbab3b11f5bcee"},
 			"0004000600060005", "bfdf7000")
 
 		r := IsValid(p)
@@ -67,7 +67,7 @@ func TestIsValid(t *testing.T) {
 
 	t.Run("Given a invalid short depth, should return false", func(t *testing.T) {
 		p := NewProof([]string{"02aae7e86eb50f61a62083a320475d9d60cbd52749dbf08fa942b1b97f50aee5"},
-		[]string{"bb6986853646d083929d1d92638f3d4741a3b7149bd2b63c6bfedd32e3c684d3",
+			[]string{"bb6986853646d083929d1d92638f3d4741a3b7149bd2b63c6bfedd32e3c684d3",
 				"0616067c793ac533815ae2d48d785d339e0330ce5bb5345b5e6217dd9d1dbeab",
 				"68b8f6b25cc700e64ed3e3d33f2f246e24801f93d29786589fbbab3b11f5bcee"},
 			"000400060006000", "bfdf7000")
@@ -86,6 +86,5 @@ func TestIsValid(t *testing.T) {
 		r := IsValid(p)
 		assert.False(t, r)
 	})
-
 
 }

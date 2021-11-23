@@ -14,14 +14,14 @@ type AnchorRepository struct {
 	configService service.ConfigurerService
 }
 
-func NewAnchorRepository(httpClient infrastructure.HttpClient, configService service.ConfigurerService) AnchorRepository{
+func NewAnchorRepository(httpClient infrastructure.HttpClient, configService service.ConfigurerService) AnchorRepository {
 	return AnchorRepository{
-		httpClient: httpClient,
+		httpClient:    httpClient,
 		configService: configService,
 	}
 }
 
-func(a AnchorRepository) GetAnchor(anchor int) (entity.Anchor, error) {
+func (a AnchorRepository) GetAnchor(anchor int) (entity.Anchor, error) {
 	url := fmt.Sprintf("%s/core/anchor/%d", a.configService.GetApiBaseUrl(), anchor)
 	response, err := a.httpClient.Get(url, nil)
 	if err != nil {

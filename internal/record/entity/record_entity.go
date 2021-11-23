@@ -18,7 +18,7 @@ func NewRecordEntity(hash string) RecordEntity {
 	}
 }
 
-func(m RecordEntity) FromObject(data interface{}) RecordEntity {
+func (m RecordEntity) FromObject(data interface{}) RecordEntity {
 	return m.FromString(shared.Stringify(data))
 }
 
@@ -26,7 +26,7 @@ func FromHash(hash string) RecordEntity {
 	return NewRecordEntity(hash)
 }
 
-func(m RecordEntity) FromHex(hex string) (RecordEntity, error) {
+func (m RecordEntity) FromHex(hex string) (RecordEntity, error) {
 	dataArray, err := shared.HexToBytes(hex)
 	if err != nil {
 		return RecordEntity{}, err
@@ -34,12 +34,12 @@ func(m RecordEntity) FromHex(hex string) (RecordEntity, error) {
 	return NewRecordEntity(m.hashAlgorithm.GenerateHash(dataArray)), nil
 }
 
-func(m RecordEntity) FromString(string string) RecordEntity {
+func (m RecordEntity) FromString(string string) RecordEntity {
 	dataArray := shared.StringToBytes(string)
 	return NewRecordEntity(m.hashAlgorithm.GenerateHash(dataArray))
 }
 
-func(m RecordEntity) FromUint8Array(array []byte) RecordEntity {
+func (m RecordEntity) FromUint8Array(array []byte) RecordEntity {
 	return NewRecordEntity(m.hashAlgorithm.GenerateHash(array))
 }
 
@@ -50,7 +50,7 @@ func Sort(records []RecordEntity) []RecordEntity {
 	return records
 }
 
-func(m RecordEntity) IsValid(record RecordEntity) bool {
+func (m RecordEntity) IsValid(record RecordEntity) bool {
 	if isType(record) {
 		record := m.GetHash()
 		if len(record) == 64 && shared.IsHex(record) {
@@ -61,11 +61,11 @@ func(m RecordEntity) IsValid(record RecordEntity) bool {
 	return false
 }
 
-func(m RecordEntity) GetHash() string {
+func (m RecordEntity) GetHash() string {
 	return m.hash
 }
 
-func(m RecordEntity) GetByteArray() ([]byte, error) {
+func (m RecordEntity) GetByteArray() ([]byte, error) {
 	ret, err := shared.HexToBytes(m.hash)
 	if err != nil {
 		return nil, err
@@ -91,7 +91,7 @@ func MapHashToStringArray(records []RecordEntity) []string {
 }
 
 func Merge(left, right []byte) ([]byte, error) {
-	concat := make([]byte, len(left) + len(right))
+	concat := make([]byte, len(left)+len(right))
 	concat = append(left, right...)
 
 	r := NewRecordEntity("")

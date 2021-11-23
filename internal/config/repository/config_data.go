@@ -36,7 +36,7 @@ func NewConfigData() ConfigData {
 	}
 }
 
-func(c ConfigData) getNetworkConfiguration(network string) entity2.NetworkConfiguration {
+func (c ConfigData) getNetworkConfiguration(network string) entity2.NetworkConfiguration {
 	config := c.networksConfig[network]
 	if config == (entity2.NetworkConfiguration{}) {
 		config = c.networksConfig[entity2.EthereumMainnet]
@@ -45,16 +45,14 @@ func(c ConfigData) getNetworkConfiguration(network string) entity2.NetworkConfig
 	return config
 }
 
-func(c ConfigData) getConfiguration() entity2.Configuration {
+func (c ConfigData) getConfiguration() entity2.Configuration {
 	return c.config
 }
 
-func(c *ConfigData) setNetworkConfiguration(network string, config entity2.NetworkConfiguration) {
+func (c *ConfigData) setNetworkConfiguration(network string, config entity2.NetworkConfiguration) {
 	c.networksConfig[network] = config
 }
 
-func(c *ConfigData) setApiHost(host string) {
+func (c *ConfigData) setApiHost(host string) {
 	c.config.Host = host
 }
-
-

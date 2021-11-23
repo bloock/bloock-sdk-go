@@ -15,5 +15,3 @@ func NewRecordReceipt(anchor int, client, record, status string) RecordReceipt {
 		Status: status,
 	}
 }
-
-

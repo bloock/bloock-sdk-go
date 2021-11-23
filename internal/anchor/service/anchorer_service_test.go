@@ -47,8 +47,8 @@ func TestWaitAnchorService(t *testing.T) {
 
 	counter := 0
 	maxCount := 3
-	var getAnchorSideEffect func(args...interface{}) (entity.Anchor, error)
-	getAnchorSideEffect = func(args...interface{}) (entity.Anchor, error) {
+	var getAnchorSideEffect func(args ...interface{}) (entity.Anchor, error)
+	getAnchorSideEffect = func(args ...interface{}) (entity.Anchor, error) {
 		if counter < maxCount {
 			counter += 1
 			return entity.Anchor{}, nil

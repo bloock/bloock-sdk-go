@@ -18,7 +18,7 @@ func TestHexToBytes(t *testing.T) {
 	data := "0100"
 	invalidData := "0G100"
 
-	t.Run("Given an hexadecimal string should return an array of byte", func(t *testing.T){
+	t.Run("Given an hexadecimal string should return an array of byte", func(t *testing.T) {
 		bytes, err := HexToBytes(data)
 		assert.Nil(t, err)
 		assert.IsType(t, []byte{}, bytes, "Type should be []byte")
@@ -73,7 +73,7 @@ func TestIsHex(t *testing.T) {
 func TestStringify(t *testing.T) {
 	i := 123456789
 	s := "test"
-	arr := []int{1,2,3,4}
+	arr := []int{1, 2, 3, 4}
 	b := true
 
 	t.Run("Given an int value, should convert to string", func(t *testing.T) {

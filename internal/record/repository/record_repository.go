@@ -16,12 +16,12 @@ type RecordRepository struct {
 
 func NewRecordRepository(httpClient infrastructure.HttpClient, configService service.ConfigurerService) RecordRepository {
 	return RecordRepository{
-		httpClient: httpClient,
+		httpClient:    httpClient,
 		configService: configService,
 	}
 }
 
-func(m RecordRepository) SendRecords(records []entity.RecordEntity) (dto.RecordWriteResponse, error) {
+func (m RecordRepository) SendRecords(records []entity.RecordEntity) (dto.RecordWriteResponse, error) {
 	url := fmt.Sprintf("%s/core/messages", m.configService.GetApiBaseUrl())
 	recordArray := entity.MapHashToStringArray(records)
 	body := dto.NewRecordWriteRequest(recordArray)
@@ -38,7 +38,7 @@ func(m RecordRepository) SendRecords(records []entity.RecordEntity) (dto.RecordW
 	return recWriteResp, nil
 }
 
-func(m RecordRepository) FetchRecords(records []entity.RecordEntity) ([]dto.RecordRetrieveResponse, error) {
+func (m RecordRepository) FetchRecords(records []entity.RecordEntity) ([]dto.RecordRetrieveResponse, error) {
 	url := fmt.Sprintf("%s/core/messages/fetch", m.configService.GetApiBaseUrl())
 	recordArray := entity.MapHashToStringArray(records)
 	body := dto.NewRecordRetrieveRequest(recordArray)
@@ -54,5 +54,3 @@ func(m RecordRepository) FetchRecords(records []entity.RecordEntity) ([]dto.Reco
 
 	return recRetrieveResp, err
 }
-
-

@@ -30,9 +30,9 @@ func TestRetrieveProofRepository(t *testing.T) {
 
 		resp := entity.Proof{
 			Leaves: []string{"02aae7e86eb50f61a62083a320475d9d60cbd52749dbf08fa942b1b97f50aee5"},
-			Nodes: nodes,
+			Nodes:  nodes,
 			Bitmap: "bfdf7000",
-			Depth: "000400060006000500030002000400060007000800090009",
+			Depth:  "000400060006000500030002000400060007000800090009",
 		}
 
 		respBytes, err := json.Marshal(resp)

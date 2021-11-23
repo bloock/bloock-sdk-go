@@ -27,7 +27,7 @@ func TestGetNetworkConfigurationRepo(t *testing.T) {
 func TestSetApiHost(t *testing.T) {
 	cd := NewConfigData()
 	r := NewConfigRepository(cd)
-	
+
 	t.Run("Given an api host, should change it", func(t *testing.T) {
 		r.SetApiHost("https://modified.bloock.com")
 		assert.Equal(t, "https://modified.bloock.com", r.GetConfiguration().Host)

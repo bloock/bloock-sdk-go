@@ -29,7 +29,7 @@ func TestGetApiBaseUrl(t *testing.T) {
 
 	cr := mockconfig.NewMockConfigurerRepository(crtl)
 	cs := NewConfigService(cr)
-	
+
 	t.Run("Given an api host, should return that api host", func(t *testing.T) {
 		config := entity2.NewConfiguration("test", 2, 100)
 

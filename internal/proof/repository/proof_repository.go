@@ -13,20 +13,20 @@ import (
 )
 
 type ProofRepository struct {
-	httpClient infrastructure.HttpClient
+	httpClient       infrastructure.HttpClient
 	blockchainClient infrastructure.BlockchainClient
 	configService    service.ConfigurerService
 }
 
 func NewProofRepository(h infrastructure.HttpClient, b infrastructure.BlockchainClient, cs service.ConfigurerService) ProofRepository {
 	return ProofRepository{
-		httpClient: h,
+		httpClient:       h,
 		blockchainClient: b,
-		configService: cs,
+		configService:    cs,
 	}
 }
 
-func(p ProofRepository) RetrieveProof(records []entity.RecordEntity) (entity2.Proof, error) {
+func (p ProofRepository) RetrieveProof(records []entity.RecordEntity) (entity2.Proof, error) {
 	url := fmt.Sprintf("%s/core/proof", p.configService.GetApiBaseUrl())
 	recordArray := entity.MapHashToStringArray(records)
 	body := dto.NewProofRetrieveRequest(recordArray)
@@ -44,7 +44,7 @@ func(p ProofRepository) RetrieveProof(records []entity.RecordEntity) (entity2.Pr
 	return proof, nil
 }
 
-func(p ProofRepository) VerifyProof(proof entity2.Proof) (entity.RecordEntity, error) {
+func (p ProofRepository) VerifyProof(proof entity2.Proof) (entity.RecordEntity, error) {
 	type Stack struct {
 		Depth int
 		Hash  []byte
@@ -60,7 +60,7 @@ func(p ProofRepository) VerifyProof(proof entity2.Proof) (entity.RecordEntity, e
 	stack := make([]Stack, 0)
 
 	for len(hashes) > itHashes || len(leaves) > itLeaves {
-		actDepth := int(depth[itHashes + itLeaves])
+		actDepth := int(depth[itHashes+itLeaves])
 
 		var actHash []byte
 
@@ -91,7 +91,7 @@ func(p ProofRepository) VerifyProof(proof entity2.Proof) (entity.RecordEntity, e
 	return result, nil
 }
 
-func(p ProofRepository) ValidateRoot(network string, record entity.RecordEntity) (int, error) {
+func (p ProofRepository) ValidateRoot(network string, record entity.RecordEntity) (int, error) {
 	r, err := p.blockchainClient.ValidateRoot(network, record.GetHash())
 	return int(r), err
 }

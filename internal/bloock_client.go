@@ -26,13 +26,13 @@ Entrypoint to the Bloock SDK:
 		- Get records proof
 		- Validate proof
 		- Get records details
- */
+*/
 type BloockClient struct {
 	anchorService service.AnchorerService
 	configService service5.ConfigurerService
 	recordService service3.RecorderService
-	proofService service4.ProoferService
-	httpClient infrastructure.HttpClient
+	proofService  service4.ProoferService
+	httpClient    infrastructure.HttpClient
 }
 
 /*
@@ -40,7 +40,7 @@ NewBloockClient
 Constructor with API Key that enables accessing to Bloock's functionalities.
 Parameters:
 	{string} apiKey Client API Key.
- */
+*/
 func NewBloockClient(apiKey string) BloockClient {
 	c := repository5.NewConfigData()
 	cr := repository5.NewConfigRepository(c)
@@ -61,13 +61,12 @@ func NewBloockClient(apiKey string) BloockClient {
 
 	return BloockClient{
 		configService: cs,
-		httpClient: h,
+		httpClient:    h,
 		anchorService: as,
 		recordService: rs,
-		proofService: ps,
+		proofService:  ps,
 	}
 }
-
 
 /*
 SetNetworkConfiguration
@@ -77,8 +76,8 @@ Parameters:
 	{NetworkConfiguration} The contract address, contract ABI and http provider to override the network specified
 Returns:
 	{void}
- */
-func(b BloockClient) SetNetworkConfiguration(network string, configuration entity4.NetworkConfiguration) {
+*/
+func (b BloockClient) SetNetworkConfiguration(network string, configuration entity4.NetworkConfiguration) {
 	b.configService.SetNetworkConfiguration(network, configuration)
 }
 
@@ -94,8 +93,8 @@ Errors:
 	{InvalidRecordException} At least one of the records sent was not well formated
 	{HttpRequestException} Error return by Bloock's API.
 	{error} Native Golang error
- */
-func(b BloockClient) SendRecords(records []entity.RecordEntity) ([]entity.RecordReceipt, error) {
+*/
+func (b BloockClient) SendRecords(records []entity.RecordEntity) ([]entity.RecordReceipt, error) {
 	return b.recordService.SendRecords(records)
 }
 
@@ -111,8 +110,8 @@ Errors:
 	{InvalidRecordException} At least one of the records sent was not well formated
 	{HttpRequestException} Error return by Bloock's API.
 	{error} Native Golang error
- */
-func(b BloockClient) GetRecords(records []entity.RecordEntity) ([]entity.RecordReceipt, error) {
+*/
+func (b BloockClient) GetRecords(records []entity.RecordEntity) ([]entity.RecordReceipt, error) {
 	return b.recordService.GetRecords(records)
 }
 
@@ -128,8 +127,8 @@ Errors:
 	{InvalidRecordException} At least one of the records sent was not well formated
 	{HttpRequestException} Error return by Bloock's API.
 	{error} Native Golang error
- */
-func(b BloockClient) GetAnchor(anchor int) (entity2.Anchor, error) {
+*/
+func (b BloockClient) GetAnchor(anchor int) (entity2.Anchor, error) {
 	return b.anchorService.GetAnchor(anchor)
 }
 
@@ -147,8 +146,8 @@ Errors:
 	{InvalidRecordException} At least one of the records sent was not well formated
 	{HttpRequestException} Error return by Bloock's API.
 	{error} Native Golang error
- */
-func(b BloockClient) WaitAnchor(anchor int, timeout int) (entity2.Anchor, error) {
+*/
+func (b BloockClient) WaitAnchor(anchor int, timeout int) (entity2.Anchor, error) {
 	return b.anchorService.WaitAnchor(anchor, timeout)
 }
 
@@ -165,8 +164,8 @@ Errors:
 	{InvalidRecordException} At least one of the records sent was not well formated
 	{HttpRequestException} Error return by Bloock's API.
 	{error} Native Golang error
- */
-func(b BloockClient) GetProof(records []entity.RecordEntity) (entity3.Proof, error) {
+*/
+func (b BloockClient) GetProof(records []entity.RecordEntity) (entity3.Proof, error) {
 	return b.proofService.RetrieveProof(records)
 }
 
@@ -182,8 +181,8 @@ Returns:
 Errors:
 	{Web3Exception} Error connecting to blockchain.
 	{error} Native Golang error
- */
-func(b BloockClient) VerifyProof(proof entity3.Proof, network string) (int, error) {
+*/
+func (b BloockClient) VerifyProof(proof entity3.Proof, network string) (int, error) {
 	return b.proofService.VerifyProof(proof, network)
 }
 
@@ -201,8 +200,7 @@ Errors:
 	{HttpRequestException} Error return by Bloock's API.
 	{Web3Exception} Error connecting to blockchain.
 	{error} Native Golang error
- */
-func(b BloockClient) VerifyRecords(records []entity.RecordEntity, network string) (int, error) {
+*/
+func (b BloockClient) VerifyRecords(records []entity.RecordEntity, network string) (int, error) {
 	return b.proofService.VerifyRecords(records, network)
 }
-
