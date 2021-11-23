@@ -7,8 +7,6 @@ import (
 )
 
 func TestRecordEntity(t *testing.T) {
-	var record RecordEntity
-
 	t.Run("Given a valid hash should return that hash", func(t *testing.T) {
 		r := FromHash("test_hash")
 
@@ -18,7 +16,7 @@ func TestRecordEntity(t *testing.T) {
 	t.Run("Given a valid hex should return a hashed Keccak256", func(t *testing.T) {
 		s := "10101010101010101010101010101010101010101010101010101010101010101111111111111111111111111111111111111111111111111111111111111111"
 		p := "e016214a5c4abb88b8b614a916b1a6f075dfcf6fbc16c1e9d6e8ebcec81994a5"
-		r, err := record.FromHex(s)
+		r, err := FromHex(s)
 
 		assert.Nil(t, err)
 		assert.Equal(t, p, r.GetHash())
@@ -27,7 +25,7 @@ func TestRecordEntity(t *testing.T) {
 	t.Run("Given a valid string should return a hashed Keccak256", func(t *testing.T) {
 		s := "testing keccak"
 		p := "7e5e383e8e70e55cdccfccf40dfc5d4bed935613dffc806b16b4675b555be139"
-		r := record.FromString(s)
+		r := FromString(s)
 
 		assert.Equal(t, p, r.GetHash())
 	})
@@ -36,7 +34,7 @@ func TestRecordEntity(t *testing.T) {
 		s := "testing keccak"
 		b := shared.StringToBytes(s)
 		p := "7e5e383e8e70e55cdccfccf40dfc5d4bed935613dffc806b16b4675b555be139"
-		r := record.FromUint8Array(b)
+		r := FromUint8Array(b)
 
 		assert.Equal(t, p, r.GetHash())
 	})

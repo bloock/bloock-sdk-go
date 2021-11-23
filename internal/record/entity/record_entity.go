@@ -7,8 +7,9 @@ import (
 	"strings"
 )
 
+var hashAlgorithm hashing.Keccak
+
 type RecordEntity struct {
-	hashAlgorithm hashing.Keccak
 	hash          string
 }
 
@@ -18,29 +19,29 @@ func NewRecordEntity(hash string) RecordEntity {
 	}
 }
 
-func (m RecordEntity) FromObject(data interface{}) RecordEntity {
-	return m.FromString(shared.Stringify(data))
+func FromObject(data interface{}) RecordEntity {
+	return FromString(shared.Stringify(data))
 }
 
 func FromHash(hash string) RecordEntity {
 	return NewRecordEntity(hash)
 }
 
-func (m RecordEntity) FromHex(hex string) (RecordEntity, error) {
+func FromHex(hex string) (RecordEntity, error) {
 	dataArray, err := shared.HexToBytes(hex)
 	if err != nil {
 		return RecordEntity{}, err
 	}
-	return NewRecordEntity(m.hashAlgorithm.GenerateHash(dataArray)), nil
+	return NewRecordEntity(hashAlgorithm.GenerateHash(dataArray)), nil
 }
 
-func (m RecordEntity) FromString(string string) RecordEntity {
+func FromString(string string) RecordEntity {
 	dataArray := shared.StringToBytes(string)
-	return NewRecordEntity(m.hashAlgorithm.GenerateHash(dataArray))
+	return NewRecordEntity(hashAlgorithm.GenerateHash(dataArray))
 }
 
-func (m RecordEntity) FromUint8Array(array []byte) RecordEntity {
-	return NewRecordEntity(m.hashAlgorithm.GenerateHash(array))
+func FromUint8Array(array []byte) RecordEntity {
+	return NewRecordEntity(hashAlgorithm.GenerateHash(array))
 }
 
 func Sort(records []RecordEntity) []RecordEntity {
@@ -94,6 +95,5 @@ func Merge(left, right []byte) ([]byte, error) {
 	concat := make([]byte, len(left)+len(right))
 	concat = append(left, right...)
 
-	r := NewRecordEntity("")
-	return r.FromUint8Array(concat).GetByteArray()
+	return FromUint8Array(concat).GetByteArray()
 }

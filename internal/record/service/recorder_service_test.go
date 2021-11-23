@@ -67,8 +67,7 @@ func TestGetRecordsService(t *testing.T) {
 		},
 		}
 		arr := make([]entity.RecordEntity, 0)
-		var rec entity.RecordEntity
-		rec = rec.FromString("record")
+		rec := entity.FromString("record")
 		arr = append(arr, rec)
 
 		rr.EXPECT().FetchRecords(gomock.Any()).Return(resp, nil).Times(1)
