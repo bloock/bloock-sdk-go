@@ -46,12 +46,12 @@ func(p ProofRepository) RetrieveProof(records []entity.RecordEntity) (entity2.Pr
 	return proof, nil
 }
 
-type Stack struct {
-	depth int
-	hash []byte
-}
-
 func(p ProofRepository) VerifyProof(proof entity2.Proof) (entity.RecordEntity, error) {
+	type Stack struct {
+		Depth int
+		Hash  []byte
+	}
+
 	leaves, hashes, bitmap, depth, err := initializeVariables(proof)
 	if err != nil {
 		return entity.RecordEntity{}, err
@@ -60,43 +60,44 @@ func(p ProofRepository) VerifyProof(proof entity2.Proof) (entity.RecordEntity, e
 	itHashes := 0
 	itLeaves := 0
 	stack := make([]Stack, 0)
-	log.Printf("Actual hashes: %+v leaves %+v\n depth %+v bitmap %+v", len(hashes), len(leaves), len(depth), bitmap)
+	log.Printf("Actual hashes: %+v leaves %+v\n Depth %+v bitmap %+v", len(hashes), len(leaves), len(depth), bitmap)
 
 	for len(hashes) > itHashes || len(leaves) > itLeaves {
 		actDepth := int(depth[itHashes + itLeaves])
 
-		log.Printf("actDepth %+v depth position %+v", actDepth, itHashes+itLeaves)
+		log.Printf("actDepth %+v Depth position %+v", actDepth, itHashes+itLeaves)
 		var actHash []byte
 
 		log.Printf("evaluate bitmap %+v", bitmap[int(math.Floor(float64((itHashes+itLeaves)/8)))] & (1 << (7 - ((itHashes + itLeaves) % 8))))
-		if (bitmap[int(math.Floor(float64((itHashes+itLeaves)/8)))] & (1 << (7 - ((itHashes + itLeaves) % 8)))) > 0 {
-			actHash = append(actHash, hashes[itHashes]...)
+		if (bitmap[(itHashes+itLeaves)/8] & (1 << (7 - ((itHashes + itLeaves) % 8)))) > 0 {
+			actHash = hashes[itHashes]
 			log.Printf("enter if actualHash %+v", actHash)
 			itHashes += 1
 		} else {
-				actHash = append(actHash, leaves[itLeaves]...)
+			actHash = leaves[itLeaves]
 			log.Printf("enter else actualHash %+v", actHash)
 			itLeaves += 1
 		}
 		log.Println(len(stack))
-		for len(stack) > 0 && stack[len(stack)-1].depth == actDepth {
-			log.Printf("stck depth %+v hash %+v",stack[len(stack)-1].depth,stack[len(stack)-1].hash)
-			lastHash := stack[len(stack)-1].hash
-			if lastHash == nil {
+		for len(stack) > 0 && stack[len(stack)-1].Depth == actDepth {
+			log.Printf("stck Depth %+v Hash %+v",stack[len(stack)-1].Depth,stack[len(stack)-1].Hash)
+			lastHash := stack[len(stack)-1]
+			stack = stack[:len(stack)-1]
+			if lastHash.Hash == nil {
 				return entity.RecordEntity{}, errors.New("verify: Stack got empty before capturing its value")
 			}
-			actHash, err = entity.Merge(lastHash, actHash)
+			actHash, err = entity.Merge(lastHash.Hash, actHash)
 			if err != nil {
 				return entity.RecordEntity{}, err
 			}
 			actDepth -= 1
 		}
 		log.Printf("push to stack actdepth: %+v actHash: %+v",actDepth, actHash)
-		stack = append(stack, Stack{depth: actDepth, hash: actHash})
+		stack = append(stack, Stack{actDepth, actHash})
 		fmt.Printf("stack %+v\n", stack)
 	}
 
-	result := entity.FromHash(shared.BytesToHex(stack[0].hash))
+	result := entity.FromHash(shared.BytesToHex(stack[0].Hash))
 	return result, nil
 }
 

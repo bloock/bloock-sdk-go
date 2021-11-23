@@ -26,3 +26,7 @@ func(c ConfigService) GetApiBaseUrl() string {
 func(c ConfigService) GetConfiguration() entity.Configuration {
 	return c.configRepository.GetConfiguration()
 }
+
+func(c ConfigService) SetNetworkConfiguration(network string, config entity.NetworkConfiguration) {
+	c.configRepository.SetNetworkConfiguration(network, config)
+}

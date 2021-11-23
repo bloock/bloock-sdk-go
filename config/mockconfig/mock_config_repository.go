@@ -61,3 +61,15 @@ func (mr *MockConfigurerRepositoryMockRecorder) GetNetworkConfiguration(network 
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetNetworkConfiguration", reflect.TypeOf((*MockConfigurerRepository)(nil).GetNetworkConfiguration), network)
 }
+
+// SetNetworkConfiguration mocks base method.
+func (m *MockConfigurerRepository) SetNetworkConfiguration(network string, config entity.NetworkConfiguration) {
+	m.ctrl.T.Helper()
+	m.ctrl.Call(m, "SetNetworkConfiguration", network, config)
+}
+
+// SetNetworkConfiguration indicates an expected call of SetNetworkConfiguration.
+func (mr *MockConfigurerRepositoryMockRecorder) SetNetworkConfiguration(network, config interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SetNetworkConfiguration", reflect.TypeOf((*MockConfigurerRepository)(nil).SetNetworkConfiguration), network, config)
+}

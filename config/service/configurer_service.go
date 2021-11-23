@@ -7,4 +7,5 @@ type ConfigurerService interface {
 	GetNetworkConfiguration(network string) entity.NetworkConfiguration
 	GetApiBaseUrl() string
 	GetConfiguration() entity.Configuration
+	SetNetworkConfiguration(network string, config entity.NetworkConfiguration)
 }

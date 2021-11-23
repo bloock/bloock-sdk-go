@@ -6,4 +6,5 @@ import "github.com/enchainte/enchainte-sdk-go/config/entity"
 type ConfigurerRepository interface {
 	GetNetworkConfiguration(network string) entity.NetworkConfiguration
 	GetConfiguration() entity.Configuration
+	SetNetworkConfiguration(network string, config entity.NetworkConfiguration)
 }

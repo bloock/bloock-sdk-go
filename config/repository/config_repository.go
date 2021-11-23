@@ -19,3 +19,7 @@ func(c ConfigRepository) GetNetworkConfiguration(network string) entity.NetworkC
 func(c ConfigRepository) GetConfiguration() entity.Configuration {
 	return c.configData.getConfiguration()
 }
+
+func(c ConfigRepository) SetNetworkConfiguration(network string, config entity.NetworkConfiguration) {
+	c.configData.setNetworkConfiguration(network, config)
+}
