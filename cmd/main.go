@@ -1,9 +1,9 @@
 package main
 
 import (
-	entity2 "github.com/enchainte/enchainte-sdk-go/config/entity"
-	"github.com/enchainte/enchainte-sdk-go/config/repository"
-	"github.com/enchainte/enchainte-sdk-go/config/service"
+	entity3 "github.com/enchainte/enchainte-sdk-go/internal/config/entity"
+	repository3 "github.com/enchainte/enchainte-sdk-go/internal/config/repository"
+	"github.com/enchainte/enchainte-sdk-go/internal/config/service"
 	"github.com/enchainte/enchainte-sdk-go/internal/infrastructure/blockchain"
 	"github.com/enchainte/enchainte-sdk-go/internal/infrastructure/http"
 	repository2 "github.com/enchainte/enchainte-sdk-go/internal/proof/repository"
@@ -47,9 +47,14 @@ func main() {
 	arrRecords := make([]entity.RecordEntity, 0)
 	arrRecords = append(arrRecords, entity.NewRecordEntity("6a83f545cb5693a32b5d56fb4a0530f7054df0c7e2e6b0a9fef36e26a2a96b04"))
 
-	configData := repository.NewConfigData()
-	configRepo := repository.NewConfigRepository(configData)
-	configService := service.NewConfigService(configRepo)
+	configData := repository3.NewConfigData()
+	configRepo := repository3.NewConfigRepository(configData)
+	configService := service.NewConfigService(&configRepo)
+
+	c := entity3.NewConfiguration("http://api.bloock.com", 1, 100)
+	configService.SetApiHost(c.Host)
+
+	log.Println(configService.GetConfiguration())
 
 	httpData := http.NewDataHttp("C1vfvhN2mPUeX0KikgGHVIUSofZIfX6Q4bx0kf7DuAHMt3cuELO2UGdYLUw9bS29")
 	httpClient := http.NewHttp(httpData)
@@ -59,7 +64,7 @@ func main() {
 	pr := repository2.NewProofRepository(httpClient, bkClient, configService)
 	ps := service2.NewProofService(pr)
 
-	p, err := ps.VerifyRecords(arrRecords, entity2.EthereumRinkeby)
+	p, err := ps.VerifyRecords(arrRecords, entity3.EthereumRinkeby)
 	if err != nil {
 		log.Println(err)
 	}

@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/enchainte/enchainte-sdk-go/config/service"
+	"github.com/enchainte/enchainte-sdk-go/internal/config/service"
 	"github.com/enchainte/enchainte-sdk-go/internal/infrastructure"
 	entity2 "github.com/enchainte/enchainte-sdk-go/internal/proof/entity"
 	"github.com/enchainte/enchainte-sdk-go/internal/proof/entity/dto"
@@ -15,7 +15,7 @@ import (
 type ProofRepository struct {
 	httpClient infrastructure.HttpClient
 	blockchainClient infrastructure.BlockchainClient
-	configService service.ConfigurerService
+	configService    service.ConfigurerService
 }
 
 func NewProofRepository(h infrastructure.HttpClient, b infrastructure.BlockchainClient, cs service.ConfigurerService) ProofRepository {

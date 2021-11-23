@@ -1,11 +1,11 @@
 package service
 
 import (
-	entity2 "github.com/enchainte/enchainte-sdk-go/config/entity"
-	"github.com/enchainte/enchainte-sdk-go/config/mockconfig"
 	"github.com/enchainte/enchainte-sdk-go/internal/anchor/entity"
 	"github.com/enchainte/enchainte-sdk-go/internal/anchor/entity/exception"
 	"github.com/enchainte/enchainte-sdk-go/internal/anchor/mockanchor"
+	entity2 "github.com/enchainte/enchainte-sdk-go/internal/config/entity"
+	"github.com/enchainte/enchainte-sdk-go/internal/config/mockconfig"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
 	"testing"

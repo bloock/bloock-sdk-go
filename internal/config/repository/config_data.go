@@ -1,12 +1,12 @@
 package repository
 
 import (
-	"github.com/enchainte/enchainte-sdk-go/config/entity"
+	entity2 "github.com/enchainte/enchainte-sdk-go/internal/config/entity"
 )
 
 type ConfigData struct {
-	config entity.Configuration
-	networksConfig map[string]entity.NetworkConfiguration
+	config         entity2.Configuration
+	networksConfig map[string]entity2.NetworkConfiguration
 }
 
 func NewConfigData() ConfigData {
@@ -22,35 +22,39 @@ func NewConfigData() ConfigData {
 	rinkebyProv := "https://rinkeby.infura.io/v3/40e23a35d578492daacb318023772b52"
 	bloockProv := "https://ganache.bloock.com"
 
-	ethConfig := entity.NewNetworkConfiguration(ethContract, ethABI, ethProv)
-	rinkebyConfig := entity.NewNetworkConfiguration(rinkebyContract, rinkebyABI, rinkebyProv)
-	bloockConfig := entity.NewNetworkConfiguration(bloockContract, bloockABI, bloockProv)
-	configMap := make(map[string] entity.NetworkConfiguration)
-	configMap[entity.EthereumMainnet] = ethConfig
-	configMap[entity.EthereumRinkeby] = rinkebyConfig
-	configMap[entity.BloockChain] = bloockConfig
+	ethConfig := entity2.NewNetworkConfiguration(ethContract, ethABI, ethProv)
+	rinkebyConfig := entity2.NewNetworkConfiguration(rinkebyContract, rinkebyABI, rinkebyProv)
+	bloockConfig := entity2.NewNetworkConfiguration(bloockContract, bloockABI, bloockProv)
+	configMap := make(map[string]entity2.NetworkConfiguration)
+	configMap[entity2.EthereumMainnet] = ethConfig
+	configMap[entity2.EthereumRinkeby] = rinkebyConfig
+	configMap[entity2.BloockChain] = bloockConfig
 
 	return ConfigData{
-		config: entity.NewConfiguration("https://api.bloock.dev", 2, 100),
+		config:         entity2.NewConfiguration("https://api.bloock.dev", 2, 100),
 		networksConfig: configMap,
 	}
 }
 
-func(c ConfigData) getNetworkConfiguration(network string) entity.NetworkConfiguration {
+func(c ConfigData) getNetworkConfiguration(network string) entity2.NetworkConfiguration {
 	config := c.networksConfig[network]
-	if config == (entity.NetworkConfiguration{}) {
-		config = c.networksConfig[entity.EthereumMainnet]
+	if config == (entity2.NetworkConfiguration{}) {
+		config = c.networksConfig[entity2.EthereumMainnet]
 	}
 
 	return config
 }
 
-func(c ConfigData) getConfiguration() entity.Configuration {
+func(c ConfigData) getConfiguration() entity2.Configuration {
 	return c.config
 }
 
-func(c ConfigData) setNetworkConfiguration(network string, config entity.NetworkConfiguration) {
+func(c *ConfigData) setNetworkConfiguration(network string, config entity2.NetworkConfiguration) {
 	c.networksConfig[network] = config
+}
+
+func(c *ConfigData) setApiHost(host string) {
+	c.config.Host = host
 }
 
 

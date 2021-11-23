@@ -1,16 +1,16 @@
 package service
 
 import (
-	"github.com/enchainte/enchainte-sdk-go/config/service"
 	"github.com/enchainte/enchainte-sdk-go/internal/anchor/entity"
 	exception2 "github.com/enchainte/enchainte-sdk-go/internal/anchor/entity/exception"
 	"github.com/enchainte/enchainte-sdk-go/internal/anchor/repository"
+	"github.com/enchainte/enchainte-sdk-go/internal/config/service"
 	"time"
 )
 
 type AnchorService struct {
 	anchorRepository repository.AnchorerRepository
-	configService service.ConfigurerService
+	configService    service.ConfigurerService
 }
 
 func NewAnchorService(ar repository.AnchorerRepository, conf service.ConfigurerService) AnchorService {

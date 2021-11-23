@@ -1,8 +1,8 @@
 package service
 
 import (
-	"github.com/enchainte/enchainte-sdk-go/config/entity"
-	"github.com/enchainte/enchainte-sdk-go/config/repository"
+	"github.com/enchainte/enchainte-sdk-go/internal/config/entity"
+	"github.com/enchainte/enchainte-sdk-go/internal/config/repository"
 )
 
 type ConfigService struct {
@@ -29,4 +29,8 @@ func(c ConfigService) GetConfiguration() entity.Configuration {
 
 func(c ConfigService) SetNetworkConfiguration(network string, config entity.NetworkConfiguration) {
 	c.configRepository.SetNetworkConfiguration(network, config)
+}
+
+func(c ConfigService) SetApiHost(host string) {
+	c.configRepository.SetApiHost(host)
 }

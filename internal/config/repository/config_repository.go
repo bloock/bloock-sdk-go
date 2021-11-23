@@ -1,6 +1,8 @@
 package repository
 
-import "github.com/enchainte/enchainte-sdk-go/config/entity"
+import (
+	"github.com/enchainte/enchainte-sdk-go/internal/config/entity"
+)
 
 type ConfigRepository struct {
 	configData ConfigData
@@ -20,6 +22,10 @@ func(c ConfigRepository) GetConfiguration() entity.Configuration {
 	return c.configData.getConfiguration()
 }
 
-func(c ConfigRepository) SetNetworkConfiguration(network string, config entity.NetworkConfiguration) {
+func(c *ConfigRepository) SetNetworkConfiguration(network string, config entity.NetworkConfiguration) {
 	c.configData.setNetworkConfiguration(network, config)
+}
+
+func(c *ConfigRepository) SetApiHost(host string) {
+	c.configData.setApiHost(host)
 }

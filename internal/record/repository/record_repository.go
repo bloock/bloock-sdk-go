@@ -3,14 +3,14 @@ package repository
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/enchainte/enchainte-sdk-go/config/service"
+	"github.com/enchainte/enchainte-sdk-go/internal/config/service"
 	"github.com/enchainte/enchainte-sdk-go/internal/infrastructure"
 	"github.com/enchainte/enchainte-sdk-go/internal/record/entity"
 	"github.com/enchainte/enchainte-sdk-go/internal/record/entity/dto"
 )
 
 type RecordRepository struct {
-	httpClient infrastructure.HttpClient
+	httpClient    infrastructure.HttpClient
 	configService service.ConfigurerService
 }
 

@@ -1,12 +1,12 @@
 package internal
 
 import (
-	entity4 "github.com/enchainte/enchainte-sdk-go/config/entity"
-	"github.com/enchainte/enchainte-sdk-go/config/repository"
-	service2 "github.com/enchainte/enchainte-sdk-go/config/service"
 	entity2 "github.com/enchainte/enchainte-sdk-go/internal/anchor/entity"
 	repository2 "github.com/enchainte/enchainte-sdk-go/internal/anchor/repository"
 	"github.com/enchainte/enchainte-sdk-go/internal/anchor/service"
+	entity4 "github.com/enchainte/enchainte-sdk-go/internal/config/entity"
+	repository5 "github.com/enchainte/enchainte-sdk-go/internal/config/repository"
+	service5 "github.com/enchainte/enchainte-sdk-go/internal/config/service"
 	"github.com/enchainte/enchainte-sdk-go/internal/infrastructure"
 	"github.com/enchainte/enchainte-sdk-go/internal/infrastructure/blockchain"
 	"github.com/enchainte/enchainte-sdk-go/internal/infrastructure/http"
@@ -29,7 +29,7 @@ Entrypoint to the Bloock SDK:
  */
 type BloockClient struct {
 	anchorService service.AnchorerService
-	configService service2.ConfigurerService
+	configService service5.ConfigurerService
 	recordService service3.RecorderService
 	proofService service4.ProoferService
 	httpClient infrastructure.HttpClient
@@ -42,9 +42,9 @@ Parameters:
 	{string} apiKey Client API Key.
  */
 func NewBloockClient(apiKey string) BloockClient {
-	c := repository.NewConfigData()
-	cr := repository.NewConfigRepository(c)
-	cs := service2.NewConfigService(cr)
+	c := repository5.NewConfigData()
+	cr := repository5.NewConfigRepository(c)
+	cs := service5.NewConfigService(&cr)
 
 	d := http.NewDataHttp(apiKey)
 	h := http.NewHttp(d)

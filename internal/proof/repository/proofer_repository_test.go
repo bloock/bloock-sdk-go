@@ -2,7 +2,7 @@ package repository
 
 import (
 	"encoding/json"
-	"github.com/enchainte/enchainte-sdk-go/config/mockconfig"
+	"github.com/enchainte/enchainte-sdk-go/internal/config/mockconfig"
 	"github.com/enchainte/enchainte-sdk-go/internal/infrastructure/blockchain/mockblockchain"
 	"github.com/enchainte/enchainte-sdk-go/internal/infrastructure/http/mockhttp"
 	"github.com/enchainte/enchainte-sdk-go/internal/proof/entity"
