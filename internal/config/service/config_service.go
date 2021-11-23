@@ -31,6 +31,6 @@ func (c ConfigService) SetNetworkConfiguration(network string, config entity.Net
 	c.configRepository.SetNetworkConfiguration(network, config)
 }
 
-func (c ConfigService) SetApiHost(host string) {
+func (c *ConfigService) SetApiHost(host string) {
 	c.configRepository.SetApiHost(host)
 }

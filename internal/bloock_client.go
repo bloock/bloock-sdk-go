@@ -49,23 +49,35 @@ func NewBloockClient(apiKey string) BloockClient {
 	d := http.NewDataHttp(apiKey)
 	h := http.NewHttp(d)
 
-	ar := repository2.NewAnchorRepository(h, cs)
-	as := service.NewAnchorService(ar, cs)
+	ar := repository2.NewAnchorRepository(h, &cs)
+	as := service.NewAnchorService(ar, &cs)
 
-	rr := repository3.NewRecordRepository(h, cs)
+	rr := repository3.NewRecordRepository(h, &cs)
 	rs := service3.NewRecordService(rr)
 
-	b := blockchain.NewWeb3(cs)
-	pr := repository4.NewProofRepository(h, b, cs)
+	b := blockchain.NewWeb3(&cs)
+	pr := repository4.NewProofRepository(h, b, &cs)
 	ps := service4.NewProofService(pr)
 
 	return BloockClient{
-		configService: cs,
+		configService: &cs,
 		httpClient:    h,
 		anchorService: as,
 		recordService: rs,
 		proofService:  ps,
 	}
+}
+
+/*
+SetApiHost
+Overrides the API host.
+Parameters:
+	{string} The API host to apply
+Returns:
+	{void}
+ */
+func(b BloockClient) SetApiHost(host string) {
+	b.configService.SetApiHost(host)
 }
 
 /*
