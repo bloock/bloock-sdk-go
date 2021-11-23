@@ -10,8 +10,6 @@ import (
 	"github.com/enchainte/enchainte-sdk-go/internal/proof/entity/dto"
 	"github.com/enchainte/enchainte-sdk-go/internal/record/entity"
 	"github.com/enchainte/enchainte-sdk-go/internal/shared"
-	"log"
-	"math"
 )
 
 type ProofRepository struct {
@@ -60,41 +58,33 @@ func(p ProofRepository) VerifyProof(proof entity2.Proof) (entity.RecordEntity, e
 	itHashes := 0
 	itLeaves := 0
 	stack := make([]Stack, 0)
-	log.Printf("Actual hashes: %+v leaves %+v\n Depth %+v bitmap %+v", len(hashes), len(leaves), len(depth), bitmap)
 
 	for len(hashes) > itHashes || len(leaves) > itLeaves {
 		actDepth := int(depth[itHashes + itLeaves])
 
-		log.Printf("actDepth %+v Depth position %+v", actDepth, itHashes+itLeaves)
 		var actHash []byte
 
-		log.Printf("evaluate bitmap %+v", bitmap[int(math.Floor(float64((itHashes+itLeaves)/8)))] & (1 << (7 - ((itHashes + itLeaves) % 8))))
 		if (bitmap[(itHashes+itLeaves)/8] & (1 << (7 - ((itHashes + itLeaves) % 8)))) > 0 {
 			actHash = hashes[itHashes]
-			log.Printf("enter if actualHash %+v", actHash)
 			itHashes += 1
 		} else {
 			actHash = leaves[itLeaves]
-			log.Printf("enter else actualHash %+v", actHash)
 			itLeaves += 1
 		}
-		log.Println(len(stack))
 		for len(stack) > 0 && stack[len(stack)-1].Depth == actDepth {
-			log.Printf("stck Depth %+v Hash %+v",stack[len(stack)-1].Depth,stack[len(stack)-1].Hash)
 			lastHash := stack[len(stack)-1]
 			stack = stack[:len(stack)-1]
 			if lastHash.Hash == nil {
 				return entity.RecordEntity{}, errors.New("verify: Stack got empty before capturing its value")
 			}
+
 			actHash, err = entity.Merge(lastHash.Hash, actHash)
 			if err != nil {
 				return entity.RecordEntity{}, err
 			}
 			actDepth -= 1
 		}
-		log.Printf("push to stack actdepth: %+v actHash: %+v",actDepth, actHash)
 		stack = append(stack, Stack{actDepth, actHash})
-		fmt.Printf("stack %+v\n", stack)
 	}
 
 	result := entity.FromHash(shared.BytesToHex(stack[0].Hash))
@@ -102,7 +92,6 @@ func(p ProofRepository) VerifyProof(proof entity2.Proof) (entity.RecordEntity, e
 }
 
 func(p ProofRepository) ValidateRoot(network string, record entity.RecordEntity) (int, error) {
-	log.Printf("Root: %+v", record.GetHash())
 	r, err := p.blockchainClient.ValidateRoot(network, record.GetHash())
 	return int(r), err
 }

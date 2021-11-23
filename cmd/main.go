@@ -50,8 +50,6 @@ func main() {
 	configData := repository.NewConfigData()
 	configRepo := repository.NewConfigRepository(configData)
 	configService := service.NewConfigService(configRepo)
-	n:=entity2.NetworkConfiguration{ContractAddress: "", ContractABI: "", HttpProvider: ""}
-	configService.SetNetworkConfiguration(entity2.EthereumRinkeby, n)
 
 	httpData := http.NewDataHttp("C1vfvhN2mPUeX0KikgGHVIUSofZIfX6Q4bx0kf7DuAHMt3cuELO2UGdYLUw9bS29")
 	httpClient := http.NewHttp(httpData)

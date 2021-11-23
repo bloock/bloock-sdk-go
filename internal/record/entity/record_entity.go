@@ -8,7 +8,7 @@ import (
 )
 
 type RecordEntity struct {
-	HashAlgorithm hashing.Keccak
+	hashAlgorithm hashing.Keccak
 	hash          string
 }
 
@@ -31,16 +31,16 @@ func(m RecordEntity) FromHex(hex string) (RecordEntity, error) {
 	if err != nil {
 		return RecordEntity{}, err
 	}
-	return NewRecordEntity(m.HashAlgorithm.GenerateHash(dataArray)), nil
+	return NewRecordEntity(m.hashAlgorithm.GenerateHash(dataArray)), nil
 }
 
 func(m RecordEntity) FromString(string string) RecordEntity {
 	dataArray := shared.StringToBytes(string)
-	return NewRecordEntity(m.HashAlgorithm.GenerateHash(dataArray))
+	return NewRecordEntity(m.hashAlgorithm.GenerateHash(dataArray))
 }
 
 func(m RecordEntity) FromUint8Array(array []byte) RecordEntity {
-	return NewRecordEntity(m.HashAlgorithm.GenerateHash(array))
+	return NewRecordEntity(m.hashAlgorithm.GenerateHash(array))
 }
 
 func Sort(records []RecordEntity) []RecordEntity {
@@ -92,8 +92,7 @@ func MapHashToStringArray(records []RecordEntity) []string {
 
 func Merge(left, right []byte) ([]byte, error) {
 	concat := make([]byte, len(left) + len(right))
-	concat = append(concat, left...)
-	concat = append(concat, right...)
+	concat = append(left, right...)
 
 	r := NewRecordEntity("")
 	return r.FromUint8Array(concat).GetByteArray()
