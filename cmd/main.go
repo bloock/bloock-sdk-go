@@ -1,60 +1,58 @@
 package main
 
 import (
-	entity3 "github.com/enchainte/enchainte-sdk-go/internal/config/entity"
-	repository3 "github.com/enchainte/enchainte-sdk-go/internal/config/repository"
+	repository3 "github.com/enchainte/enchainte-sdk-go/internal/anchor/repository"
+	service3 "github.com/enchainte/enchainte-sdk-go/internal/anchor/service"
+	"github.com/enchainte/enchainte-sdk-go/internal/config/entity"
+	"github.com/enchainte/enchainte-sdk-go/internal/config/repository"
 	"github.com/enchainte/enchainte-sdk-go/internal/config/service"
 	"github.com/enchainte/enchainte-sdk-go/internal/infrastructure/blockchain"
 	"github.com/enchainte/enchainte-sdk-go/internal/infrastructure/http"
 	repository2 "github.com/enchainte/enchainte-sdk-go/internal/proof/repository"
 	service2 "github.com/enchainte/enchainte-sdk-go/internal/proof/service"
-	"github.com/enchainte/enchainte-sdk-go/internal/record/entity"
+	entity2 "github.com/enchainte/enchainte-sdk-go/internal/record/entity"
 	"log"
 )
 
 func main() {
-	/*configData := repository.NewConfigData()
+	configData := repository.NewConfigData()
 	configRepo := repository.NewConfigRepository(configData)
-	configService := service.NewConfigService(configRepo)
+	configService := service.NewConfigService(&configRepo)
 
-	arrRecords := make([]entity.RecordEntity, 0)
-	arrRecords = append(arrRecords, entity.NewRecordEntity("6a83f545cb5693a32b5d56fb4a0530f7054df0c7e2e6b0a9fef36e26a2a96b04"))
-	arrRecords = append(arrRecords, entity.NewRecordEntity("2d9130eb0900a08f22dee5e0330672861e6035eb858e1d1ac0d0d5d98a676800"))
-	arrRecords = append(arrRecords, entity.NewRecordEntity("cadc5a160b48bde5727b08e1f8d1b8fe08704ff3cc730bf4919a2ef10ae6e291"))
-	arrRecords = append(arrRecords, entity.NewRecordEntity("db6d0af6e743ca02954f1feb7dec3033fe4f86d429b8dd5b7dd654b794d71dee"))
+	arrRecords := make([]entity2.RecordEntity, 0)
+	arrRecords = append(arrRecords, entity2.NewRecordEntity("6a83f545cb5693a32b5d56fb4a0530f7054df0c7e2e6b0a9fef36e26a2a96b04"))
 
-	httpData := http.NewDataHttp("C1vfvhN2mPUeX0KikgGHVIUSofZIfX6Q4bx0kf7DuAHMt3cuELO2UGdYLUw9bS29")
+	httpData := http.NewDataHttp("test_xculO0olb1Itp-tFMNCjpsLgx4Bik3E7Wd-iUfdL1c2lsgyKvhAZQnd7U8vlPnJX")
 	httpClient := http.NewHttp(httpData)
-	recordRepo := repository2.NewRecordRepository(httpClient, configService)
-	recordService := service2.NewRecordService(recordRepo)
 
-	resp, err := recordService.SendRecords(arrRecords)
+	anchorRepo := repository3.NewAnchorRepository(httpClient, &configService)
+	anchorService := service3.NewAnchorService(anchorRepo, &configService)
+
+	bkClient := blockchain.NewWeb3(&configService)
+
+	pr := repository2.NewProofRepository(httpClient, bkClient, &configService)
+	ps := service2.NewProofService(pr)
+
+	resp, err := anchorService.GetAnchor(58)
 	if err != nil {
 		log.Println(err)
 	}
 
 	log.Println(resp)
 
-	anchorRepo := repository3.NewAnchorRepository(httpClient, configService)
-	anchorService := service3.NewAnchorService(anchorRepo, configService)
-
-	anchor2, err := anchorService.WaitAnchor(resp[0].Anchor, 5000)
+	p, err := ps.VerifyRecords(arrRecords, entity.BloockChain)
 	if err != nil {
 		log.Println(err)
 	}
-	log.Println(anchor2)*/
+	log.Println(p)
 
-	arrRecords := make([]entity.RecordEntity, 0)
+
+	/*arrRecords := make([]entity.RecordEntity, 0)
 	arrRecords = append(arrRecords, entity.NewRecordEntity("6a83f545cb5693a32b5d56fb4a0530f7054df0c7e2e6b0a9fef36e26a2a96b04"))
 
 	configData := repository3.NewConfigData()
 	configRepo := repository3.NewConfigRepository(configData)
 	configService := service.NewConfigService(&configRepo)
-
-	c := entity3.NewConfiguration("http://api.bloock.com", 1, 100)
-	configService.SetApiHost(c.Host)
-
-	log.Println(configService.GetConfiguration())
 
 	httpData := http.NewDataHttp("C1vfvhN2mPUeX0KikgGHVIUSofZIfX6Q4bx0kf7DuAHMt3cuELO2UGdYLUw9bS29")
 	httpClient := http.NewHttp(httpData)
@@ -69,7 +67,7 @@ func main() {
 		log.Println(err)
 	}
 
-	log.Println(p)
+	log.Println(p)*/
 
 	/*leaves := []string{
 		"02aae7e86eb50f61a62083a320475d9d60cbd52749dbf08fa942b1b97f50aee5",
@@ -93,7 +91,16 @@ func main() {
 		log.Println(err)
 	}
 	log.Println(r)*/
-
-
-
 }
+
+/*func randHex(length int) string {
+	maxlen := 8
+	min := math.Pow(16, math.Min(float64(length), float64(maxlen)) - 1)
+	max := math.Pow(16, math.Min(float64(length), float64(maxlen))) - 1
+	n := int((rand.Float64() * (max - min + 1)) + min)
+	r := strconv.Itoa(n)
+	for len(r) < length {
+		r += randHex(length - maxlen)
+	}
+	return r
+}*/
