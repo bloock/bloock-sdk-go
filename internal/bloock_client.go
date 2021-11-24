@@ -1,21 +1,21 @@
 package internal
 
 import (
-	entity2 "github.com/enchainte/enchainte-sdk-go/internal/anchor/entity"
-	repository2 "github.com/enchainte/enchainte-sdk-go/internal/anchor/repository"
+	anchorEntity "github.com/enchainte/enchainte-sdk-go/internal/anchor/entity"
+	anchorRepository "github.com/enchainte/enchainte-sdk-go/internal/anchor/repository"
 	"github.com/enchainte/enchainte-sdk-go/internal/anchor/service"
-	entity4 "github.com/enchainte/enchainte-sdk-go/internal/config/entity"
-	repository5 "github.com/enchainte/enchainte-sdk-go/internal/config/repository"
-	service5 "github.com/enchainte/enchainte-sdk-go/internal/config/service"
+	configEntity "github.com/enchainte/enchainte-sdk-go/internal/config/entity"
+	configRepository "github.com/enchainte/enchainte-sdk-go/internal/config/repository"
+	configService "github.com/enchainte/enchainte-sdk-go/internal/config/service"
 	"github.com/enchainte/enchainte-sdk-go/internal/infrastructure"
 	"github.com/enchainte/enchainte-sdk-go/internal/infrastructure/blockchain"
 	"github.com/enchainte/enchainte-sdk-go/internal/infrastructure/http"
-	entity3 "github.com/enchainte/enchainte-sdk-go/internal/proof/entity"
-	repository4 "github.com/enchainte/enchainte-sdk-go/internal/proof/repository"
-	service4 "github.com/enchainte/enchainte-sdk-go/internal/proof/service"
+	proofEntity "github.com/enchainte/enchainte-sdk-go/internal/proof/entity"
+	proofRepository "github.com/enchainte/enchainte-sdk-go/internal/proof/repository"
+	proofService "github.com/enchainte/enchainte-sdk-go/internal/proof/service"
 	"github.com/enchainte/enchainte-sdk-go/internal/record/entity"
-	repository3 "github.com/enchainte/enchainte-sdk-go/internal/record/repository"
-	service3 "github.com/enchainte/enchainte-sdk-go/internal/record/service"
+	recordRepository "github.com/enchainte/enchainte-sdk-go/internal/record/repository"
+	recordService "github.com/enchainte/enchainte-sdk-go/internal/record/service"
 )
 
 /*
@@ -29,9 +29,9 @@ Entrypoint to the Bloock SDK:
 */
 type BloockClient struct {
 	anchorService service.AnchorerService
-	configService service5.ConfigurerService
-	recordService service3.RecorderService
-	proofService  service4.ProoferService
+	configService configService.ConfigurerService
+	recordService recordService.RecorderService
+	proofService  proofService.ProoferService
 	httpClient    infrastructure.HttpClient
 }
 
@@ -42,22 +42,22 @@ Parameters:
 	{string} apiKey Client API Key.
 */
 func NewBloockClient(apiKey string) BloockClient {
-	c := repository5.NewConfigData()
-	cr := repository5.NewConfigRepository(c)
-	cs := service5.NewConfigService(&cr)
+	c := configRepository.NewConfigData()
+	cr := configRepository.NewConfigRepository(c)
+	cs := configService.NewConfigService(&cr)
 
 	d := http.NewDataHttp(apiKey)
 	h := http.NewHttp(d)
 
-	ar := repository2.NewAnchorRepository(h, &cs)
+	ar := anchorRepository.NewAnchorRepository(h, &cs)
 	as := service.NewAnchorService(ar, &cs)
 
-	rr := repository3.NewRecordRepository(h, &cs)
-	rs := service3.NewRecordService(rr)
+	rr := recordRepository.NewRecordRepository(h, &cs)
+	rs := recordService.NewRecordService(rr)
 
 	b := blockchain.NewWeb3(&cs)
-	pr := repository4.NewProofRepository(h, b, &cs)
-	ps := service4.NewProofService(pr)
+	pr := proofRepository.NewProofRepository(h, b, &cs)
+	ps := proofService.NewProofService(pr)
 
 	return BloockClient{
 		configService: &cs,
@@ -89,7 +89,7 @@ Parameters:
 Returns:
 	{void}
 */
-func (b BloockClient) SetNetworkConfiguration(network string, configuration entity4.NetworkConfiguration) {
+func (b BloockClient) SetNetworkConfiguration(network string, configuration configEntity.NetworkConfiguration) {
 	b.configService.SetNetworkConfiguration(network, configuration)
 }
 
@@ -140,7 +140,7 @@ Errors:
 	{HttpRequestException} Error return by Bloock's API.
 	{error} Native Golang error
 */
-func (b BloockClient) GetAnchor(anchor int) (entity2.Anchor, error) {
+func (b BloockClient) GetAnchor(anchor int) (anchorEntity.Anchor, error) {
 	return b.anchorService.GetAnchor(anchor)
 }
 
@@ -159,7 +159,7 @@ Errors:
 	{HttpRequestException} Error return by Bloock's API.
 	{error} Native Golang error
 */
-func (b BloockClient) WaitAnchor(anchor int, timeout int) (entity2.Anchor, error) {
+func (b BloockClient) WaitAnchor(anchor int, timeout int) (anchorEntity.Anchor, error) {
 	return b.anchorService.WaitAnchor(anchor, timeout)
 }
 
@@ -177,7 +177,7 @@ Errors:
 	{HttpRequestException} Error return by Bloock's API.
 	{error} Native Golang error
 */
-func (b BloockClient) GetProof(records []entity.RecordEntity) (entity3.Proof, error) {
+func (b BloockClient) GetProof(records []entity.RecordEntity) (proofEntity.Proof, error) {
 	return b.proofService.RetrieveProof(records)
 }
 
@@ -194,7 +194,7 @@ Errors:
 	{Web3Exception} Error connecting to blockchain.
 	{error} Native Golang error
 */
-func (b BloockClient) VerifyProof(proof entity3.Proof, network string) (int, error) {
+func (b BloockClient) VerifyProof(proof proofEntity.Proof, network string) (int, error) {
 	return b.proofService.VerifyProof(proof, network)
 }
 

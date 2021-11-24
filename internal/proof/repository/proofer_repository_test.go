@@ -6,7 +6,7 @@ import (
 	"github.com/enchainte/enchainte-sdk-go/internal/infrastructure/blockchain/mockblockchain"
 	"github.com/enchainte/enchainte-sdk-go/internal/infrastructure/http/mockhttp"
 	"github.com/enchainte/enchainte-sdk-go/internal/proof/entity"
-	entity2 "github.com/enchainte/enchainte-sdk-go/internal/record/entity"
+	recordEntity "github.com/enchainte/enchainte-sdk-go/internal/record/entity"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -41,8 +41,8 @@ func TestRetrieveProofRepository(t *testing.T) {
 		cs.EXPECT().GetApiBaseUrl()
 		hc.EXPECT().Post(gomock.Any(), gomock.Any(), gomock.Any()).Return(respBytes, nil).Times(1)
 
-		r := entity2.FromHash("02aae7e86eb50f61a62083a320475d9d60cbd52749dbf08fa942b1b97f50aee5")
-		actual, err := pr.RetrieveProof([]entity2.RecordEntity{r})
+		r := recordEntity.FromHash("02aae7e86eb50f61a62083a320475d9d60cbd52749dbf08fa942b1b97f50aee5")
+		actual, err := pr.RetrieveProof([]recordEntity.RecordEntity{r})
 		assert.Nil(t, err)
 		assert.IsType(t, entity.Proof{}, actual)
 		assert.Equal(t, "bfdf7000", actual.Bitmap)

@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"github.com/enchainte/enchainte-sdk-go/internal/config/service"
 	"github.com/enchainte/enchainte-sdk-go/internal/infrastructure"
-	entity2 "github.com/enchainte/enchainte-sdk-go/internal/proof/entity"
+	proofEntity "github.com/enchainte/enchainte-sdk-go/internal/proof/entity"
 	"github.com/enchainte/enchainte-sdk-go/internal/proof/entity/dto"
 	"github.com/enchainte/enchainte-sdk-go/internal/record/entity"
 	"github.com/enchainte/enchainte-sdk-go/internal/shared"
@@ -26,25 +26,25 @@ func NewProofRepository(h infrastructure.HttpClient, b infrastructure.Blockchain
 	}
 }
 
-func (p ProofRepository) RetrieveProof(records []entity.RecordEntity) (entity2.Proof, error) {
+func (p ProofRepository) RetrieveProof(records []entity.RecordEntity) (proofEntity.Proof, error) {
 	url := fmt.Sprintf("%s/core/proof", p.configService.GetApiBaseUrl())
 	recordArray := entity.MapHashToStringArray(records)
 	body := dto.NewProofRetrieveRequest(recordArray)
 
 	resp, err := p.httpClient.Post(url, body, nil)
 	if err != nil {
-		return entity2.Proof{}, err
+		return proofEntity.Proof{}, err
 	}
 
-	var proof entity2.Proof
+	var proof proofEntity.Proof
 	if err := json.Unmarshal(resp, &proof); err != nil {
-		return entity2.Proof{}, err
+		return proofEntity.Proof{}, err
 	}
 
 	return proof, nil
 }
 
-func (p ProofRepository) VerifyProof(proof entity2.Proof) (entity.RecordEntity, error) {
+func (p ProofRepository) VerifyProof(proof proofEntity.Proof) (entity.RecordEntity, error) {
 	type Stack struct {
 		Depth int
 		Hash  []byte
@@ -96,7 +96,7 @@ func (p ProofRepository) ValidateRoot(network string, record entity.RecordEntity
 	return int(r), err
 }
 
-func initializeVariables(proof entity2.Proof) (l, h [][]byte, b []byte, d []uint16, err error) {
+func initializeVariables(proof proofEntity.Proof) (l, h [][]byte, b []byte, d []uint16, err error) {
 	leaves := make([][]byte, 0)
 	for _, p := range proof.Leaves {
 		b := entity.FromHash(p)

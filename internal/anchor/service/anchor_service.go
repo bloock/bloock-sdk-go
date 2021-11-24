@@ -2,7 +2,7 @@ package service
 
 import (
 	"github.com/enchainte/enchainte-sdk-go/internal/anchor/entity"
-	exception2 "github.com/enchainte/enchainte-sdk-go/internal/anchor/entity/exception"
+	anchorException "github.com/enchainte/enchainte-sdk-go/internal/anchor/entity/exception"
 	"github.com/enchainte/enchainte-sdk-go/internal/anchor/repository"
 	"github.com/enchainte/enchainte-sdk-go/internal/config/service"
 	"time"
@@ -27,7 +27,7 @@ func (a AnchorService) GetAnchor(anchorId int) (entity.Anchor, error) {
 	}
 
 	if anchor.Status() != "Success" {
-		return entity.Anchor{}, exception2.NewAnchorNotFoundException()
+		return entity.Anchor{}, anchorException.NewAnchorNotFoundException()
 	}
 
 	return anchor, nil
@@ -53,7 +53,7 @@ func (a AnchorService) WaitAnchor(anchorId int, limit int) (entity.Anchor, error
 		currentTime := time.Now().Unix()
 
 		if currentTime > timeout {
-			return entity.Anchor{}, exception2.NewWaitAnchorTimeoutException()
+			return entity.Anchor{}, anchorException.NewWaitAnchorTimeoutException()
 		}
 		time.Sleep(time.Millisecond * 1000)
 
@@ -62,13 +62,13 @@ func (a AnchorService) WaitAnchor(anchorId int, limit int) (entity.Anchor, error
 			currentTime = time.Now().Unix()
 		}
 		if currentTime > timeout {
-			return entity.Anchor{}, exception2.NewWaitAnchorTimeoutException()
+			return entity.Anchor{}, anchorException.NewWaitAnchorTimeoutException()
 		}
 		nextTry += int64(attempts*waitFactor + waitDefault)
 		attempts += 1
 
 		if currentTime > timeout {
-			return entity.Anchor{}, exception2.NewWaitAnchorTimeoutException()
+			return entity.Anchor{}, anchorException.NewWaitAnchorTimeoutException()
 		}
 	}
 

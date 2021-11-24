@@ -2,10 +2,10 @@ package service
 
 import (
 	"errors"
-	entity2 "github.com/enchainte/enchainte-sdk-go/internal/proof/entity"
+	proofEntity "github.com/enchainte/enchainte-sdk-go/internal/proof/entity"
 	"github.com/enchainte/enchainte-sdk-go/internal/proof/repository"
 	"github.com/enchainte/enchainte-sdk-go/internal/record/entity"
-	exception2 "github.com/enchainte/enchainte-sdk-go/internal/record/entity/exception"
+	entityException "github.com/enchainte/enchainte-sdk-go/internal/record/entity/exception"
 )
 
 type ProofService struct {
@@ -18,10 +18,10 @@ func NewProofService(pr repository.ProoferRepository) ProofService {
 	}
 }
 
-func (p ProofService) RetrieveProof(records []entity.RecordEntity) (entity2.Proof, error) {
+func (p ProofService) RetrieveProof(records []entity.RecordEntity) (proofEntity.Proof, error) {
 	for _, r := range records {
 		if !r.IsValid(r) {
-			return entity2.Proof{}, exception2.NewInvalidRecordException()
+			return proofEntity.Proof{}, entityException.NewInvalidRecordException()
 		}
 	}
 
@@ -33,7 +33,7 @@ func (p ProofService) RetrieveProof(records []entity.RecordEntity) (entity2.Proo
 func (p ProofService) VerifyRecords(records []entity.RecordEntity, network string) (int, error) {
 	for _, r := range records {
 		if !r.IsValid(r) {
-			return -1, exception2.NewInvalidRecordException()
+			return -1, entityException.NewInvalidRecordException()
 		}
 	}
 
@@ -48,7 +48,7 @@ func (p ProofService) VerifyRecords(records []entity.RecordEntity, network strin
 	return p.VerifyProof(proof, network)
 }
 
-func (p ProofService) VerifyProof(proof entity2.Proof, network string) (int, error) {
+func (p ProofService) VerifyProof(proof proofEntity.Proof, network string) (int, error) {
 	root, err := p.proofRepository.VerifyProof(proof)
 	if err != nil {
 		return -1, err

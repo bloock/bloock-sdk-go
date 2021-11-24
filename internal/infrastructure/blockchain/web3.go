@@ -8,7 +8,6 @@ import (
 	"github.com/enchainte/enchainte-sdk-go/internal/shared"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/ethclient"
-	"log"
 )
 
 type Web3Client struct {
@@ -22,7 +21,6 @@ func NewWeb3(config service.ConfigurerService) Web3Client {
 }
 
 func(w Web3Client) ValidateRoot(network string, root string) (int64, error) {
-	log.Println(root)
 	config := w.configService.GetNetworkConfiguration(network)
 
 	client, err := ethclient.Dial(config.HttpProvider)

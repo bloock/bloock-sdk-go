@@ -1,12 +1,12 @@
 package repository
 
 import (
-	entity2 "github.com/enchainte/enchainte-sdk-go/internal/config/entity"
+	configEntity "github.com/enchainte/enchainte-sdk-go/internal/config/entity"
 )
 
 type ConfigData struct {
-	config         entity2.Configuration
-	networksConfig map[string]entity2.NetworkConfiguration
+	config         configEntity.Configuration
+	networksConfig map[string]configEntity.NetworkConfiguration
 }
 
 func NewConfigData() ConfigData {
@@ -22,34 +22,34 @@ func NewConfigData() ConfigData {
 	rinkebyProv := "https://rinkeby.infura.io/v3/40e23a35d578492daacb318023772b52"
 	bloockProv := "https://ganache.bloock.com"
 
-	ethConfig := entity2.NewNetworkConfiguration(ethContract, ethABI, ethProv)
-	rinkebyConfig := entity2.NewNetworkConfiguration(rinkebyContract, rinkebyABI, rinkebyProv)
-	bloockConfig := entity2.NewNetworkConfiguration(bloockContract, bloockABI, bloockProv)
-	configMap := make(map[string]entity2.NetworkConfiguration)
-	configMap[entity2.EthereumMainnet] = ethConfig
-	configMap[entity2.EthereumRinkeby] = rinkebyConfig
-	configMap[entity2.BloockChain] = bloockConfig
+	ethConfig := configEntity.NewNetworkConfiguration(ethContract, ethABI, ethProv)
+	rinkebyConfig := configEntity.NewNetworkConfiguration(rinkebyContract, rinkebyABI, rinkebyProv)
+	bloockConfig := configEntity.NewNetworkConfiguration(bloockContract, bloockABI, bloockProv)
+	configMap := make(map[string]configEntity.NetworkConfiguration)
+	configMap[configEntity.EthereumMainnet] = ethConfig
+	configMap[configEntity.EthereumRinkeby] = rinkebyConfig
+	configMap[configEntity.BloockChain] = bloockConfig
 
 	return ConfigData{
-		config:         entity2.NewConfiguration("https://api.bloock.com", 2, 100),
+		config:         configEntity.NewConfiguration("https://api.bloock.com", 2, 100),
 		networksConfig: configMap,
 	}
 }
 
-func (c ConfigData) getNetworkConfiguration(network string) entity2.NetworkConfiguration {
+func (c ConfigData) getNetworkConfiguration(network string) configEntity.NetworkConfiguration {
 	config := c.networksConfig[network]
-	if config == (entity2.NetworkConfiguration{}) {
-		config = c.networksConfig[entity2.EthereumMainnet]
+	if config == (configEntity.NetworkConfiguration{}) {
+		config = c.networksConfig[configEntity.EthereumMainnet]
 	}
 
 	return config
 }
 
-func (c ConfigData) getConfiguration() entity2.Configuration {
+func (c ConfigData) getConfiguration() configEntity.Configuration {
 	return c.config
 }
 
-func (c *ConfigData) setNetworkConfiguration(network string, config entity2.NetworkConfiguration) {
+func (c *ConfigData) setNetworkConfiguration(network string, config configEntity.NetworkConfiguration) {
 	c.networksConfig[network] = config
 }
 

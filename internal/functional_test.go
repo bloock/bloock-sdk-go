@@ -1,12 +1,11 @@
 package internal
 
 import (
-	entity2 "github.com/enchainte/enchainte-sdk-go/internal/anchor/entity"
-	entity4 "github.com/enchainte/enchainte-sdk-go/internal/config/entity"
-	entity3 "github.com/enchainte/enchainte-sdk-go/internal/proof/entity"
+	anchorEntity "github.com/enchainte/enchainte-sdk-go/internal/anchor/entity"
+	configEntity "github.com/enchainte/enchainte-sdk-go/internal/config/entity"
+	proofEntity "github.com/enchainte/enchainte-sdk-go/internal/proof/entity"
 	"github.com/enchainte/enchainte-sdk-go/internal/record/entity"
 	"github.com/stretchr/testify/assert"
-	"log"
 	"testing"
 )
 
@@ -19,7 +18,6 @@ func GetSdk() BloockClient {
 }
 
 func TestFunctionalSendRecord(t *testing.T) {
-
 	sdk := GetSdk()
 
 	records := make([]entity.RecordEntity, 0)
@@ -28,7 +26,6 @@ func TestFunctionalSendRecord(t *testing.T) {
 	records = append(records, entity.FromString("Example Data 3"))
 
 	r, err := sdk.SendRecords(records)
-
 	assert.Nil(t, err)
 	assert.IsType(t, entity.RecordReceipt{}, r[0])
 	assert.Greater(t, r[0].Anchor, 0)
@@ -38,7 +35,6 @@ func TestFunctionalSendRecord(t *testing.T) {
 }
 
 func TestFunctionalWaitAnchor(t *testing.T) {
-
 	sdk := GetSdk()
 
 	records := make([]entity.RecordEntity, 0)
@@ -51,11 +47,10 @@ func TestFunctionalWaitAnchor(t *testing.T) {
 	assert.IsType(t, entity.RecordReceipt{}, r[0])
 	assert.NotNil(t, r)
 	assert.NotEqual(t, entity.RecordReceipt{}, r[0])
-	log.Println("Before")
+
 	a, err := sdk.WaitAnchor(r[0].Anchor, 5000)
-	log.Println("After")
 	assert.Nil(t, err)
-	assert.IsType(t, entity2.Anchor{}, a)
+	assert.IsType(t, anchorEntity.Anchor{}, a)
 	assert.Greater(t, a.ID(), 0)
 	assert.Greater(t, len(a.BlockRoots()), 0)
 	assert.Greater(t, len(a.Networks()), 0)
@@ -64,7 +59,6 @@ func TestFunctionalWaitAnchor(t *testing.T) {
 }
 
 func TestFunctionalFetchRecords(t *testing.T) {
-
 	sdk := GetSdk()
 
 	records := make([]entity.RecordEntity, 0)
@@ -88,7 +82,6 @@ func TestFunctionalFetchRecords(t *testing.T) {
 }
 
 func TestFunctionalGetProof(t *testing.T) {
-
 	sdk := GetSdk()
 
 	records := make([]entity.RecordEntity, 0)
@@ -98,13 +91,12 @@ func TestFunctionalGetProof(t *testing.T) {
 
 	p, err := sdk.GetProof(records)
 	assert.Nil(t, err)
-	assert.IsType(t, entity3.Proof{}, p)
+	assert.IsType(t, proofEntity.Proof{}, p)
 	assert.NotNil(t, p)
-	assert.NotEqual(t, entity3.Proof{}, p)
+	assert.NotEqual(t, proofEntity.Proof{}, p)
 }
 
 func TestFunctionalVerifyProof(t *testing.T) {
-
 	sdk := GetSdk()
 
 	records := make([]entity.RecordEntity, 0)
@@ -114,11 +106,11 @@ func TestFunctionalVerifyProof(t *testing.T) {
 
 	p, err := sdk.GetProof(records)
 	assert.Nil(t, err)
-	assert.IsType(t, entity3.Proof{}, p)
+	assert.IsType(t, proofEntity.Proof{}, p)
 	assert.NotNil(t, p)
-	assert.NotEqual(t, entity3.Proof{}, p)
+	assert.NotEqual(t, proofEntity.Proof{}, p)
 
-	timestamp, err := sdk.VerifyProof(p, entity4.BloockChain)
+	timestamp, err := sdk.VerifyProof(p, configEntity.BloockChain)
 	assert.Nil(t, err)
 	assert.Greater(t, timestamp, 0)
 }
