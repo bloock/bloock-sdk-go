@@ -1,39 +1,39 @@
 package service
 
 import (
-	"github.com/enchainte/enchainte-sdk-go/config/service"
 	"github.com/enchainte/enchainte-sdk-go/internal/anchor/entity"
-	exception2 "github.com/enchainte/enchainte-sdk-go/internal/anchor/entity/exception"
+	anchorException "github.com/enchainte/enchainte-sdk-go/internal/anchor/entity/exception"
 	"github.com/enchainte/enchainte-sdk-go/internal/anchor/repository"
+	"github.com/enchainte/enchainte-sdk-go/internal/config/service"
 	"time"
 )
 
 type AnchorService struct {
 	anchorRepository repository.AnchorerRepository
-	configService service.ConfigurerService
+	configService    service.ConfigurerService
 }
 
 func NewAnchorService(ar repository.AnchorerRepository, conf service.ConfigurerService) AnchorService {
 	return AnchorService{
 		anchorRepository: ar,
-		configService: conf,
+		configService:    conf,
 	}
 }
 
-func(a AnchorService) GetAnchor(anchorId int) (entity.Anchor, error) {
+func (a AnchorService) GetAnchor(anchorId int) (entity.Anchor, error) {
 	anchor, err := a.anchorRepository.GetAnchor(anchorId)
 	if err != nil {
 		return entity.Anchor{}, err
 	}
 
 	if anchor.Status() != "Success" {
-		return entity.Anchor{}, exception2.NewAnchorNotFoundException()
+		return entity.Anchor{}, anchorException.NewAnchorNotFoundException()
 	}
 
 	return anchor, nil
 }
 
-func(a AnchorService) WaitAnchor(anchorId int, limit int) (entity.Anchor, error) {
+func (a AnchorService) WaitAnchor(anchorId int, limit int) (entity.Anchor, error) {
 	waitDefault := a.configService.GetConfiguration().WaitMessageIntervalDefault
 	waitFactor := a.configService.GetConfiguration().WaitMessageIntervalFactor
 
@@ -53,7 +53,7 @@ func(a AnchorService) WaitAnchor(anchorId int, limit int) (entity.Anchor, error)
 		currentTime := time.Now().Unix()
 
 		if currentTime > timeout {
-			return entity.Anchor{}, exception2.NewWaitAnchorTimeoutException()
+			return entity.Anchor{}, anchorException.NewWaitAnchorTimeoutException()
 		}
 		time.Sleep(time.Millisecond * 1000)
 
@@ -62,13 +62,13 @@ func(a AnchorService) WaitAnchor(anchorId int, limit int) (entity.Anchor, error)
 			currentTime = time.Now().Unix()
 		}
 		if currentTime > timeout {
-			return entity.Anchor{}, exception2.NewWaitAnchorTimeoutException()
+			return entity.Anchor{}, anchorException.NewWaitAnchorTimeoutException()
 		}
-		nextTry += int64(attempts * waitFactor + waitDefault)
+		nextTry += int64(attempts*waitFactor + waitDefault)
 		attempts += 1
 
 		if currentTime > timeout {
-			return entity.Anchor{}, exception2.NewWaitAnchorTimeoutException()
+			return entity.Anchor{}, anchorException.NewWaitAnchorTimeoutException()
 		}
 	}
 

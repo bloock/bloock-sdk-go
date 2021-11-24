@@ -3,29 +3,31 @@ package repository
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/enchainte/enchainte-sdk-go/config/service"
+	"github.com/enchainte/enchainte-sdk-go/internal/config/service"
 	"github.com/enchainte/enchainte-sdk-go/internal/infrastructure"
 	"github.com/enchainte/enchainte-sdk-go/internal/record/entity"
 	"github.com/enchainte/enchainte-sdk-go/internal/record/entity/dto"
+	"log"
 )
 
 type RecordRepository struct {
-	httpClient infrastructure.HttpClient
+	httpClient    infrastructure.HttpClient
 	configService service.ConfigurerService
 }
 
 func NewRecordRepository(httpClient infrastructure.HttpClient, configService service.ConfigurerService) RecordRepository {
 	return RecordRepository{
-		httpClient: httpClient,
+		httpClient:    httpClient,
 		configService: configService,
 	}
 }
 
-func(m RecordRepository) SendRecords(records []entity.RecordEntity) (dto.RecordWriteResponse, error) {
+func (m RecordRepository) SendRecords(records []entity.RecordEntity) (dto.RecordWriteResponse, error) {
 	url := fmt.Sprintf("%s/core/messages", m.configService.GetApiBaseUrl())
 	recordArray := entity.MapHashToStringArray(records)
 	body := dto.NewRecordWriteRequest(recordArray)
 	resp, err := m.httpClient.Post(url, body, nil)
+	log.Println(resp, err)
 	if err != nil {
 		return dto.RecordWriteResponse{}, err
 	}
@@ -38,7 +40,7 @@ func(m RecordRepository) SendRecords(records []entity.RecordEntity) (dto.RecordW
 	return recWriteResp, nil
 }
 
-func(m RecordRepository) FetchRecords(records []entity.RecordEntity) ([]dto.RecordRetrieveResponse, error) {
+func (m RecordRepository) FetchRecords(records []entity.RecordEntity) ([]dto.RecordRetrieveResponse, error) {
 	url := fmt.Sprintf("%s/core/messages/fetch", m.configService.GetApiBaseUrl())
 	recordArray := entity.MapHashToStringArray(records)
 	body := dto.NewRecordRetrieveRequest(recordArray)
@@ -54,5 +56,3 @@ func(m RecordRepository) FetchRecords(records []entity.RecordEntity) ([]dto.Reco
 
 	return recRetrieveResp, err
 }
-
-

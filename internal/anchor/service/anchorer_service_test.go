@@ -1,11 +1,11 @@
 package service
 
 import (
-	entity2 "github.com/enchainte/enchainte-sdk-go/config/entity"
-	"github.com/enchainte/enchainte-sdk-go/config/mockconfig"
 	"github.com/enchainte/enchainte-sdk-go/internal/anchor/entity"
 	"github.com/enchainte/enchainte-sdk-go/internal/anchor/entity/exception"
 	"github.com/enchainte/enchainte-sdk-go/internal/anchor/mockanchor"
+	configEntity "github.com/enchainte/enchainte-sdk-go/internal/config/entity"
+	"github.com/enchainte/enchainte-sdk-go/internal/config/mockconfig"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
 	"testing"
@@ -47,8 +47,8 @@ func TestWaitAnchorService(t *testing.T) {
 
 	counter := 0
 	maxCount := 3
-	var getAnchorSideEffect func(args...interface{}) (entity.Anchor, error)
-	getAnchorSideEffect = func(args...interface{}) (entity.Anchor, error) {
+	var getAnchorSideEffect func(args ...interface{}) (entity.Anchor, error)
+	getAnchorSideEffect = func(args ...interface{}) (entity.Anchor, error) {
 		if counter < maxCount {
 			counter += 1
 			return entity.Anchor{}, nil
@@ -60,7 +60,7 @@ func TestWaitAnchorService(t *testing.T) {
 		counter = 0
 		maxCount = 0
 
-		conf := entity2.NewConfiguration("api", 0, 1)
+		conf := configEntity.NewConfiguration("api", 0, 1)
 		cs.EXPECT().GetConfiguration().Return(conf).Times(2)
 
 		ar.EXPECT().GetAnchor(gomock.Any()).DoAndReturn(getAnchorSideEffect).Times(maxCount + 1)
@@ -80,7 +80,7 @@ func TestWaitAnchorService(t *testing.T) {
 		counter = 0
 		maxCount = 3
 
-		conf := entity2.NewConfiguration("api", 0, 1)
+		conf := configEntity.NewConfiguration("api", 0, 1)
 		cs.EXPECT().GetConfiguration().Return(conf).Times(2)
 
 		ar.EXPECT().GetAnchor(gomock.Any()).DoAndReturn(getAnchorSideEffect).Times(maxCount + 1)
@@ -100,7 +100,7 @@ func TestWaitAnchorService(t *testing.T) {
 		counter = 0
 		maxCount = 3
 
-		conf := entity2.NewConfiguration("api", 0, 10)
+		conf := configEntity.NewConfiguration("api", 0, 10)
 		cs.EXPECT().GetConfiguration().Return(conf).Times(2)
 
 		ar.EXPECT().GetAnchor(gomock.Any()).DoAndReturn(getAnchorSideEffect).Times(maxCount)

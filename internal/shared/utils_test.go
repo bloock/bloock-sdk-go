@@ -15,12 +15,29 @@ func TestBytesToHex(t *testing.T) {
 }
 
 func TestHexToBytes(t *testing.T) {
-	data := "c7afe76d6dabae68c10c32e5673ed20535ebb00436e615eccc208f14c0993744"
+	data := "0100"
+	invalidData := "0G100"
 
-	t.Run("Given an hexadecimal string should return an array of byte", func(t *testing.T){
+	t.Run("Given an hexadecimal string should return an array of byte", func(t *testing.T) {
 		bytes, err := HexToBytes(data)
 		assert.Nil(t, err)
 		assert.IsType(t, []byte{}, bytes, "Type should be []byte")
+	})
+
+	t.Run("Given an invalid hexadecimal string, should return an error", func(t *testing.T) {
+		_, err := HexToBytes(invalidData)
+		assert.NotNil(t, err)
+		assert.Equal(t, "parameter is not hexadecimal", err.Error())
+	})
+}
+
+func TestHexToBytes16(t *testing.T) {
+	hex := "0100"
+
+	t.Run("Given an hexadecimal, should return an []uint16", func(t *testing.T) {
+		bytes, err := HexToBytes16(hex)
+		assert.Nil(t, err)
+		assert.Equal(t, []uint16{256}, bytes)
 	})
 }
 
@@ -46,7 +63,7 @@ func TestHexToBytes32(t *testing.T) {
 
 func TestIsHex(t *testing.T) {
 	hex := "abcdefg"
-	
+
 	t.Run("Given an invalid regexp should return false", func(t *testing.T) {
 		exp := IsHex(hex)
 		assert.False(t, exp)
@@ -56,7 +73,7 @@ func TestIsHex(t *testing.T) {
 func TestStringify(t *testing.T) {
 	i := 123456789
 	s := "test"
-	arr := []int{1,2,3,4}
+	arr := []int{1, 2, 3, 4}
 	b := true
 
 	t.Run("Given an int value, should convert to string", func(t *testing.T) {

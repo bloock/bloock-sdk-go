@@ -16,7 +16,7 @@ func NewRecordService(recordRepo repository.RecorderRepository) RecordService {
 	}
 }
 
-func(m RecordService) SendRecords(records []entity.RecordEntity) ([]entity.RecordReceipt, error) {
+func (m RecordService) SendRecords(records []entity.RecordEntity) ([]entity.RecordReceipt, error) {
 	if len(records) == 0 {
 		return []entity.RecordReceipt{}, nil
 	}
@@ -40,7 +40,7 @@ func(m RecordService) SendRecords(records []entity.RecordEntity) ([]entity.Recor
 	return result, nil
 }
 
-func(m RecordService) GetRecords(records []entity.RecordEntity) ([]entity.RecordReceipt, error) {
+func (m RecordService) GetRecords(records []entity.RecordEntity) ([]entity.RecordReceipt, error) {
 	if len(records) == 0 {
 		return []entity.RecordReceipt{}, nil
 	}

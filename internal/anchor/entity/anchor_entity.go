@@ -18,22 +18,22 @@ func NewAnchor(id int, blockRoots []string, networks []Network, root, status str
 	}
 }
 
-func(a Anchor) ID() int {
+func (a Anchor) ID() int {
 	return a.id
 }
 
-func(a Anchor) BlockRoots() []string {
+func (a Anchor) BlockRoots() []string {
 	return a.blockRoots
 }
 
-func(a Anchor) Networks() []Network {
+func (a Anchor) Networks() []Network {
 	return a.networks
 }
 
-func(a Anchor) Root() string {
+func (a Anchor) Root() string {
 	return a.root
 }
 
-func(a Anchor) Status() string {
+func (a Anchor) Status() string {
 	return a.status
 }

@@ -2,9 +2,9 @@ package repository
 
 import (
 	"encoding/json"
-	"github.com/enchainte/enchainte-sdk-go/config/mockconfig"
 	"github.com/enchainte/enchainte-sdk-go/internal/anchor/entity"
 	"github.com/enchainte/enchainte-sdk-go/internal/anchor/entity/dto"
+	"github.com/enchainte/enchainte-sdk-go/internal/config/mockconfig"
 	"github.com/enchainte/enchainte-sdk-go/internal/infrastructure/http/mockhttp"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
@@ -22,11 +22,11 @@ func TestGetAnchorRepository(t *testing.T) {
 
 	t.Run("Given an existing anchor, should return that anchor", func(t *testing.T) {
 		resp := dto.AnchorRetrieveResponse{
-			AnchorId: 1,
+			AnchorId:   1,
 			BlockRoots: []string{"block_root"},
-			Networks: []entity.Network{},
-			Root: "root",
-			Status: "Success",
+			Networks:   []entity.Network{},
+			Root:       "root",
+			Status:     "Success",
 		}
 		respByte, err := json.Marshal(resp)
 		require.Nil(t, err)

@@ -1,8 +1,8 @@
 package service
 
 import (
-	"github.com/enchainte/enchainte-sdk-go/config/entity"
-	"github.com/enchainte/enchainte-sdk-go/config/mockconfig"
+	configEntity "github.com/enchainte/enchainte-sdk-go/internal/config/entity"
+	"github.com/enchainte/enchainte-sdk-go/internal/config/mockconfig"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
 	"testing"
@@ -18,7 +18,7 @@ func TestGetNetworkConfigurationService(t *testing.T) {
 	t.Run("Given a network should return a network configuration", func(t *testing.T) {
 		cr.EXPECT().GetNetworkConfiguration(gomock.Any()).Times(1)
 
-		netConfig := cs.GetNetworkConfiguration(entity.EthereumMainnet)
+		netConfig := cs.GetNetworkConfiguration(configEntity.EthereumMainnet)
 		assert.NotNil(t, netConfig)
 	})
 }
@@ -29,9 +29,9 @@ func TestGetApiBaseUrl(t *testing.T) {
 
 	cr := mockconfig.NewMockConfigurerRepository(crtl)
 	cs := NewConfigService(cr)
-	
+
 	t.Run("Given an api host, should return that api host", func(t *testing.T) {
-		config := entity.NewConfiguration("test", 2, 100)
+		config := configEntity.NewConfiguration("test", 2, 100)
 
 		cr.EXPECT().GetConfiguration().Return(config)
 

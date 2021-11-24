@@ -5,4 +5,3 @@ type Network struct {
 	State  string `json:"state"`
 	TxHash string `json:"tx_hash"`
 }
-
