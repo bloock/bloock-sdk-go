@@ -1,9 +1,32 @@
-package internal
+package acceptance
+
+import (
+	"github.com/enchainte/enchainte-sdk-go/internal"
+	exceptionEntity "github.com/enchainte/enchainte-sdk-go/internal/anchor/entity/exception"
+	configEntity "github.com/enchainte/enchainte-sdk-go/internal/config/entity"
+	exceptionHttp "github.com/enchainte/enchainte-sdk-go/internal/infrastructure/http/exception"
+	"github.com/enchainte/enchainte-sdk-go/internal/record/entity"
+	"github.com/enchainte/enchainte-sdk-go/internal/record/entity/exception"
+	"github.com/stretchr/testify/assert"
+	"math"
+	"math/rand"
+	"strconv"
+	"testing"
+)
 
 
+var apiKey = "test_xculO0olb1Itp-tFMNCjpsLgx4Bik3E7Wd-iUfdL1c2lsgyKvhAZQnd7U8vlPnJX"
+var invalidApiKey = "test_xculO0olb1Itp-tFMNCjpsLgx4Bik3E7Wd-iUfdL1c2lsgyKvhAZQnd7U8vlPn"
 
-/*func TestAcceptance(t *testing.T) {
-	sdk := GetSdk()
+func GetSdk(apiKey string) internal.BloockClient {
+	apiHost := "https://api.bloock.com" //endpoint de pro
+	client := internal.NewBloockClient(apiKey)
+	client.SetApiHost(apiHost)
+	return client
+}
+
+func TestAcceptance(t *testing.T) {
+	sdk := GetSdk(apiKey)
 
 	t.Run("Basic test E2E", func(t *testing.T) {
 		record := entity.FromString(randHex(64))
@@ -13,13 +36,13 @@ package internal
 		assert.Nil(t, err)
 		assert.NotEqual(t, entity.RecordReceipt{}, rr[0])
 
-		sdk.WaitAnchor(rr[0].Anchor, 5000)
+		sdk.WaitAnchor(rr[0].Anchor, 120000)
 
 		// Retrieving record proof
 		proof, err := sdk.GetProof(records)
 		assert.Nil(t, err)
-		timestamp, err := sdk.VerifyProof(proof, entity2.BloockChain)
-		assert.Greater(t, timestamp, 0)
+		timestamp, err := sdk.VerifyProof(proof, configEntity.BloockChain)
+		assert.Greater(t, timestamp, 5000)
 	})
 
 	t.Run("Test send records invalid record input wrong char", func(t *testing.T) {
@@ -100,14 +123,14 @@ package internal
 	t.Run("Test get anchor non existing anchor", func(t *testing.T) {
 		_, err := sdk.GetAnchor(666666666666666666)
 		assert.NotNil(t, err)
-		assert.IsType(t, exception2.HttpRequestException{}, err)
-		assert.Equal(t, "HttpClient was not successful: Anchor not found", err.Error())
+		assert.IsType(t, exceptionEntity.NewAnchorNotFoundException(), err)
+		assert.Equal(t, "Anchor not found", err.Error())
 	})
 
 	t.Run("Test wait anchor non existing anchor", func(t *testing.T) {
 		_, err := sdk.WaitAnchor(666666666666666666, 3000)
 		assert.NotNil(t, err)
-		assert.IsType(t, exception3.WaitAnchorTimeoutException{}, err)
+		assert.IsType(t, exceptionEntity.WaitAnchorTimeoutException{}, err)
 		assert.Equal(t, "Timeout exceeded while waiting for anchor", err.Error())
 	})
 
@@ -145,22 +168,22 @@ package internal
 		assert.Equal(t, "Record not valid", err.Error())
 	})
 
+	//Review because should salt Http error, or should control that the proof exists
 	t.Run("Test get proof none existing leaf", func(t *testing.T) {
-		record := entity.FromHash("0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef")
+		record := entity.FromHash("0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdee")
 
 		records := []entity.RecordEntity{record}
 
 		_, err := sdk.GetProof(records)
 		assert.NotNil(t, err)
-		assert.IsType(t, exception2.HttpRequestException{}, err)
-		assert.Equal(t, "HttpClient was not successful: Message '0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef' not found.", err.Error())
+		assert.Equal(t, "couldn't get proof for specified records", err.Error())
 	})
 
 	t.Run("Test verify records invalid record input wrong char", func(t *testing.T) {
 		record := entity.FromHash("e016214a5c4abb88b8b614a916b1a6f075dfcf6fbc16c1e9d6e8ebcec81994aG")
 		records := []entity.RecordEntity{record}
 
-		_, err := sdk.VerifyRecords(records, entity2.BloockChain)
+		_, err := sdk.VerifyRecords(records, configEntity.BloockChain)
 		assert.NotNil(t, err)
 		assert.IsType(t, exception.InvalidRecordException{}, err)
 		assert.Equal(t, "Record not valid", err.Error())
@@ -172,7 +195,7 @@ package internal
 
 		records := []entity.RecordEntity{record1, record2}
 
-		_, err := sdk.VerifyRecords(records, entity2.BloockChain)
+		_, err := sdk.VerifyRecords(records, configEntity.BloockChain)
 		assert.NotNil(t, err)
 		assert.IsType(t, exception.InvalidRecordException{}, err)
 		assert.Equal(t, "Record not valid", err.Error())
@@ -184,32 +207,46 @@ package internal
 
 		records := []entity.RecordEntity{record1, record2}
 
-		_, err := sdk.VerifyRecords(records, entity2.BloockChain)
+		_, err := sdk.VerifyRecords(records, configEntity.BloockChain)
 		assert.NotNil(t, err)
 		assert.IsType(t, exception.InvalidRecordException{}, err)
 		assert.Equal(t, "Record not valid", err.Error())
 	})
 
+	//Review because should be HttpError
 	t.Run("Test verify records none existing leaf", func(t *testing.T) {
-		record := entity.FromHash("0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef")
+		record := entity.FromHash("0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdee")
 
 		records := []entity.RecordEntity{record}
 
-		_, err := sdk.VerifyRecords(records, entity2.BloockChain)
+		_, err := sdk.VerifyRecords(records, configEntity.BloockChain)
 		assert.NotNil(t, err)
-		assert.IsType(t, exception2.HttpRequestException{}, err)
-		assert.Equal(t, "HttpClient was not successful: Message '0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef' not found.", err.Error())
+		assert.Equal(t, "couldn't get proof for specified records", err.Error())
+	})
+}
+
+func TestAcceptanceInvalidApiKey(t *testing.T) {
+	sdk := GetSdk(invalidApiKey)
+
+	t.Run("Given an invalid api key, should return an HttpException error", func(t *testing.T) {
+		record := entity.FromHash("0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef")
+		records := []entity.RecordEntity{record}
+
+		_, err := sdk.SendRecords(records)
+		assert.NotNil(t, err)
+		assert.IsType(t, exceptionHttp.HttpRequestException{}, err)
+		assert.Equal(t, "HttpClient was not successful: Invalid API Key provided", err.Error())
 	})
 }
 
 func randHex(length int) string {
-	maxlen := 8
-	min := math.Pow(16, math.Min(float64(length), float64(maxlen)) - 1)
-	max := math.Pow(16, math.Min(float64(length), float64(maxlen))) - 1
+	maxlength := 8
+	min := math.Pow(16, math.Min(float64(length), float64(maxlength)) - 1)
+	max := math.Pow(16, math.Min(float64(length), float64(maxlength))) - 1
 	n := int((rand.Float64() * (max - min + 1)) + min)
 	r := strconv.Itoa(n)
 	for len(r) < length {
-		r += randHex(length - maxlen)
+		r += randHex(length - maxlength)
 	}
 	return r
-}*/
+}

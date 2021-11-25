@@ -9,6 +9,10 @@ import (
 	http "net/http"
 	"time"
 )
+type Error struct {
+	Message string
+	Code string
+}
 
 type Http struct {
 	httpData DataHttp
@@ -54,6 +58,10 @@ func (h Http) request(method, url string, headers map[string]string, body interf
 	respByte, err := io.ReadAll(response.Body)
 	if err != nil {
 		return nil, exception.NewHttpRequestException(err.Error())
+	}
+
+	if response.StatusCode == 401 {
+		return nil, exception.NewHttpRequestException("Invalid API Key provided")
 	}
 
 	return respByte, nil

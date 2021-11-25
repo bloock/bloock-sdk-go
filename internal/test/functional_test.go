@@ -1,6 +1,7 @@
-package internal
+package test
 
 import (
+	"github.com/enchainte/enchainte-sdk-go/internal"
 	anchorEntity "github.com/enchainte/enchainte-sdk-go/internal/anchor/entity"
 	configEntity "github.com/enchainte/enchainte-sdk-go/internal/config/entity"
 	proofEntity "github.com/enchainte/enchainte-sdk-go/internal/proof/entity"
@@ -9,10 +10,10 @@ import (
 	"testing"
 )
 
-func GetSdk() BloockClient {
+func GetSdk() internal.BloockClient {
 	apiKey := "test_xculO0olb1Itp-tFMNCjpsLgx4Bik3E7Wd-iUfdL1c2lsgyKvhAZQnd7U8vlPnJX" //clau de l'entorn de test de pro
 	apiHost := "https://api.bloock.com" //endpoint de pro
-	client := NewBloockClient(apiKey)
+	client := internal.NewBloockClient(apiKey)
 	client.SetApiHost(apiHost)
 	return client
 }
@@ -48,7 +49,7 @@ func TestFunctionalWaitAnchor(t *testing.T) {
 	assert.NotNil(t, r)
 	assert.NotEqual(t, entity.RecordReceipt{}, r[0])
 
-	a, err := sdk.WaitAnchor(r[0].Anchor, 5000)
+	a, err := sdk.WaitAnchor(r[0].Anchor, 120000)
 	assert.Nil(t, err)
 	assert.IsType(t, anchorEntity.Anchor{}, a)
 	assert.Greater(t, a.ID(), 0)
@@ -72,7 +73,7 @@ func TestFunctionalFetchRecords(t *testing.T) {
 	assert.NotNil(t, r)
 	assert.NotEqual(t, entity.RecordReceipt{}, r[0])
 
-	sdk.WaitAnchor(r[0].Anchor, 5000)
+	sdk.WaitAnchor(r[0].Anchor, 120000)
 
 	rr, err := sdk.GetRecords(records)
 	assert.Nil(t, err)

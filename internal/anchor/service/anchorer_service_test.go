@@ -103,7 +103,7 @@ func TestWaitAnchorService(t *testing.T) {
 		conf := configEntity.NewConfiguration("api", 0, 10)
 		cs.EXPECT().GetConfiguration().Return(conf).Times(2)
 
-		ar.EXPECT().GetAnchor(gomock.Any()).DoAndReturn(getAnchorSideEffect).Times(maxCount)
+		ar.EXPECT().GetAnchor(gomock.Any()).DoAndReturn(getAnchorSideEffect)
 
 		_, err := as.WaitAnchor(1, 1)
 

@@ -6,6 +6,7 @@ import (
 	"github.com/enchainte/enchainte-sdk-go/internal/proof/repository"
 	"github.com/enchainte/enchainte-sdk-go/internal/record/entity"
 	entityException "github.com/enchainte/enchainte-sdk-go/internal/record/entity/exception"
+	"log"
 )
 
 type ProofService struct {
@@ -27,7 +28,16 @@ func (p ProofService) RetrieveProof(records []entity.RecordEntity) (proofEntity.
 
 	sorted := entity.Sort(records)
 
-	return p.proofRepository.RetrieveProof(sorted)
+	proof, err := p.proofRepository.RetrieveProof(sorted)
+	if err != nil {
+		return proofEntity.Proof{}, err
+	}
+
+	if proof.Depth == "" && proof.Nodes == nil {
+		return proofEntity.Proof{}, errors.New("couldn't get proof for specified records")
+	}
+
+	return proof, nil
 }
 
 func (p ProofService) VerifyRecords(records []entity.RecordEntity, network string) (int, error) {
@@ -38,6 +48,7 @@ func (p ProofService) VerifyRecords(records []entity.RecordEntity, network strin
 	}
 
 	proof, err := p.RetrieveProof(records)
+	log.Println(proof)
 	if err != nil {
 		return -1, err
 	}

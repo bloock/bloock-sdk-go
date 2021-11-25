@@ -47,7 +47,7 @@ func (m RecordService) GetRecords(records []entity.RecordEntity) ([]entity.Recor
 
 	for _, r := range records {
 		if !r.IsValid(r) {
-			return []entity.RecordReceipt{}, nil //Retornar error tipus InvalidArgumentException
+			return []entity.RecordReceipt{}, exception.NewInvalidRecordException()
 		}
 	}
 
