@@ -4,29 +4,26 @@ import (
 	"github.com/enchainte/enchainte-sdk-go/internal"
 	exceptionEntity "github.com/enchainte/enchainte-sdk-go/internal/anchor/entity/exception"
 	configEntity "github.com/enchainte/enchainte-sdk-go/internal/config/entity"
-	exceptionHttp "github.com/enchainte/enchainte-sdk-go/internal/infrastructure/http/exception"
 	"github.com/enchainte/enchainte-sdk-go/internal/record/entity"
 	"github.com/enchainte/enchainte-sdk-go/internal/record/entity/exception"
 	"github.com/stretchr/testify/assert"
 	"math"
 	"math/rand"
+	"os"
 	"strconv"
 	"testing"
 )
 
-
-var apiKey = "test_xculO0olb1Itp-tFMNCjpsLgx4Bik3E7Wd-iUfdL1c2lsgyKvhAZQnd7U8vlPnJX"
-var invalidApiKey = "test_xculO0olb1Itp-tFMNCjpsLgx4Bik3E7Wd-iUfdL1c2lsgyKvhAZQnd7U8vlPn"
-
-func GetSdk(apiKey string) internal.BloockClient {
-	apiHost := "https://api.bloock.com" //endpoint de pro
+func GetSdk() internal.BloockClient {
+	apiKey := os.Getenv("API_KEY")
+	apiHost := os.Getenv("API_HOST")
 	client := internal.NewBloockClient(apiKey)
 	client.SetApiHost(apiHost)
 	return client
 }
 
 func TestAcceptance(t *testing.T) {
-	sdk := GetSdk(apiKey)
+	sdk := GetSdk()
 
 	t.Run("Basic test E2E", func(t *testing.T) {
 		record := entity.FromString(randHex(64))
@@ -225,23 +222,9 @@ func TestAcceptance(t *testing.T) {
 	})
 }
 
-func TestAcceptanceInvalidApiKey(t *testing.T) {
-	sdk := GetSdk(invalidApiKey)
-
-	t.Run("Given an invalid api key, should return an HttpException error", func(t *testing.T) {
-		record := entity.FromHash("0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef")
-		records := []entity.RecordEntity{record}
-
-		_, err := sdk.SendRecords(records)
-		assert.NotNil(t, err)
-		assert.IsType(t, exceptionHttp.HttpRequestException{}, err)
-		assert.Equal(t, "HttpClient was not successful: Invalid API Key provided", err.Error())
-	})
-}
-
 func randHex(length int) string {
 	maxlength := 8
-	min := math.Pow(16, math.Min(float64(length), float64(maxlength)) - 1)
+	min := math.Pow(16, math.Min(float64(length), float64(maxlength))-1)
 	max := math.Pow(16, math.Min(float64(length), float64(maxlength))) - 1
 	n := int((rand.Float64() * (max - min + 1)) + min)
 	r := strconv.Itoa(n)

@@ -7,12 +7,13 @@ import (
 	proofEntity "github.com/enchainte/enchainte-sdk-go/internal/proof/entity"
 	"github.com/enchainte/enchainte-sdk-go/internal/record/entity"
 	"github.com/stretchr/testify/assert"
+	"os"
 	"testing"
 )
 
 func GetSdk() internal.BloockClient {
-	apiKey := "test_xculO0olb1Itp-tFMNCjpsLgx4Bik3E7Wd-iUfdL1c2lsgyKvhAZQnd7U8vlPnJX" //clau de l'entorn de test de pro
-	apiHost := "https://api.bloock.com" //endpoint de pro
+	apiKey := os.Getenv("API_KEY")
+	apiHost := os.Getenv("API_HOST")
 	client := internal.NewBloockClient(apiKey)
 	client.SetApiHost(apiHost)
 	return client
@@ -115,4 +116,3 @@ func TestFunctionalVerifyProof(t *testing.T) {
 	assert.Nil(t, err)
 	assert.Greater(t, timestamp, 0)
 }
-
