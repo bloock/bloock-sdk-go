@@ -218,6 +218,16 @@ log.Println(timestamp)
 This snippet shows a complete data cycle including: write, wait for record confirmation and proof retrieval and validation.
 
 ```go
+import (
+    "github.com/bloock/bloock-sdk-go/internal"
+    configEntity "github.com/bloock/bloock-sdk-go/internal/config/entity"
+    "github.com/bloock/bloock-sdk-go/internal/record/entity"
+    "log"
+    "math"
+    "math/rand"
+    "os"
+    "strconv"
+)
 
 // Helper function to get a random hex string
 func randHex(length int) string {
@@ -229,19 +239,51 @@ func randHex(length int) string {
     for len(r) < length {
         r += randHex(length - maxlength)
     }
-	return r
+    return r
 }
 
 func main() {
     apiKey := os.Getenv("API_KEY")
-    client := internal.NewBloockClient(apiKey)
+    sdk := internal.NewBloockClient(apiKey)
 
-    r := entity.FromString(randHex(64))
+    record := entity.FromString(randHex(64))
     records := make([]entity.RecordEntity, 0)
-    records = append(records, r)
+    records = append(records, record)
+
+    r, err := sdk.SendRecords(records)
+    if err != nil {
+        log.Println(err)
+    }
+    log.Println("Write record - Successful!")
+
+	if r[0].Record == "" && r[0].Status == "" {
+        os.Exit(1)
+    }
 	
+    // timeout = 120000
+    _, err = sdk.WaitAnchor(r[0].Anchor, 120000)
+    if err != nil {
+        log.Println(err)
+    }
+    log.Println("Record reached Blockchain!")
+
+    // Retrieving record proof 
+    proof, err := sdk.GetProof(records)
+    if err != nil {
+        log.Println(err)
+    }
 	
-	
+    // configEntity.EthereumMainnet -> transact to Ethereum Mainnet
+    timestamp, err := sdk.VerifyProof(proof, configEntity.EthereumMainnet)
+    if err != nil {
+        log.Println(err)
+    }
+
+    if timestamp != 0 {
+        log.Printf("Record is valid - Timestamp: %d", timestamp)
+    } else {
+        log.Println("Record is invalid")
+    }
 }
 
 ```
