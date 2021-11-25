@@ -2,14 +2,18 @@ package main
 
 import (
 	"github.com/bloock/bloock-sdk-go/internal"
-	entity2 "github.com/bloock/bloock-sdk-go/internal/config/entity"
+	configEntity "github.com/bloock/bloock-sdk-go/internal/config/entity"
 	"github.com/bloock/bloock-sdk-go/internal/record/entity"
 	"log"
+	"math"
+	"math/rand"
+	"os"
+	"strconv"
 )
 
 func main() {
 
-	type Data struct {
+	/*type Data struct {
 		data string
 	}
 	re := entity.FromObject(Data{data: "Example Data"})
@@ -61,31 +65,82 @@ func main() {
 
 	apiKey := "test_xculO0olb1Itp-tFMNCjpsLgx4Bik3E7Wd-iUfdL1c2lsgyKvhAZQnd7U8vlPnJX"
 
-	client := internal.NewBloockClient(apiKey)
+	sdk := internal.NewBloockClient(apiKey)
 
 	records := make([]entity.RecordEntity, 0)
 	records = append(records, re4)
-	records = append(records, re3)
+	records = append(records, re3)*/
 
-	/*se, err := client.SendRecords(records)
+	/*se, err := sdk.SendRecords(records)
 	if err != nil {
 		log.Println(err)
 	}*/
 
-	/*rr, err := client.WaitAnchor(se[3].Anchor, 60000)
+	/*r, err := sdk.WaitAnchor(se[3].Anchor, 60000)
 	if err != nil {
 		log.Println(err)
 	}*/
 
-	r, err := client.GetProof(records)
+	/*r, err := sdk.GetProof(records)
 	if err != nil {
 		log.Println(err)
 	}
 	log.Println(r)
 
-	i, err := client.VerifyRecords(records, entity2.BloockChain)
+	i, err := sdk.VerifyRecords(records, configEntity.BloockChain)
 	if err != nil {
 		log.Println(err)
 	}
-	log.Println(i)
+	log.Println(i)*/
+
+	apiKey := os.Getenv("API_KEY")
+	sdk := internal.NewBloockClient(apiKey)
+
+	record := entity.FromString(randHex(64))
+	records := make([]entity.RecordEntity, 0)
+	records = append(records, record)
+
+	r, err := sdk.SendRecords(records)
+	if err != nil {
+		log.Println(err)
+	}
+	log.Println("Write record - Successful!")
+
+	if r[0].Record == "" && r[0].Status == "" {
+		os.Exit(1)
+	}
+
+	_, err = sdk.WaitAnchor(r[0].Anchor, 120000)
+	if err != nil {
+		log.Println(err)
+	}
+	log.Println("Record reached Blockchain!")
+
+	// Retrieving record proof
+	proof, err := sdk.GetProof(records)
+	if err != nil {
+		log.Println(err)
+	}
+	timestamp, err := sdk.VerifyProof(proof, configEntity.BloockChain)
+	if err != nil {
+		log.Println(err)
+	}
+
+	if timestamp != 0 {
+		log.Printf("Record is valid - Timestamp: %d", timestamp)
+	} else {
+		log.Println("Record is invalid")
+	}
+}
+
+func randHex(length int) string {
+	maxlength := 8
+	min := math.Pow(16, math.Min(float64(length), float64(maxlength))-1)
+	max := math.Pow(16, math.Min(float64(length), float64(maxlength))) - 1
+	n := int((rand.Float64() * (max - min + 1)) + min)
+	r := strconv.Itoa(n)
+	for len(r) < length {
+		r += randHex(length - maxlength)
+	}
+	return r
 }
