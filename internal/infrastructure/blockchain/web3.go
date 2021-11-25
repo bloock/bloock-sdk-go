@@ -20,7 +20,7 @@ func NewWeb3(config service.ConfigurerService) Web3Client {
 	}
 }
 
-func(w Web3Client) ValidateRoot(network string, root string) (int64, error) {
+func (w Web3Client) ValidateRoot(network string, root string) (int64, error) {
 	config := w.configService.GetNetworkConfiguration(network)
 
 	client, err := ethclient.Dial(config.HttpProvider)
@@ -48,5 +48,3 @@ func(w Web3Client) ValidateRoot(network string, root string) (int64, error) {
 
 	return timestamp.Int64(), nil
 }
-
-

@@ -33,5 +33,4 @@ func TestGenerateHash(t *testing.T) {
 		assert.Equal(t, "d5f4f7e1d989848480236fb0a5f808d5877abf778364ae50845234dd6c1e80fc", result)
 	})
 
-
 }

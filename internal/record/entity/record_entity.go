@@ -13,9 +13,9 @@ var hashAlgorithm hashing.Keccak
 RecordEntity is the struct in charge of computing and storing the
 value of the data sent to Bloock.
 This class is intended to be used by calling "from" methods to create instances of RecordEntity.
- */
+*/
 type RecordEntity struct {
-	hash          string
+	hash string
 }
 
 func NewRecordEntity(hash string) RecordEntity {
@@ -31,7 +31,7 @@ Parameters:
 	{interface{}} data
 Returns:
 	{RecordEntity} RecordEntity object of the hashed input.
- */
+*/
 func FromObject(data interface{}) RecordEntity {
 	return FromString(shared.Stringify(data))
 }
@@ -43,7 +43,7 @@ Parameters:
 	{string} Hexadecimal string without prefix and length 64.
 Returns:
 	{RecordEntity} RecordEntity object of the hashed input.
- */
+*/
 func FromHash(hash string) RecordEntity {
 	return NewRecordEntity(hash)
 }
@@ -56,7 +56,7 @@ Parameters:
 Returns:
 	{RecordEntity} RecordEntity object of the hashed input.
 	{error} any type of error when hashing or converting
- */
+*/
 func FromHex(hex string) (RecordEntity, error) {
 	dataArray, err := shared.HexToBytes(hex)
 	if err != nil {
@@ -85,7 +85,7 @@ Parameters:
 	{[]byte} Bytes object.
 Returns:
 	{RecordEntity} RecordEntity object of the hashed input.
- */
+*/
 func FromUint8Array(array []byte) RecordEntity {
 	return NewRecordEntity(hashAlgorithm.GenerateHash(array))
 }
@@ -104,7 +104,7 @@ Parameters:
 	{RecordEntity} RecordEntity object.
 Returns:
 	{boolean} Boolean indicating if the RecordEntity is susceptible to be sent (True) or not (False).
- */
+*/
 func (m RecordEntity) IsValid(record RecordEntity) bool {
 	if isType(record) {
 		record := m.GetHash()
@@ -121,7 +121,7 @@ GetHash
 Returns the hashed representation of the Record string.
 Returns:
 	{string} String containing the RecordEntity hash as a hexadecimal (with no "0x" prefix).
- */
+*/
 func (m RecordEntity) GetHash() string {
 	return m.hash
 }

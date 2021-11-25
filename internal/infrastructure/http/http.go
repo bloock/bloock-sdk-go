@@ -9,9 +9,10 @@ import (
 	http "net/http"
 	"time"
 )
+
 type Error struct {
 	Message string
-	Code string
+	Code    string
 }
 
 type Http struct {

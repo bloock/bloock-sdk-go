@@ -64,7 +64,7 @@ func (a AnchorService) WaitAnchor(anchorId int, limit int) (entity.Anchor, error
 		if currentTime.After(timeout) {
 			return entity.Anchor{}, anchorException.NewWaitAnchorTimeoutException()
 		}
-		nextTry.Add(time.Millisecond * time.Duration(attempts * waitFactor + waitDefault))
+		nextTry.Add(time.Millisecond * time.Duration(attempts*waitFactor+waitDefault))
 		attempts += 1
 
 		if currentTime.After(timeout) {

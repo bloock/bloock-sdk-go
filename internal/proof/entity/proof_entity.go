@@ -8,7 +8,7 @@ import (
 /*
 Proof
 Is the object in charge of storing all data necessary to compute a data integrity check.
- */
+*/
 type Proof struct {
 	Leaves []string `json:"leaves"`
 	Nodes  []string `json:"nodes"`
@@ -32,7 +32,7 @@ Parameters:
 	{Proof} Proof to validate.
 Returns:
 	{boolean} A Boolean that returns True if the proof is valid, False if not.
- */
+*/
 func IsValid(proof Proof) bool {
 	if isType(proof) {
 		for _, l := range proof.Leaves {

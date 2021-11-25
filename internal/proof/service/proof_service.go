@@ -6,7 +6,6 @@ import (
 	"github.com/enchainte/enchainte-sdk-go/internal/proof/repository"
 	"github.com/enchainte/enchainte-sdk-go/internal/record/entity"
 	entityException "github.com/enchainte/enchainte-sdk-go/internal/record/entity/exception"
-	"log"
 )
 
 type ProofService struct {
@@ -48,7 +47,7 @@ func (p ProofService) VerifyRecords(records []entity.RecordEntity, network strin
 	}
 
 	proof, err := p.RetrieveProof(records)
-	log.Println(proof)
+
 	if err != nil {
 		return -1, err
 	}

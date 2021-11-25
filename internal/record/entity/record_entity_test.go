@@ -22,6 +22,15 @@ func TestRecordEntity(t *testing.T) {
 		assert.Equal(t, p, r.GetHash())
 	})
 
+	t.Run("Given an invalid hex should return an error", func(t *testing.T) {
+		s := "1010101010101010101010101010101010101010101010101010101010101010111111111111111111111111111111111111111111111111111111111111111"
+
+		_, err := FromHex(s)
+
+		assert.NotNil(t, err)
+		assert.Equal(t, "parameter is missing last character to be represented in bytes", err.Error())
+	})
+
 	t.Run("Given a valid string should return a hashed Keccak256", func(t *testing.T) {
 		s := "testing keccak"
 		p := "7e5e383e8e70e55cdccfccf40dfc5d4bed935613dffc806b16b4675b555be139"
