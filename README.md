@@ -26,6 +26,11 @@ In order to interact with the SDK, the data should be processed through the Hash
 There are several ways to generate a Hash:
 
 ```go
+import (
+    "github.com/bloock/bloock-sdk-go/internal/record/entity"
+    "log"
+)
+
 // From an object
 type Data struct {
     data string
@@ -85,6 +90,14 @@ record4 := entity.FromUint8Array([]byte{
 This example shows how to send data to Bloock
 
 ```go
+import (
+    "github.com/bloock/bloock-sdk-go/internal"
+    "github.com/bloock/bloock-sdk-go/internal/record/entity"
+    "log"
+    "os"
+)
+
+
 apiKey := os.Getenv("API_KEY")
 
 client := internal.NewBloockClient(apiKey)
@@ -105,6 +118,14 @@ log.Println(r)
 This example shows how to get all the details and status of records:
 
 ```go
+import (
+    "github.com/bloock/bloock-sdk-go/internal"
+    "github.com/bloock/bloock-sdk-go/internal/record/entity"
+    "log"
+    "os"
+)
+
+
 apiKey := os.Getenv("API_KEY")
 
 client := internal.NewBloockClient(apiKey)
@@ -129,6 +150,14 @@ log.Println(r)
 This example shows how to wait for a record to be processed by Bloock after sending it.
 
 ```go
+import (
+    "github.com/bloock/bloock-sdk-go/internal"
+    "github.com/bloock/bloock-sdk-go/internal/record/entity"
+    "log"
+    "os"
+)
+
+
 apiKey := os.Getenv("API_KEY")
 
 client := internal.NewBloockClient(apiKey)
@@ -151,6 +180,15 @@ if err != nil {
 This example shows how to get a proof for an array of records and validate it:
 
 ```go
+import (
+    "github.com/bloock/bloock-sdk-go/internal"
+    "github.com/bloock/bloock-sdk-go/internal/record/entity"
+    configEntity "github.com/bloock/bloock-sdk-go/internal/config/entity"
+    "log"
+    "os"
+)
+
+
 apiKey := os.Getenv("API_KEY")
 
 client := internal.NewBloockClient(apiKey)
@@ -168,7 +206,7 @@ if err != nil {
     log.Println(err)
 }
 
-timestamp, err := client.VerifyProof(p, entity2.EthereumMainnet)
+timestamp, err := client.VerifyProof(p, configEntity.EthereumMainnet)
 if err != nil {
     log.Println(err)
 }
@@ -180,6 +218,31 @@ log.Println(timestamp)
 This snippet shows a complete data cycle including: write, wait for record confirmation and proof retrieval and validation.
 
 ```go
+
+// Helper function to get a random hex string
+func randHex(length int) string {
+    maxlength := 8
+    min := math.Pow(16, math.Min(float64(length), float64(maxlength))-1)
+    max := math.Pow(16, math.Min(float64(length), float64(maxlength))) - 1
+    n := int((rand.Float64() * (max - min + 1)) + min)
+    r := strconv.Itoa(n)
+    for len(r) < length {
+        r += randHex(length - maxlength)
+    }
+	return r
+}
+
+func main() {
+    apiKey := os.Getenv("API_KEY")
+    client := internal.NewBloockClient(apiKey)
+
+    r := entity.FromString(randHex(64))
+    records := make([]entity.RecordEntity, 0)
+    records = append(records, r)
+	
+	
+	
+}
 
 ```
 
