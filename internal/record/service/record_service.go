@@ -1,9 +1,9 @@
 package service
 
 import (
-	"github.com/enchainte/enchainte-sdk-go/internal/record/entity"
-	"github.com/enchainte/enchainte-sdk-go/internal/record/entity/exception"
-	"github.com/enchainte/enchainte-sdk-go/internal/record/repository"
+	"github.com/bloock/bloock-sdk-go/internal/record/entity"
+	"github.com/bloock/bloock-sdk-go/internal/record/entity/exception"
+	"github.com/bloock/bloock-sdk-go/internal/record/repository"
 )
 
 type RecordService struct {

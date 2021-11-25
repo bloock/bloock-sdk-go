@@ -1,11 +1,11 @@
 package test
 
 import (
-	"github.com/enchainte/enchainte-sdk-go/internal"
-	anchorEntity "github.com/enchainte/enchainte-sdk-go/internal/anchor/entity"
-	configEntity "github.com/enchainte/enchainte-sdk-go/internal/config/entity"
-	proofEntity "github.com/enchainte/enchainte-sdk-go/internal/proof/entity"
-	"github.com/enchainte/enchainte-sdk-go/internal/record/entity"
+	"github.com/bloock/bloock-sdk-go/internal"
+	anchorEntity "github.com/bloock/bloock-sdk-go/internal/anchor/entity"
+	configEntity "github.com/bloock/bloock-sdk-go/internal/config/entity"
+	proofEntity "github.com/bloock/bloock-sdk-go/internal/proof/entity"
+	"github.com/bloock/bloock-sdk-go/internal/record/entity"
 	"github.com/stretchr/testify/assert"
 	"os"
 	"testing"

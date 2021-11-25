@@ -1,8 +1,8 @@
 package entity
 
 import (
-	"github.com/enchainte/enchainte-sdk-go/internal/infrastructure/hashing"
-	"github.com/enchainte/enchainte-sdk-go/internal/shared"
+	"github.com/bloock/bloock-sdk-go/internal/infrastructure/hashing"
+	"github.com/bloock/bloock-sdk-go/internal/shared"
 	"sort"
 	"strings"
 )

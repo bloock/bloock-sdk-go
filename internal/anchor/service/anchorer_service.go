@@ -1,6 +1,6 @@
 package service
 
-import "github.com/enchainte/enchainte-sdk-go/internal/anchor/entity"
+import "github.com/bloock/bloock-sdk-go/internal/anchor/entity"
 
 type AnchorerService interface {
 	GetAnchor(anchorId int) (entity.Anchor, error)

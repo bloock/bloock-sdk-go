@@ -1,7 +1,7 @@
 package entity
 
 import (
-	"github.com/enchainte/enchainte-sdk-go/internal/shared"
+	"github.com/bloock/bloock-sdk-go/internal/shared"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )

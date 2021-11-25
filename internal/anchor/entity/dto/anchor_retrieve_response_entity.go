@@ -1,6 +1,6 @@
 package dto
 
-import "github.com/enchainte/enchainte-sdk-go/internal/anchor/entity"
+import "github.com/bloock/bloock-sdk-go/internal/anchor/entity"
 
 type AnchorRetrieveResponse struct {
 	AnchorId int `json:"anchor_id"`

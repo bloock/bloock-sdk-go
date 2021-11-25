@@ -2,10 +2,10 @@ package repository
 
 import (
 	"encoding/json"
-	"github.com/enchainte/enchainte-sdk-go/internal/anchor/entity"
-	"github.com/enchainte/enchainte-sdk-go/internal/anchor/entity/dto"
-	"github.com/enchainte/enchainte-sdk-go/internal/config/mockconfig"
-	"github.com/enchainte/enchainte-sdk-go/internal/infrastructure/http/mockhttp"
+	"github.com/bloock/bloock-sdk-go/internal/anchor/entity"
+	"github.com/bloock/bloock-sdk-go/internal/anchor/entity/dto"
+	"github.com/bloock/bloock-sdk-go/internal/config/mockconfig"
+	"github.com/bloock/bloock-sdk-go/internal/infrastructure/http/mockhttp"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"

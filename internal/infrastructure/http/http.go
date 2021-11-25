@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"github.com/enchainte/enchainte-sdk-go/internal/infrastructure/http/exception"
+	"github.com/bloock/bloock-sdk-go/internal/infrastructure/http/exception"
 	"io"
 	http "net/http"
 	"time"

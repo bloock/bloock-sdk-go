@@ -1,10 +1,10 @@
 package service
 
 import (
-	"github.com/enchainte/enchainte-sdk-go/internal/anchor/entity"
-	anchorException "github.com/enchainte/enchainte-sdk-go/internal/anchor/entity/exception"
-	"github.com/enchainte/enchainte-sdk-go/internal/anchor/repository"
-	"github.com/enchainte/enchainte-sdk-go/internal/config/service"
+	"github.com/bloock/bloock-sdk-go/internal/anchor/entity"
+	anchorException "github.com/bloock/bloock-sdk-go/internal/anchor/entity/exception"
+	"github.com/bloock/bloock-sdk-go/internal/anchor/repository"
+	"github.com/bloock/bloock-sdk-go/internal/config/service"
 	"time"
 )
 

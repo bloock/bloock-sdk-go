@@ -1,8 +1,8 @@
 package service
 
 import (
-	proofEntity "github.com/enchainte/enchainte-sdk-go/internal/proof/entity"
-	"github.com/enchainte/enchainte-sdk-go/internal/record/entity"
+	proofEntity "github.com/bloock/bloock-sdk-go/internal/proof/entity"
+	"github.com/bloock/bloock-sdk-go/internal/record/entity"
 )
 
 type ProoferService interface {

@@ -2,10 +2,10 @@ package service
 
 import (
 	"errors"
-	proofEntity "github.com/enchainte/enchainte-sdk-go/internal/proof/entity"
-	"github.com/enchainte/enchainte-sdk-go/internal/proof/repository"
-	"github.com/enchainte/enchainte-sdk-go/internal/record/entity"
-	entityException "github.com/enchainte/enchainte-sdk-go/internal/record/entity/exception"
+	proofEntity "github.com/bloock/bloock-sdk-go/internal/proof/entity"
+	"github.com/bloock/bloock-sdk-go/internal/proof/repository"
+	"github.com/bloock/bloock-sdk-go/internal/record/entity"
+	entityException "github.com/bloock/bloock-sdk-go/internal/record/entity/exception"
 )
 
 type ProofService struct {

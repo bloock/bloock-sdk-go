@@ -1,9 +1,9 @@
 package main
 
 import (
-	"github.com/enchainte/enchainte-sdk-go/internal"
-	entity2 "github.com/enchainte/enchainte-sdk-go/internal/config/entity"
-	"github.com/enchainte/enchainte-sdk-go/internal/record/entity"
+	"github.com/bloock/bloock-sdk-go/internal"
+	entity2 "github.com/bloock/bloock-sdk-go/internal/config/entity"
+	"github.com/bloock/bloock-sdk-go/internal/record/entity"
 	"log"
 )
 

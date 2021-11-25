@@ -3,9 +3,9 @@ package blockchain
 import (
 	"errors"
 	"fmt"
-	"github.com/enchainte/enchainte-sdk-go/internal/config/service"
-	"github.com/enchainte/enchainte-sdk-go/internal/infrastructure/blockchain/contracts"
-	"github.com/enchainte/enchainte-sdk-go/internal/shared"
+	"github.com/bloock/bloock-sdk-go/internal/config/service"
+	"github.com/bloock/bloock-sdk-go/internal/infrastructure/blockchain/contracts"
+	"github.com/bloock/bloock-sdk-go/internal/shared"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/ethclient"
 )

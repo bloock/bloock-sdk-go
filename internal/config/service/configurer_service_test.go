@@ -1,8 +1,8 @@
 package service
 
 import (
-	configEntity "github.com/enchainte/enchainte-sdk-go/internal/config/entity"
-	"github.com/enchainte/enchainte-sdk-go/internal/config/mockconfig"
+	configEntity "github.com/bloock/bloock-sdk-go/internal/config/entity"
+	"github.com/bloock/bloock-sdk-go/internal/config/mockconfig"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
 	"testing"

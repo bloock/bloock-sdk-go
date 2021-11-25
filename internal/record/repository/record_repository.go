@@ -3,10 +3,10 @@ package repository
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/enchainte/enchainte-sdk-go/internal/config/service"
-	"github.com/enchainte/enchainte-sdk-go/internal/infrastructure"
-	"github.com/enchainte/enchainte-sdk-go/internal/record/entity"
-	"github.com/enchainte/enchainte-sdk-go/internal/record/entity/dto"
+	"github.com/bloock/bloock-sdk-go/internal/config/service"
+	"github.com/bloock/bloock-sdk-go/internal/infrastructure"
+	"github.com/bloock/bloock-sdk-go/internal/record/entity"
+	"github.com/bloock/bloock-sdk-go/internal/record/entity/dto"
 )
 
 type RecordRepository struct {

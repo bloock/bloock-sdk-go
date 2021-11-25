@@ -1,21 +1,21 @@
 package internal
 
 import (
-	anchorEntity "github.com/enchainte/enchainte-sdk-go/internal/anchor/entity"
-	anchorRepository "github.com/enchainte/enchainte-sdk-go/internal/anchor/repository"
-	"github.com/enchainte/enchainte-sdk-go/internal/anchor/service"
-	configEntity "github.com/enchainte/enchainte-sdk-go/internal/config/entity"
-	configRepository "github.com/enchainte/enchainte-sdk-go/internal/config/repository"
-	configService "github.com/enchainte/enchainte-sdk-go/internal/config/service"
-	"github.com/enchainte/enchainte-sdk-go/internal/infrastructure"
-	"github.com/enchainte/enchainte-sdk-go/internal/infrastructure/blockchain"
-	"github.com/enchainte/enchainte-sdk-go/internal/infrastructure/http"
-	proofEntity "github.com/enchainte/enchainte-sdk-go/internal/proof/entity"
-	proofRepository "github.com/enchainte/enchainte-sdk-go/internal/proof/repository"
-	proofService "github.com/enchainte/enchainte-sdk-go/internal/proof/service"
-	"github.com/enchainte/enchainte-sdk-go/internal/record/entity"
-	recordRepository "github.com/enchainte/enchainte-sdk-go/internal/record/repository"
-	recordService "github.com/enchainte/enchainte-sdk-go/internal/record/service"
+	anchorEntity "github.com/bloock/bloock-sdk-go/internal/anchor/entity"
+	anchorRepository "github.com/bloock/bloock-sdk-go/internal/anchor/repository"
+	"github.com/bloock/bloock-sdk-go/internal/anchor/service"
+	configEntity "github.com/bloock/bloock-sdk-go/internal/config/entity"
+	configRepository "github.com/bloock/bloock-sdk-go/internal/config/repository"
+	configService "github.com/bloock/bloock-sdk-go/internal/config/service"
+	"github.com/bloock/bloock-sdk-go/internal/infrastructure"
+	"github.com/bloock/bloock-sdk-go/internal/infrastructure/blockchain"
+	"github.com/bloock/bloock-sdk-go/internal/infrastructure/http"
+	proofEntity "github.com/bloock/bloock-sdk-go/internal/proof/entity"
+	proofRepository "github.com/bloock/bloock-sdk-go/internal/proof/repository"
+	proofService "github.com/bloock/bloock-sdk-go/internal/proof/service"
+	"github.com/bloock/bloock-sdk-go/internal/record/entity"
+	recordRepository "github.com/bloock/bloock-sdk-go/internal/record/repository"
+	recordService "github.com/bloock/bloock-sdk-go/internal/record/service"
 )
 
 /*

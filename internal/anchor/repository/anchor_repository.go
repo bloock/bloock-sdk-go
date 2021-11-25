@@ -3,10 +3,10 @@ package repository
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/enchainte/enchainte-sdk-go/internal/anchor/entity"
-	"github.com/enchainte/enchainte-sdk-go/internal/anchor/entity/dto"
-	"github.com/enchainte/enchainte-sdk-go/internal/config/service"
-	"github.com/enchainte/enchainte-sdk-go/internal/infrastructure"
+	"github.com/bloock/bloock-sdk-go/internal/anchor/entity"
+	"github.com/bloock/bloock-sdk-go/internal/anchor/entity/dto"
+	"github.com/bloock/bloock-sdk-go/internal/config/service"
+	"github.com/bloock/bloock-sdk-go/internal/infrastructure"
 )
 
 type AnchorRepository struct {

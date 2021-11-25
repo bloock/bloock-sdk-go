@@ -1,11 +1,11 @@
 package acceptance
 
 import (
-	"github.com/enchainte/enchainte-sdk-go/internal"
-	exceptionEntity "github.com/enchainte/enchainte-sdk-go/internal/anchor/entity/exception"
-	configEntity "github.com/enchainte/enchainte-sdk-go/internal/config/entity"
-	"github.com/enchainte/enchainte-sdk-go/internal/record/entity"
-	"github.com/enchainte/enchainte-sdk-go/internal/record/entity/exception"
+	"github.com/bloock/bloock-sdk-go/internal"
+	exceptionEntity "github.com/bloock/bloock-sdk-go/internal/anchor/entity/exception"
+	configEntity "github.com/bloock/bloock-sdk-go/internal/config/entity"
+	"github.com/bloock/bloock-sdk-go/internal/record/entity"
+	"github.com/bloock/bloock-sdk-go/internal/record/entity/exception"
 	"github.com/stretchr/testify/assert"
 	"math"
 	"math/rand"

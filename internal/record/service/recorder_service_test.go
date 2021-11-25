@@ -1,10 +1,10 @@
 package service
 
 import (
-	"github.com/enchainte/enchainte-sdk-go/internal/record/entity"
-	"github.com/enchainte/enchainte-sdk-go/internal/record/entity/dto"
-	"github.com/enchainte/enchainte-sdk-go/internal/record/entity/exception"
-	"github.com/enchainte/enchainte-sdk-go/internal/record/mockrecord"
+	"github.com/bloock/bloock-sdk-go/internal/record/entity"
+	"github.com/bloock/bloock-sdk-go/internal/record/entity/dto"
+	"github.com/bloock/bloock-sdk-go/internal/record/entity/exception"
+	"github.com/bloock/bloock-sdk-go/internal/record/mockrecord"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
 	"testing"

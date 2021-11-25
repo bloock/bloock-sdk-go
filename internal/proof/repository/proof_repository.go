@@ -4,12 +4,12 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/enchainte/enchainte-sdk-go/internal/config/service"
-	"github.com/enchainte/enchainte-sdk-go/internal/infrastructure"
-	proofEntity "github.com/enchainte/enchainte-sdk-go/internal/proof/entity"
-	"github.com/enchainte/enchainte-sdk-go/internal/proof/entity/dto"
-	"github.com/enchainte/enchainte-sdk-go/internal/record/entity"
-	"github.com/enchainte/enchainte-sdk-go/internal/shared"
+	"github.com/bloock/bloock-sdk-go/internal/config/service"
+	"github.com/bloock/bloock-sdk-go/internal/infrastructure"
+	proofEntity "github.com/bloock/bloock-sdk-go/internal/proof/entity"
+	"github.com/bloock/bloock-sdk-go/internal/proof/entity/dto"
+	"github.com/bloock/bloock-sdk-go/internal/record/entity"
+	"github.com/bloock/bloock-sdk-go/internal/shared"
 )
 
 type ProofRepository struct {

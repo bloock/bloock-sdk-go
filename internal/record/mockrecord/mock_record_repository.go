@@ -7,8 +7,8 @@ package mockrecord
 import (
 	reflect "reflect"
 
-	entity "github.com/enchainte/enchainte-sdk-go/internal/record/entity"
-	dto "github.com/enchainte/enchainte-sdk-go/internal/record/entity/dto"
+	entity "github.com/bloock/bloock-sdk-go/internal/record/entity"
+	dto "github.com/bloock/bloock-sdk-go/internal/record/entity/dto"
 	gomock "github.com/golang/mock/gomock"
 )
 
