@@ -2,8 +2,6 @@ package main
 
 import (
 	"github.com/bloock/bloock-sdk-go"
-	anchorEntity "github.com/bloock/bloock-sdk-go/internal/anchor/entity"
-	configEntity "github.com/bloock/bloock-sdk-go/internal/config/entity"
 	"github.com/bloock/bloock-sdk-go/internal/record/entity"
 	"log"
 	"math"
@@ -78,7 +76,7 @@ func main() {
 	sdk := bloock.NewBloockClient(apiKey)
 
 	record := entity.FromString(randHex(64))
-	records := make([]entity.RecordEntity, 0)
+	records := make([]bloock.Record, 0)
 	records = append(records, record)
 
 	r, err := sdk.SendRecords(records)
@@ -91,7 +89,9 @@ func main() {
 		os.Exit(1)
 	}
 
-	_, err = sdk.WaitAnchor(r[0].Anchor, anchorEntity.AnchorParams{})
+	a := bloock.NewAnchorParams()
+	a.Timeout = 3000
+	_, err = sdk.WaitAnchor(r[0].Anchor, a)
 	if err != nil {
 		log.Println(err)
 	}
@@ -102,7 +102,10 @@ func main() {
 	if err != nil {
 		log.Println(err)
 	}
-	timestamp, err := sdk.VerifyProof(proof, configEntity.NetworkParams{Network: configEntity.BloockChain})
+
+	n := bloock.NewNetworkParams()
+	n.Network = bloock.BloockChain
+	timestamp, err := sdk.VerifyProof(proof, n)
 	if err != nil {
 		log.Println(err)
 	}
