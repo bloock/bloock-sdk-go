@@ -90,7 +90,7 @@ func main() {
 	}
 
 	a := bloock.NewAnchorParams()
-	a.Timeout = 3000
+	a.Timeout = 130000
 	_, err = sdk.WaitAnchor(r[0].Anchor, a)
 	if err != nil {
 		log.Println(err)
@@ -104,7 +104,8 @@ func main() {
 	}
 
 	n := bloock.NewNetworkParams()
-	n.Network = bloock.BloockChain
+	nn := bloock.ListOfNetworks()
+	n.Network = nn.BloockChain
 	timestamp, err := sdk.VerifyProof(proof, n)
 	if err != nil {
 		log.Println(err)

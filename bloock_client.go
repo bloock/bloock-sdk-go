@@ -75,8 +75,8 @@ Parameters:
 	{string} The API host to apply
 Returns:
 	{void}
- */
-func(b BloockClient) SetApiHost(host string) {
+*/
+func (b BloockClient) SetApiHost(host string) {
 	b.configService.SetApiHost(host)
 }
 
@@ -224,7 +224,7 @@ Parameters:
 	{interface{}} any type of data
 Returns:
 	{RecordEntity} RecordEntity object of the hashed input.
- */
+*/
 func NewRecordFromObject(data interface{}) entity.RecordEntity {
 	return entity.FromObject(data)
 }
@@ -249,7 +249,7 @@ Parameters:
 Returns:
 	{RecordEntity} RecordEntity object of the hashed input.
 	{error} any type of error when hashing or converting
- */
+*/
 func NewRecordFromHex(hex string) (entity.RecordEntity, error) {
 	return entity.FromHex(hex)
 }
@@ -261,7 +261,7 @@ Parameters:
 	{string} String object.
 Returns:
 	{RecordEntity} RecordEntity object of the hashed input.
- */
+*/
 func NewRecordFromString(string string) entity.RecordEntity {
 	return entity.FromString(string)
 }
@@ -273,7 +273,7 @@ Parameters:
 	{[]byte} Bytes object.
 Returns:
 	{RecordEntity} RecordEntity object of the hashed input.
- */
+*/
 func NewRecordFromUint8Array(array []byte) entity.RecordEntity {
 	return entity.FromUint8Array(array)
 }
