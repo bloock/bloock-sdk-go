@@ -27,7 +27,7 @@ There are several ways to generate a Hash:
 
 ```go
 import (
-    "github.com/bloock/bloock-sdk-go/internal/record/entity"
+    "github.com/bloock/bloock-sdk-go"
     "log"
 )
 
@@ -35,22 +35,22 @@ import (
 type Data struct {
     data string
 }
-record := entity.FromObject(Data{data: "Example Data"})
+record := bloock.NewRecordFromObject(Data{data: "Example Data"})
 
 // From a hash string (hex encoded 64-chars long string)
-record2 := entity.FromHash("5ac706bdef87529b22c08646b74cb98baf310a46bd21ee420814b04c71fa42b1")
+record2 := bloock.NewRecordFromHash("5ac706bdef87529b22c08646b74cb98baf310a46bd21ee420814b04c71fa42b1")
 
 // From a hex encoded string
-record3, err := entity.FromHex("123456789abcdefa")
+record3, err := bloock.NewRecordFromHex("123456789abcdefa")
 if err != nil {
     log.Println(err)
 }
 
 // From a string
-record4 := entity.FromString("Example Data")
+record4 := bloock.NewRecordFromString("Example Data")
 
 // From a Uint8Array with a lenght of 32
-record5 := entity.FromUint8Array([]byte{
+record5 := bloock.NewRecordFromUint8Array([]byte{
     1,
     1,
     1,
@@ -91,8 +91,7 @@ This example shows how to send data to Bloock
 
 ```go
 import (
-    "github.com/bloock/bloock-sdk-go/internal"
-    "github.com/bloock/bloock-sdk-go/internal/record/entity"
+    "github.com/bloock/bloock-sdk-go"
     "log"
     "os"
 )
@@ -100,9 +99,9 @@ import (
 
 apiKey := os.Getenv("API_KEY")
 
-client := internal.NewBloockClient(apiKey)
+client := bloock.NewBloockClient(apiKey)
 
-record := entity.FromString("Example Data 1")
+record := bloock.NewRecordFromString("Example Data 1")
 records := make([]entity.RecordEntity, 0)
 records = append(records, record)
 
@@ -119,8 +118,7 @@ This example shows how to get all the details and status of records:
 
 ```go
 import (
-    "github.com/bloock/bloock-sdk-go/internal"
-    "github.com/bloock/bloock-sdk-go/internal/record/entity"
+    "github.com/bloock/bloock-sdk-go"
     "log"
     "os"
 )
@@ -128,11 +126,11 @@ import (
 
 apiKey := os.Getenv("API_KEY")
 
-client := internal.NewBloockClient(apiKey)
+client := bloock.NewBloockClient(apiKey)
 
-record := entity.FromString("Example Data 1")
-record2 := entity.FromString("Example Data 2")
-record3 := entity.FromString("Example Data 3")
+record := bloock.NewRecordFromString("Example Data 1")
+record2 := bloock.NewRecordFromString("Example Data 2")
+record3 := bloock.NewRecordFromString("Example Data 3")
 records := make([]entity.RecordEntity, 0)
 records = append(records, record)
 records = append(records, record2)
@@ -151,8 +149,7 @@ This example shows how to wait for a record to be processed by Bloock after send
 
 ```go
 import (
-    "github.com/bloock/bloock-sdk-go/internal"
-    "github.com/bloock/bloock-sdk-go/internal/record/entity"
+    "github.com/bloock/bloock-sdk-go"
     "log"
     "os"
 )
@@ -160,9 +157,9 @@ import (
 
 apiKey := os.Getenv("API_KEY")
 
-client := internal.NewBloockClient(apiKey)
+client := bloock.NewBloockClient(apiKey)
 
-record := entity.FromString("Example Data 1")
+record := bloock.NewRecordFromString("Example Data 1")
 records := make([]entity.RecordEntity, 0)
 records = append(records, record)
 
@@ -185,9 +182,7 @@ This example shows how to get a proof for an array of records and validate it:
 
 ```go
 import (
-    "github.com/bloock/bloock-sdk-go/internal"
-    "github.com/bloock/bloock-sdk-go/internal/record/entity"
-    configEntity "github.com/bloock/bloock-sdk-go/internal/config/entity"
+    "github.com/bloock/bloock-sdk-go"
     "log"
     "os"
 )
@@ -195,11 +190,11 @@ import (
 
 apiKey := os.Getenv("API_KEY")
 
-client := internal.NewBloockClient(apiKey)
+client := bloock.NewBloockClient(apiKey)
 
-record := entity.FromString("Example Data 1")
-record2 := entity.FromString("Example Data 2")
-record3 := entity.FromString("Example Data 3")
+record := bloock.NewRecordFromString("Example Data 1")
+record2 := bloock.NewRecordFromString("Example Data 2")
+record3 := bloock.NewRecordFromString("Example Data 3")
 records := make([]entity.RecordEntity, 0)
 records = append(records, record)
 records = append(records, record2)
@@ -225,9 +220,7 @@ This snippet shows a complete data cycle including: write, wait for record confi
 
 ```go
 import (
-    "github.com/bloock/bloock-sdk-go/internal"
-    configEntity "github.com/bloock/bloock-sdk-go/internal/config/entity"
-    "github.com/bloock/bloock-sdk-go/internal/record/entity"
+    "github.com/bloock/bloock-sdk-go"
     "log"
     "math"
     "math/rand"
@@ -250,9 +243,9 @@ func randHex(length int) string {
 
 func main() {
     apiKey := os.Getenv("API_KEY")
-    sdk := internal.NewBloockClient(apiKey)
+    sdk := bloock.NewBloockClient(apiKey)
 
-    record := entity.FromString(randHex(64))
+    record := bloock.NewRecordFromString(randHex(64))
     records := make([]entity.RecordEntity, 0)
     records = append(records, record)
 
