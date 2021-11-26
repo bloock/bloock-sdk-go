@@ -96,13 +96,12 @@ import (
     "os"
 )
 
-
 apiKey := os.Getenv("API_KEY")
 
 client := bloock.NewBloockClient(apiKey)
 
 record := bloock.NewRecordFromString("Example Data 1")
-records := make([]entity.RecordEntity, 0)
+records := make([]bloock.Record, 0)
 records = append(records, record)
 
 r, err := client.SendRecords(records)
@@ -123,7 +122,6 @@ import (
     "os"
 )
 
-
 apiKey := os.Getenv("API_KEY")
 
 client := bloock.NewBloockClient(apiKey)
@@ -131,7 +129,7 @@ client := bloock.NewBloockClient(apiKey)
 record := bloock.NewRecordFromString("Example Data 1")
 record2 := bloock.NewRecordFromString("Example Data 2")
 record3 := bloock.NewRecordFromString("Example Data 3")
-records := make([]entity.RecordEntity, 0)
+records := make([]bloock.Record, 0)
 records = append(records, record)
 records = append(records, record2)
 records = append(records, record3)
@@ -154,13 +152,12 @@ import (
     "os"
 )
 
-
 apiKey := os.Getenv("API_KEY")
 
 client := bloock.NewBloockClient(apiKey)
 
 record := bloock.NewRecordFromString("Example Data 1")
-records := make([]entity.RecordEntity, 0)
+records := make([]bloock.Record, 0)
 records = append(records, record)
 
 r, err := client.SendRecords(records)
@@ -168,12 +165,20 @@ if err != nil {
     log.Println(err)
 }
 
-// You can specify the timeout by setting: anchorEntity.AnchorParams{Timeout: xxx}
-// Default: 120000
-_, err := client.WaitAnchor(r[0].Anchor, anchorEntity.AnchorParams{})
+_, err := client.WaitAnchor(r[0].Anchor, bloock.NewAnchorParams())
 if err != nil {
     log.Println(err)
 }
+```
+
+Snippet to set other timeout, by default it's set 120000.
+
+```go
+// By default --> timeout = 120000
+anchorParams := bloock.NewAnchorParams()
+anchorParams.Timeout = 3000
+_, err := client.WaitAnchor(r[0].Anchor, anchorParams)
+
 ```
 
 ### Get and validate records proof
@@ -187,7 +192,6 @@ import (
     "os"
 )
 
-
 apiKey := os.Getenv("API_KEY")
 
 client := bloock.NewBloockClient(apiKey)
@@ -195,7 +199,7 @@ client := bloock.NewBloockClient(apiKey)
 record := bloock.NewRecordFromString("Example Data 1")
 record2 := bloock.NewRecordFromString("Example Data 2")
 record3 := bloock.NewRecordFromString("Example Data 3")
-records := make([]entity.RecordEntity, 0)
+records := make([]bloock.Record, 0)
 records = append(records, record)
 records = append(records, record2)
 records = append(records, record3)
@@ -205,13 +209,21 @@ if err != nil {
     log.Println(err)
 }
 
-// You can specify the network by setting: configEntity.NetworkParams{Network: configEntity.EthereumRinkeby}
-// Default: EthereumMainnet
-timestamp, err := client.VerifyProof(p, configEntity.NetworkParams{})
+timestamp, err := client.VerifyProof(p, bloock.NewNetworkParams())
 if err != nil {
     log.Println(err)
 }
 log.Println(timestamp)
+```
+
+Snippet to set another Network, by default it's set Ethereum Mainnet.
+
+```go
+params := bloock.NewNetworkParams()
+list := bloock.ListOfNetworks()
+params.Network = list.EthereumRinkeby
+
+timestamp, err := sdk.VerifyProof(proof, params)
 ```
 
 ### Full example
@@ -246,7 +258,7 @@ func main() {
     sdk := bloock.NewBloockClient(apiKey)
 
     record := bloock.NewRecordFromString(randHex(64))
-    records := make([]entity.RecordEntity, 0)
+    records := make([]bloock.Record, 0)
     records = append(records, record)
 
     r, err := sdk.SendRecords(records)
@@ -260,7 +272,7 @@ func main() {
     }
 	
     // Default timeout: 120000
-    _, err = sdk.WaitAnchor(r[0].Anchor, anchorEntity.AnchorParams{})
+    _, err = sdk.WaitAnchor(r[0].Anchor, bloock.NewAnchorParams())
     if err != nil {
         log.Println(err)
     }
@@ -273,7 +285,7 @@ func main() {
     }
 	
     // Default: EthereumMainnet 
-    timestamp, err := sdk.VerifyProof(proof, configEntity.NetworkParams{})
+    timestamp, err := sdk.VerifyProof(proof, bloock.NewNetworkParams())
     if err != nil {
         log.Println(err)
     }
