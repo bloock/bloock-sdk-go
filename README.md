@@ -169,7 +169,9 @@ if err != nil {
     log.Println(err)
 }
 
-_, err := client.WaitAnchor(r[0].Anchor, 120000)
+// You can specify the timeout by setting: anchorEntity.AnchorParams{Timeout: xxx}
+// Default: 120000
+_, err := client.WaitAnchor(r[0].Anchor, anchorEntity.AnchorParams{})
 if err != nil {
     log.Println(err)
 }
@@ -206,7 +208,9 @@ if err != nil {
     log.Println(err)
 }
 
-timestamp, err := client.VerifyProof(p, configEntity.EthereumMainnet)
+// You can specify the network by setting: configEntity.NetworkParams{Network: configEntity.EthereumRinkeby}
+// Default: EthereumMainnet
+timestamp, err := client.VerifyProof(p, configEntity.NetworkParams{})
 if err != nil {
     log.Println(err)
 }
@@ -260,8 +264,8 @@ func main() {
         os.Exit(1)
     }
 	
-    // timeout = 120000
-    _, err = sdk.WaitAnchor(r[0].Anchor, 120000)
+    // Default timeout: 120000
+    _, err = sdk.WaitAnchor(r[0].Anchor, anchorEntity.AnchorParams{})
     if err != nil {
         log.Println(err)
     }
@@ -273,8 +277,8 @@ func main() {
         log.Println(err)
     }
 	
-    // configEntity.EthereumMainnet -> transact to Ethereum Mainnet
-    timestamp, err := sdk.VerifyProof(proof, configEntity.EthereumMainnet)
+    // Default: EthereumMainnet 
+    timestamp, err := sdk.VerifyProof(proof, configEntity.NetworkParams{})
     if err != nil {
         log.Println(err)
     }
