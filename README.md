@@ -41,16 +41,16 @@ record := entity.FromObject(Data{data: "Example Data"})
 record2 := entity.FromHash("5ac706bdef87529b22c08646b74cb98baf310a46bd21ee420814b04c71fa42b1")
 
 // From a hex encoded string
-record2, err := entity.FromHex("123456789abcdefa")
+record3, err := entity.FromHex("123456789abcdefa")
 if err != nil {
     log.Println(err)
 }
 
 // From a string
-record3 := entity.FromString("Example Data")
+record4 := entity.FromString("Example Data")
 
 // From a Uint8Array with a lenght of 32
-record4 := entity.FromUint8Array([]byte{
+record5 := entity.FromUint8Array([]byte{
     1,
     1,
     1,
@@ -130,13 +130,13 @@ apiKey := os.Getenv("API_KEY")
 
 client := internal.NewBloockClient(apiKey)
 
-r := entity.FromString("Example Data 1")
-r2 := entity.FromString("Example Data 2")
-r3 := entity.FromString("Example Data 3")
+record := entity.FromString("Example Data 1")
+record2 := entity.FromString("Example Data 2")
+record3 := entity.FromString("Example Data 3")
 records := make([]entity.RecordEntity, 0)
-records = append(records, r)
-records = append(records, r2)
-records = append(records, r3)
+records = append(records, record)
+records = append(records, record2)
+records = append(records, record3)
 
 r, err := client.GetRecords(records)
 if err != nil {
@@ -162,7 +162,9 @@ apiKey := os.Getenv("API_KEY")
 
 client := internal.NewBloockClient(apiKey)
 
-r := entity.FromString("Example Data 1")
+record := entity.FromString("Example Data 1")
+records := make([]entity.RecordEntity, 0)
+records = append(records, record)
 
 r, err := client.SendRecords(records)
 if err != nil {
@@ -195,13 +197,13 @@ apiKey := os.Getenv("API_KEY")
 
 client := internal.NewBloockClient(apiKey)
 
-r := entity.FromString("Example Data 1")
-r2 := entity.FromString("Example Data 2")
-r3 := entity.FromString("Example Data 3")
+record := entity.FromString("Example Data 1")
+record2 := entity.FromString("Example Data 2")
+record3 := entity.FromString("Example Data 3")
 records := make([]entity.RecordEntity, 0)
-records = append(records, r)
-records = append(records, r2)
-records = append(records, r3)
+records = append(records, record)
+records = append(records, record2)
+records = append(records, record3)
 
 p, err := client.GetProof(records)
 if err != nil {
