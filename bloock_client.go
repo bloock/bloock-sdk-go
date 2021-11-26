@@ -1,4 +1,4 @@
-package internal
+package bloock
 
 import (
 	anchorEntity "github.com/bloock/bloock-sdk-go/internal/anchor/entity"
@@ -215,4 +215,65 @@ Errors:
 */
 func (b BloockClient) VerifyRecords(records []entity.RecordEntity, params configEntity.NetworkParams) (int, error) {
 	return b.proofService.VerifyRecords(records, params)
+}
+
+/*
+NewRecordFromObject
+Given an JSON object, returns a Record with its value hashed.
+Parameters:
+	{interface{}} any type of data
+Returns:
+	{RecordEntity} RecordEntity object of the hashed input.
+ */
+func NewRecordFromObject(data interface{}) entity.RecordEntity {
+	return entity.FromObject(data)
+}
+
+/*
+NewRecordFromHash
+It converts string to a Record hash.
+Parameters:
+	{string} Hexadecimal string without prefix and length 64.
+Returns:
+	{RecordEntity} RecordEntity object of the hashed input.
+*/
+func NewRecordFromHash(hash string) entity.RecordEntity {
+	return entity.FromHash(hash)
+}
+
+/*
+NewRecordFromHex
+Given a hexadecimal string (with no 0x prefix) returns a Record with its value hashed.
+Parameters:
+	{string} Hexadecimal string without prefix.
+Returns:
+	{RecordEntity} RecordEntity object of the hashed input.
+	{error} any type of error when hashing or converting
+ */
+func NewRecordFromHex(hex string) (entity.RecordEntity, error) {
+	return entity.FromHex(hex)
+}
+
+/*
+NewRecordFromString
+Given a string returns a Record with its value hashed.
+Parameters:
+	{string} String object.
+Returns:
+	{RecordEntity} RecordEntity object of the hashed input.
+ */
+func NewRecordFromString(string string) entity.RecordEntity {
+	return entity.FromString(string)
+}
+
+/*
+NewRecordFromUint8Array
+Given a bytes object returns a Record with its value hashed.
+Parameters:
+	{[]byte} Bytes object.
+Returns:
+	{RecordEntity} RecordEntity object of the hashed input.
+ */
+func NewRecordFromUint8Array(array []byte) entity.RecordEntity {
+	return entity.FromUint8Array(array)
 }

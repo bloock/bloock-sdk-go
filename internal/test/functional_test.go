@@ -1,7 +1,7 @@
 package test
 
 import (
-	"github.com/bloock/bloock-sdk-go/internal"
+	"github.com/bloock/bloock-sdk-go"
 	anchorEntity "github.com/bloock/bloock-sdk-go/internal/anchor/entity"
 	configEntity "github.com/bloock/bloock-sdk-go/internal/config/entity"
 	proofEntity "github.com/bloock/bloock-sdk-go/internal/proof/entity"
@@ -11,10 +11,10 @@ import (
 	"testing"
 )
 
-func GetSdk() internal.BloockClient {
+func GetSdk() bloock.BloockClient {
 	apiKey := os.Getenv("API_KEY")
 	apiHost := os.Getenv("API_HOST")
-	client := internal.NewBloockClient(apiKey)
+	client := bloock.NewBloockClient(apiKey)
 	client.SetApiHost(apiHost)
 	return client
 }

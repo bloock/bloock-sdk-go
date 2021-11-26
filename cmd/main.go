@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/bloock/bloock-sdk-go/internal"
+	"github.com/bloock/bloock-sdk-go"
 	anchorEntity "github.com/bloock/bloock-sdk-go/internal/anchor/entity"
 	configEntity "github.com/bloock/bloock-sdk-go/internal/config/entity"
 	"github.com/bloock/bloock-sdk-go/internal/record/entity"
@@ -14,21 +14,21 @@ import (
 
 func main() {
 
-	/*type Data struct {
+	type Data struct {
 		data string
 	}
-	re := entity.FromObject(Data{data: "Example Data"})
+	re := bloock.NewRecordFromObject(Data{data: "Example Data"})
 	log.Println(re)
-	re1 := entity.FromHash("5ac706bdef87529b22c08646b74cb98baf310a46bd21ee420814b04c71fa42b1")
+	re1 := bloock.NewRecordFromHash("5ac706bdef87529b22c08646b74cb98baf310a46bd21ee420814b04c71fa42b1")
 	log.Println(re1)
-	re2, err := entity.FromHex("123456789abcdefa")
+	re2, err := bloock.NewRecordFromHex("123456789abcdefa")
 	if err != nil {
 		log.Println(err)
 	}
 	log.Println(re2)
-	re3 := entity.FromString("Example Data")
+	re3 := bloock.NewRecordFromString("Example Data")
 	log.Println(re3)
-	re4 := entity.FromUint8Array([]byte{
+	re4 := bloock.NewRecordFromUint8Array([]byte{
 		1,
 		1,
 		1,
@@ -64,7 +64,7 @@ func main() {
 	log.Println(re4)
 
 
-	apiKey := "test_xculO0olb1Itp-tFMNCjpsLgx4Bik3E7Wd-iUfdL1c2lsgyKvhAZQnd7U8vlPnJX"
+	/*apiKey := "test_xculO0olb1Itp-tFMNCjpsLgx4Bik3E7Wd-iUfdL1c2lsgyKvhAZQnd7U8vlPnJX"
 
 	sdk := internal.NewBloockClient(apiKey)
 
@@ -72,30 +72,10 @@ func main() {
 	records = append(records, re4)
 	records = append(records, re3)*/
 
-	/*se, err := sdk.SendRecords(records)
-	if err != nil {
-		log.Println(err)
-	}*/
 
-	/*r, err := sdk.WaitAnchor(se[3].Anchor, 60000)
-	if err != nil {
-		log.Println(err)
-	}*/
-
-	/*r, err := sdk.GetProof(records)
-	if err != nil {
-		log.Println(err)
-	}
-	log.Println(r)
-
-	i, err := sdk.VerifyRecords(records, configEntity.BloockChain)
-	if err != nil {
-		log.Println(err)
-	}
-	log.Println(i)*/
 
 	apiKey := os.Getenv("API_KEY")
-	sdk := internal.NewBloockClient(apiKey)
+	sdk := bloock.NewBloockClient(apiKey)
 
 	record := entity.FromString(randHex(64))
 	records := make([]entity.RecordEntity, 0)

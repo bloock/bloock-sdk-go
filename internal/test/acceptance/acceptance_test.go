@@ -1,7 +1,7 @@
 package acceptance
 
 import (
-	"github.com/bloock/bloock-sdk-go/internal"
+	"github.com/bloock/bloock-sdk-go"
 	anchorEntity "github.com/bloock/bloock-sdk-go/internal/anchor/entity"
 	exceptionEntity "github.com/bloock/bloock-sdk-go/internal/anchor/entity/exception"
 	configEntity "github.com/bloock/bloock-sdk-go/internal/config/entity"
@@ -15,10 +15,10 @@ import (
 	"testing"
 )
 
-func GetSdk() internal.BloockClient {
+func GetSdk() bloock.BloockClient {
 	apiKey := os.Getenv("API_KEY")
 	apiHost := os.Getenv("API_HOST")
-	client := internal.NewBloockClient(apiKey)
+	client := bloock.NewBloockClient(apiKey)
 	client.SetApiHost(apiHost)
 	return client
 }
