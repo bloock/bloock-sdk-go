@@ -149,7 +149,7 @@ WaitAnchor
 Waits until the anchor specified is confirmed in Bloock.
 Parameters:
 	{int} anchor Id of the Anchor to wait for.
-	{int} [timeout=120000] Timeout time in miliseconds. After exceeding this time returns an exception.
+	{AnchorParams} Timeout time in miliseconds. After exceeding this time returns an exception. Default = 120000
 Returns:
 	{Anchor} Anchor object matching the id.
 	{error} Error if something went wrong.
@@ -159,8 +159,8 @@ Errors:
 	{HttpRequestException} Error return by Bloock's API.
 	{error} Native Golang error
 */
-func (b BloockClient) WaitAnchor(anchor int, timeout int) (anchorEntity.Anchor, error) {
-	return b.anchorService.WaitAnchor(anchor, timeout)
+func (b BloockClient) WaitAnchor(anchor int, params anchorEntity.AnchorParams) (anchorEntity.Anchor, error) {
+	return b.anchorService.WaitAnchor(anchor, params)
 }
 
 /*
@@ -186,7 +186,7 @@ VerifyProof
 Verifies if the specified integrity Proof is valid and checks if it's currently included in the blockchain.
 Parameters:
 	{Proof} Proof to validate.
-	{Network} blockchain network where the proof will be validated
+	{NetworkParams} blockchain network where the proof will be validated. Default: EthereumMainnet
 Returns:
 	{int} A number representing the timestamp in milliseconds when the anchor was registered in Blockchain
 	{error} Error if something went wrong.
@@ -194,8 +194,8 @@ Errors:
 	{Web3Exception} Error connecting to blockchain.
 	{error} Native Golang error
 */
-func (b BloockClient) VerifyProof(proof proofEntity.Proof, network string) (int, error) {
-	return b.proofService.VerifyProof(proof, network)
+func (b BloockClient) VerifyProof(proof proofEntity.Proof, params configEntity.NetworkParams) (int, error) {
+	return b.proofService.VerifyProof(proof, params)
 }
 
 /*
@@ -203,7 +203,7 @@ VerifyRecords
 It retrieves a proof for the specified list of Anchor using getProof and verifies it using verifyProof.
 Parameters:
 	{[]Record} list of records to validate
-	{Network} blockchain network where the records will be validated
+	{NetworkParams} blockchain network where the records will be validated. Default: EthereumMainnet
 Returns:
 	{int} A number representing the timestamp in milliseconds when the anchor was registered in Blockchain
 	{error} Error if something went wrong.
@@ -213,6 +213,6 @@ Errors:
 	{Web3Exception} Error connecting to blockchain.
 	{error} Native Golang error
 */
-func (b BloockClient) VerifyRecords(records []entity.RecordEntity, network string) (int, error) {
-	return b.proofService.VerifyRecords(records, network)
+func (b BloockClient) VerifyRecords(records []entity.RecordEntity, params configEntity.NetworkParams) (int, error) {
+	return b.proofService.VerifyRecords(records, params)
 }

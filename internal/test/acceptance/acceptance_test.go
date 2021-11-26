@@ -2,6 +2,7 @@ package acceptance
 
 import (
 	"github.com/bloock/bloock-sdk-go/internal"
+	anchorEntity "github.com/bloock/bloock-sdk-go/internal/anchor/entity"
 	exceptionEntity "github.com/bloock/bloock-sdk-go/internal/anchor/entity/exception"
 	configEntity "github.com/bloock/bloock-sdk-go/internal/config/entity"
 	"github.com/bloock/bloock-sdk-go/internal/record/entity"
@@ -33,12 +34,12 @@ func TestAcceptance(t *testing.T) {
 		assert.Nil(t, err)
 		assert.NotEqual(t, entity.RecordReceipt{}, rr[0])
 
-		sdk.WaitAnchor(rr[0].Anchor, 120000)
+		sdk.WaitAnchor(rr[0].Anchor, anchorEntity.AnchorParams{})
 
 		// Retrieving record proof
 		proof, err := sdk.GetProof(records)
 		assert.Nil(t, err)
-		timestamp, err := sdk.VerifyProof(proof, configEntity.BloockChain)
+		timestamp, err := sdk.VerifyProof(proof, configEntity.NetworkParams{Network: configEntity.BloockChain})
 		assert.Greater(t, timestamp, 5000)
 	})
 
@@ -125,7 +126,7 @@ func TestAcceptance(t *testing.T) {
 	})
 
 	t.Run("Test wait anchor non existing anchor", func(t *testing.T) {
-		_, err := sdk.WaitAnchor(666666666666666666, 3000)
+		_, err := sdk.WaitAnchor(666666666666666666, anchorEntity.AnchorParams{Timeout: 3000})
 		assert.NotNil(t, err)
 		assert.IsType(t, exceptionEntity.WaitAnchorTimeoutException{}, err)
 		assert.Equal(t, "Timeout exceeded while waiting for anchor", err.Error())
@@ -180,7 +181,7 @@ func TestAcceptance(t *testing.T) {
 		record := entity.FromHash("e016214a5c4abb88b8b614a916b1a6f075dfcf6fbc16c1e9d6e8ebcec81994aG")
 		records := []entity.RecordEntity{record}
 
-		_, err := sdk.VerifyRecords(records, configEntity.BloockChain)
+		_, err := sdk.VerifyRecords(records, configEntity.NetworkParams{Network: configEntity.BloockChain})
 		assert.NotNil(t, err)
 		assert.IsType(t, exception.InvalidRecordException{}, err)
 		assert.Equal(t, "Record not valid", err.Error())
@@ -192,7 +193,7 @@ func TestAcceptance(t *testing.T) {
 
 		records := []entity.RecordEntity{record1, record2}
 
-		_, err := sdk.VerifyRecords(records, configEntity.BloockChain)
+		_, err := sdk.VerifyRecords(records, configEntity.NetworkParams{Network: configEntity.BloockChain})
 		assert.NotNil(t, err)
 		assert.IsType(t, exception.InvalidRecordException{}, err)
 		assert.Equal(t, "Record not valid", err.Error())
@@ -204,7 +205,7 @@ func TestAcceptance(t *testing.T) {
 
 		records := []entity.RecordEntity{record1, record2}
 
-		_, err := sdk.VerifyRecords(records, configEntity.BloockChain)
+		_, err := sdk.VerifyRecords(records, configEntity.NetworkParams{Network: configEntity.BloockChain})
 		assert.NotNil(t, err)
 		assert.IsType(t, exception.InvalidRecordException{}, err)
 		assert.Equal(t, "Record not valid", err.Error())
@@ -216,7 +217,7 @@ func TestAcceptance(t *testing.T) {
 
 		records := []entity.RecordEntity{record}
 
-		_, err := sdk.VerifyRecords(records, configEntity.BloockChain)
+		_, err := sdk.VerifyRecords(records, configEntity.NetworkParams{Network: configEntity.BloockChain})
 		assert.NotNil(t, err)
 		assert.Equal(t, "couldn't get proof for specified records", err.Error())
 	})

@@ -50,7 +50,7 @@ func TestFunctionalWaitAnchor(t *testing.T) {
 	assert.NotNil(t, r)
 	assert.NotEqual(t, entity.RecordReceipt{}, r[0])
 
-	a, err := sdk.WaitAnchor(r[0].Anchor, 120000)
+	a, err := sdk.WaitAnchor(r[0].Anchor, anchorEntity.AnchorParams{})
 	assert.Nil(t, err)
 	assert.IsType(t, anchorEntity.Anchor{}, a)
 	assert.Greater(t, a.ID(), 0)
@@ -74,7 +74,7 @@ func TestFunctionalFetchRecords(t *testing.T) {
 	assert.NotNil(t, r)
 	assert.NotEqual(t, entity.RecordReceipt{}, r[0])
 
-	sdk.WaitAnchor(r[0].Anchor, 120000)
+	sdk.WaitAnchor(r[0].Anchor, anchorEntity.AnchorParams{})
 
 	rr, err := sdk.GetRecords(records)
 	assert.Nil(t, err)
@@ -112,7 +112,7 @@ func TestFunctionalVerifyProof(t *testing.T) {
 	assert.NotNil(t, p)
 	assert.NotEqual(t, proofEntity.Proof{}, p)
 
-	timestamp, err := sdk.VerifyProof(p, configEntity.BloockChain)
+	timestamp, err := sdk.VerifyProof(p, configEntity.NetworkParams{Network: configEntity.BloockChain})
 	assert.Nil(t, err)
 	assert.Greater(t, timestamp, 0)
 }

@@ -33,14 +33,18 @@ func (a AnchorService) GetAnchor(anchorId int) (entity.Anchor, error) {
 	return anchor, nil
 }
 
-func (a AnchorService) WaitAnchor(anchorId int, limit int) (entity.Anchor, error) {
+func (a AnchorService) WaitAnchor(anchorId int, params entity.AnchorParams) (entity.Anchor, error) {
+	if params.Timeout == 0 {
+		params.Timeout = 120000
+	}
+
 	waitDefault := a.configService.GetConfiguration().WaitMessageIntervalDefault
 	waitFactor := a.configService.GetConfiguration().WaitMessageIntervalFactor
 
 	var attempts = 0
 	var start = time.Now()
 	var nextTry = start.Add(time.Millisecond * time.Duration(waitDefault))
-	var timeout = start.Add(time.Millisecond * time.Duration(limit))
+	var timeout = start.Add(time.Millisecond * time.Duration(params.Timeout))
 
 	for true {
 		anchor, err := a.anchorRepository.GetAnchor(anchorId)

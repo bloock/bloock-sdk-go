@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/bloock/bloock-sdk-go/internal"
+	anchorEntity "github.com/bloock/bloock-sdk-go/internal/anchor/entity"
 	configEntity "github.com/bloock/bloock-sdk-go/internal/config/entity"
 	"github.com/bloock/bloock-sdk-go/internal/record/entity"
 	"log"
@@ -110,7 +111,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	_, err = sdk.WaitAnchor(r[0].Anchor, 120000)
+	_, err = sdk.WaitAnchor(r[0].Anchor, anchorEntity.AnchorParams{})
 	if err != nil {
 		log.Println(err)
 	}
@@ -121,7 +122,7 @@ func main() {
 	if err != nil {
 		log.Println(err)
 	}
-	timestamp, err := sdk.VerifyProof(proof, configEntity.BloockChain)
+	timestamp, err := sdk.VerifyProof(proof, configEntity.NetworkParams{Network: configEntity.BloockChain})
 	if err != nil {
 		log.Println(err)
 	}

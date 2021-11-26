@@ -65,7 +65,7 @@ func TestWaitAnchorService(t *testing.T) {
 
 		ar.EXPECT().GetAnchor(gomock.Any()).DoAndReturn(getAnchorSideEffect).Times(maxCount + 1)
 
-		actual, err := as.WaitAnchor(1, 5000)
+		actual, err := as.WaitAnchor(1, entity.AnchorParams{Timeout: 5000})
 
 		assert.Nil(t, err)
 		assert.IsType(t, entity.Anchor{}, actual)
@@ -85,7 +85,7 @@ func TestWaitAnchorService(t *testing.T) {
 
 		ar.EXPECT().GetAnchor(gomock.Any()).DoAndReturn(getAnchorSideEffect).Times(maxCount + 1)
 
-		actual, err := as.WaitAnchor(1, 5000)
+		actual, err := as.WaitAnchor(1, entity.AnchorParams{Timeout: 5000})
 
 		assert.Nil(t, err)
 		assert.IsType(t, entity.Anchor{}, actual)
@@ -105,7 +105,7 @@ func TestWaitAnchorService(t *testing.T) {
 
 		ar.EXPECT().GetAnchor(gomock.Any()).DoAndReturn(getAnchorSideEffect)
 
-		_, err := as.WaitAnchor(1, 1)
+		_, err := as.WaitAnchor(1, entity.AnchorParams{Timeout: 1})
 
 		assert.Equal(t, exception.NewWaitAnchorTimeoutException().Error(), err.Error())
 	})
