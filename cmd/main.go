@@ -64,7 +64,7 @@ func main() {
 
 	/*apiKey := "test_xculO0olb1Itp-tFMNCjpsLgx4Bik3E7Wd-iUfdL1c2lsgyKvhAZQnd7U8vlPnJX"
 
-	sdk := internal.NewBloockClient(apiKey)
+	client := internal.NewBloockClient(apiKey)
 
 	records := make([]entity.RecordEntity, 0)
 	records = append(records, re4)
@@ -73,13 +73,13 @@ func main() {
 
 
 	apiKey := os.Getenv("API_KEY")
-	sdk := bloock.NewBloockClient(apiKey)
+	client := bloock.NewBloockClient(apiKey)
 
 	record := entity.FromString(randHex(64))
 	records := make([]bloock.Record, 0)
 	records = append(records, record)
 
-	r, err := sdk.SendRecords(records)
+	r, err := client.SendRecords(records)
 	if err != nil {
 		log.Println(err)
 	}
@@ -91,14 +91,14 @@ func main() {
 
 	a := bloock.NewAnchorParams()
 	a.Timeout = 130000
-	_, err = sdk.WaitAnchor(r[0].Anchor, a)
+	_, err = client.WaitAnchor(r[0].Anchor, a)
 	if err != nil {
 		log.Println(err)
 	}
 	log.Println("Record reached Blockchain!")
 
 	// Retrieving record proof
-	proof, err := sdk.GetProof(records)
+	proof, err := client.GetProof(records)
 	if err != nil {
 		log.Println(err)
 	}
@@ -106,7 +106,7 @@ func main() {
 	n := bloock.NewNetworkParams()
 	nn := bloock.ListOfNetworks()
 	n.Network = nn.BloockChain
-	timestamp, err := sdk.VerifyProof(proof, n)
+	timestamp, err := client.VerifyProof(proof, n)
 	if err != nil {
 		log.Println(err)
 	}
@@ -116,6 +116,7 @@ func main() {
 	} else {
 		log.Println("Record is invalid")
 	}
+
 }
 
 func randHex(length int) string {
