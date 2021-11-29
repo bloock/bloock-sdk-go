@@ -1,8 +1,8 @@
 package hashing
 
 import (
-	"github.com/enchainte/enchainte-sdk-go/internal/infrastructure"
-	"github.com/enchainte/enchainte-sdk-go/internal/shared"
+	"github.com/bloock/bloock-sdk-go/internal/infrastructure"
+	"github.com/bloock/bloock-sdk-go/internal/shared"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
@@ -32,6 +32,5 @@ func TestGenerateHash(t *testing.T) {
 		result := hashingAlgorithm.GenerateHash(dataArray)
 		assert.Equal(t, "d5f4f7e1d989848480236fb0a5f808d5877abf778364ae50845234dd6c1e80fc", result)
 	})
-
 
 }

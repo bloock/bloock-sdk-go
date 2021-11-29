@@ -1,11 +1,11 @@
 package service
 
 import (
-	"github.com/enchainte/enchainte-sdk-go/internal/anchor/entity"
-	"github.com/enchainte/enchainte-sdk-go/internal/anchor/entity/exception"
-	"github.com/enchainte/enchainte-sdk-go/internal/anchor/mockanchor"
-	configEntity "github.com/enchainte/enchainte-sdk-go/internal/config/entity"
-	"github.com/enchainte/enchainte-sdk-go/internal/config/mockconfig"
+	"github.com/bloock/bloock-sdk-go/internal/anchor/entity"
+	"github.com/bloock/bloock-sdk-go/internal/anchor/entity/exception"
+	"github.com/bloock/bloock-sdk-go/internal/anchor/mockanchor"
+	configEntity "github.com/bloock/bloock-sdk-go/internal/config/entity"
+	"github.com/bloock/bloock-sdk-go/internal/config/mockconfig"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
 	"testing"
@@ -65,7 +65,7 @@ func TestWaitAnchorService(t *testing.T) {
 
 		ar.EXPECT().GetAnchor(gomock.Any()).DoAndReturn(getAnchorSideEffect).Times(maxCount + 1)
 
-		actual, err := as.WaitAnchor(1, 5000)
+		actual, err := as.WaitAnchor(1, entity.AnchorParams{Timeout: 5000})
 
 		assert.Nil(t, err)
 		assert.IsType(t, entity.Anchor{}, actual)
@@ -85,7 +85,7 @@ func TestWaitAnchorService(t *testing.T) {
 
 		ar.EXPECT().GetAnchor(gomock.Any()).DoAndReturn(getAnchorSideEffect).Times(maxCount + 1)
 
-		actual, err := as.WaitAnchor(1, 5000)
+		actual, err := as.WaitAnchor(1, entity.AnchorParams{Timeout: 5000})
 
 		assert.Nil(t, err)
 		assert.IsType(t, entity.Anchor{}, actual)
@@ -103,9 +103,9 @@ func TestWaitAnchorService(t *testing.T) {
 		conf := configEntity.NewConfiguration("api", 0, 10)
 		cs.EXPECT().GetConfiguration().Return(conf).Times(2)
 
-		ar.EXPECT().GetAnchor(gomock.Any()).DoAndReturn(getAnchorSideEffect).Times(maxCount)
+		ar.EXPECT().GetAnchor(gomock.Any()).DoAndReturn(getAnchorSideEffect)
 
-		_, err := as.WaitAnchor(1, 1)
+		_, err := as.WaitAnchor(1, entity.AnchorParams{Timeout: 1})
 
 		assert.Equal(t, exception.NewWaitAnchorTimeoutException().Error(), err.Error())
 	})

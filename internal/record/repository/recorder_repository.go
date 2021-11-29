@@ -1,8 +1,8 @@
 package repository
 
 import (
-	"github.com/enchainte/enchainte-sdk-go/internal/record/entity"
-	"github.com/enchainte/enchainte-sdk-go/internal/record/entity/dto"
+	"github.com/bloock/bloock-sdk-go/internal/record/entity"
+	"github.com/bloock/bloock-sdk-go/internal/record/entity/dto"
 )
 
 //go:generate mockgen -source=internal/record/repository/recorder_repository.go -destination internal/record/mockrecord/mock_record_repository.go -package=mockrecord

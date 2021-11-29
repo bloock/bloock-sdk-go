@@ -1,8 +1,8 @@
 package service
 
 import (
-	"github.com/enchainte/enchainte-sdk-go/internal/config/entity"
-	"github.com/enchainte/enchainte-sdk-go/internal/config/repository"
+	"github.com/bloock/bloock-sdk-go/internal/config/entity"
+	"github.com/bloock/bloock-sdk-go/internal/config/repository"
 )
 
 type ConfigService struct {

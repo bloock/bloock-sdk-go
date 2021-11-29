@@ -1,7 +1,7 @@
 package repository
 
 import (
-	configEntity "github.com/enchainte/enchainte-sdk-go/internal/config/entity"
+	configEntity "github.com/bloock/bloock-sdk-go/internal/config/entity"
 )
 
 type ConfigData struct {

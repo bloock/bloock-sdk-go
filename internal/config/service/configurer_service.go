@@ -1,7 +1,7 @@
 package service
 
 import (
-	"github.com/enchainte/enchainte-sdk-go/internal/config/entity"
+	"github.com/bloock/bloock-sdk-go/internal/config/entity"
 )
 
 //go:generate mockgen -source=internal/config/service/configurer_service.go -destination internal/config/mockconfig/mocks_config_service.go -package=mockconfig

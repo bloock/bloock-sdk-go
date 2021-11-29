@@ -3,9 +3,9 @@ package blockchain
 import (
 	"errors"
 	"fmt"
-	"github.com/enchainte/enchainte-sdk-go/internal/config/service"
-	"github.com/enchainte/enchainte-sdk-go/internal/infrastructure/blockchain/contracts"
-	"github.com/enchainte/enchainte-sdk-go/internal/shared"
+	"github.com/bloock/bloock-sdk-go/internal/config/service"
+	"github.com/bloock/bloock-sdk-go/internal/infrastructure/blockchain/contracts"
+	"github.com/bloock/bloock-sdk-go/internal/shared"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/ethclient"
 )
@@ -20,7 +20,7 @@ func NewWeb3(config service.ConfigurerService) Web3Client {
 	}
 }
 
-func(w Web3Client) ValidateRoot(network string, root string) (int64, error) {
+func (w Web3Client) ValidateRoot(network string, root string) (int64, error) {
 	config := w.configService.GetNetworkConfiguration(network)
 
 	client, err := ethclient.Dial(config.HttpProvider)
@@ -48,5 +48,3 @@ func(w Web3Client) ValidateRoot(network string, root string) (int64, error) {
 
 	return timestamp.Int64(), nil
 }
-
-

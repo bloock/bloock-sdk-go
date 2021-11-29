@@ -14,7 +14,7 @@ func BytesToHex(array []byte) string {
 func HexToBytes(data string) ([]byte, error) {
 	if !IsHex(data) {
 		return []byte{}, errors.New("parameter is not hexadecimal")
-	} else if len(data)%2 == 1 {
+	} else if len(data) % 2 == 1 {
 		return []byte{}, errors.New("parameter is missing last character to be represented in bytes")
 	}
 	bytes, err := hex.DecodeString(data)

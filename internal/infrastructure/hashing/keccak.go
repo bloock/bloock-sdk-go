@@ -1,8 +1,8 @@
 package hashing
 
 import (
-	"github.com/enchainte/enchainte-sdk-go/internal/infrastructure"
-	"github.com/enchainte/enchainte-sdk-go/internal/shared"
+	"github.com/bloock/bloock-sdk-go/internal/infrastructure"
+	"github.com/bloock/bloock-sdk-go/internal/shared"
 	"github.com/ethereum/go-ethereum/crypto"
 )
 

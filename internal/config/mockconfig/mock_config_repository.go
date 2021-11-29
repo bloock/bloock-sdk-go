@@ -7,7 +7,7 @@ package mockconfig
 import (
 	reflect "reflect"
 
-	entity "github.com/enchainte/enchainte-sdk-go/internal/config/entity"
+	entity "github.com/bloock/bloock-sdk-go/internal/config/entity"
 	gomock "github.com/golang/mock/gomock"
 )
 

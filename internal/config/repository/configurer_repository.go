@@ -1,7 +1,7 @@
 package repository
 
 import (
-	"github.com/enchainte/enchainte-sdk-go/internal/config/entity"
+	"github.com/bloock/bloock-sdk-go/internal/config/entity"
 )
 
 //go:generate mockgen -source=internal/config/repository/configurer_repository.go -destination internal/config/mockconfig/mock_config_repository.go -package=mockconfig

@@ -3,11 +3,10 @@ package repository
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/enchainte/enchainte-sdk-go/internal/config/service"
-	"github.com/enchainte/enchainte-sdk-go/internal/infrastructure"
-	"github.com/enchainte/enchainte-sdk-go/internal/record/entity"
-	"github.com/enchainte/enchainte-sdk-go/internal/record/entity/dto"
-	"log"
+	"github.com/bloock/bloock-sdk-go/internal/config/service"
+	"github.com/bloock/bloock-sdk-go/internal/infrastructure"
+	"github.com/bloock/bloock-sdk-go/internal/record/entity"
+	"github.com/bloock/bloock-sdk-go/internal/record/entity/dto"
 )
 
 type RecordRepository struct {
@@ -27,7 +26,6 @@ func (m RecordRepository) SendRecords(records []entity.RecordEntity) (dto.Record
 	recordArray := entity.MapHashToStringArray(records)
 	body := dto.NewRecordWriteRequest(recordArray)
 	resp, err := m.httpClient.Post(url, body, nil)
-	log.Println(resp, err)
 	if err != nil {
 		return dto.RecordWriteResponse{}, err
 	}
