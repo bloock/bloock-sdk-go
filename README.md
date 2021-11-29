@@ -240,24 +240,22 @@ import (
     "strconv"
 )
 
-// Helper function to get a random hex string
-func randHex(length int) string {
-    maxlength := 8
-    min := math.Pow(16, math.Min(float64(length), float64(maxlength))-1)
-    max := math.Pow(16, math.Min(float64(length), float64(maxlength))) - 1
-    n := int((rand.Float64() * (max - min + 1)) + min)
-    r := strconv.Itoa(n)
-    for len(r) < length {
-        r += randHex(length - maxlength)
+// Helper function to get a random string
+func randomString(n int) string {
+    var letters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789")
+
+    s := make([]rune, n)
+    for i := range s {
+        s[i] = letters[rand.Intn(len(letters))]
     }
-    return r
+    return string(s)
 }
 
 func main() {
     apiKey := os.Getenv("API_KEY")
     sdk := bloock.NewBloockClient(apiKey)
 
-    record := bloock.NewRecordFromString(randHex(64))
+    record := bloock.NewRecordFromString(randomString(64))
     records := make([]bloock.Record, 0)
     records = append(records, record)
 
@@ -266,8 +264,8 @@ func main() {
         log.Println(err)
     }
     log.Println("Write record - Successful!")
-
-	if r[0].Record == "" && r[0].Status == "" {
+	
+    if r[0].Record == "" && r[0].Status == "" {
         os.Exit(1)
     }
 	
@@ -296,7 +294,6 @@ func main() {
         log.Println("Record is invalid")
     }
 }
-
 ```
 
 
