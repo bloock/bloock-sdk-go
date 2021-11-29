@@ -7,7 +7,7 @@ package mockanchor
 import (
 	reflect "reflect"
 
-	entity "github.com/enchainte/enchainte-sdk-go/internal/anchor/entity"
+	entity "github.com/bloock/bloock-sdk-go/internal/anchor/entity"
 	gomock "github.com/golang/mock/gomock"
 )
 

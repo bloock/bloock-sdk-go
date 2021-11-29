@@ -25,7 +25,11 @@ In order to interact with the SDK, the data should be processed through the Hash
 
 There are several ways to generate a Hash:
 
-```golang
+```go
+anchor, err := client.GetAnchor(1)
+	if err != nil {
+		log.Println(err)
+	}
 ```
 
 ### Send records

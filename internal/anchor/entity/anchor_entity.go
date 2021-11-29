@@ -8,6 +8,10 @@ type Anchor struct {
 	status     string    `json:"status"`
 }
 
+type AnchorParams struct {
+	Timeout		int
+}
+
 func NewAnchor(id int, blockRoots []string, networks []Network, root, status string) Anchor {
 	return Anchor{
 		id:         id,

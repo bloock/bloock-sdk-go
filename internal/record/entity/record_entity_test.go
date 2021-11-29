@@ -1,7 +1,7 @@
 package entity
 
 import (
-	"github.com/enchainte/enchainte-sdk-go/internal/shared"
+	"github.com/bloock/bloock-sdk-go/internal/shared"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
@@ -20,6 +20,15 @@ func TestRecordEntity(t *testing.T) {
 
 		assert.Nil(t, err)
 		assert.Equal(t, p, r.GetHash())
+	})
+
+	t.Run("Given an invalid hex should return an error", func(t *testing.T) {
+		s := "1010101010101010101010101010101010101010101010101010101010101010111111111111111111111111111111111111111111111111111111111111111"
+
+		_, err := FromHex(s)
+
+		assert.NotNil(t, err)
+		assert.Equal(t, "parameter is missing last character to be represented in bytes", err.Error())
 	})
 
 	t.Run("Given a valid string should return a hashed Keccak256", func(t *testing.T) {

@@ -1,6 +1,6 @@
 package service
 
-import "github.com/enchainte/enchainte-sdk-go/internal/record/entity"
+import "github.com/bloock/bloock-sdk-go/internal/record/entity"
 
 type RecorderService interface {
 	SendRecords(records []entity.RecordEntity) ([]entity.RecordReceipt, error)

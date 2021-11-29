@@ -5,3 +5,7 @@ const (
 	EthereumRinkeby = "EthereumRinkeby"
 	BloockChain     = "Bloockchain"
 )
+
+type NetworkParams struct {
+	Network 	string
+}

@@ -1,9 +1,9 @@
 package service
 
 import (
-	"github.com/enchainte/enchainte-sdk-go/internal/record/entity"
-	"github.com/enchainte/enchainte-sdk-go/internal/record/entity/exception"
-	"github.com/enchainte/enchainte-sdk-go/internal/record/repository"
+	"github.com/bloock/bloock-sdk-go/internal/record/entity"
+	"github.com/bloock/bloock-sdk-go/internal/record/entity/exception"
+	"github.com/bloock/bloock-sdk-go/internal/record/repository"
 )
 
 type RecordService struct {
@@ -47,7 +47,7 @@ func (m RecordService) GetRecords(records []entity.RecordEntity) ([]entity.Recor
 
 	for _, r := range records {
 		if !r.IsValid(r) {
-			return []entity.RecordReceipt{}, nil //Retornar error tipus InvalidArgumentException
+			return []entity.RecordReceipt{}, exception.NewInvalidRecordException()
 		}
 	}
 

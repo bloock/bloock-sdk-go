@@ -1,18 +1,20 @@
-package internal
+package test
 
 import (
-	anchorEntity "github.com/enchainte/enchainte-sdk-go/internal/anchor/entity"
-	configEntity "github.com/enchainte/enchainte-sdk-go/internal/config/entity"
-	proofEntity "github.com/enchainte/enchainte-sdk-go/internal/proof/entity"
-	"github.com/enchainte/enchainte-sdk-go/internal/record/entity"
+	"github.com/bloock/bloock-sdk-go"
+	anchorEntity "github.com/bloock/bloock-sdk-go/internal/anchor/entity"
+	configEntity "github.com/bloock/bloock-sdk-go/internal/config/entity"
+	proofEntity "github.com/bloock/bloock-sdk-go/internal/proof/entity"
+	"github.com/bloock/bloock-sdk-go/internal/record/entity"
 	"github.com/stretchr/testify/assert"
+	"os"
 	"testing"
 )
 
-func GetSdk() BloockClient {
-	apiKey := "test_xculO0olb1Itp-tFMNCjpsLgx4Bik3E7Wd-iUfdL1c2lsgyKvhAZQnd7U8vlPnJX" //clau de l'entorn de test de pro
-	apiHost := "https://api.bloock.com" //endpoint de pro
-	client := NewBloockClient(apiKey)
+func GetSdk() bloock.BloockClient {
+	apiKey := os.Getenv("API_KEY")
+	apiHost := os.Getenv("API_HOST")
+	client := bloock.NewBloockClient(apiKey)
 	client.SetApiHost(apiHost)
 	return client
 }
@@ -48,7 +50,7 @@ func TestFunctionalWaitAnchor(t *testing.T) {
 	assert.NotNil(t, r)
 	assert.NotEqual(t, entity.RecordReceipt{}, r[0])
 
-	a, err := sdk.WaitAnchor(r[0].Anchor, 5000)
+	a, err := sdk.WaitAnchor(r[0].Anchor, anchorEntity.AnchorParams{})
 	assert.Nil(t, err)
 	assert.IsType(t, anchorEntity.Anchor{}, a)
 	assert.Greater(t, a.ID(), 0)
@@ -72,7 +74,7 @@ func TestFunctionalFetchRecords(t *testing.T) {
 	assert.NotNil(t, r)
 	assert.NotEqual(t, entity.RecordReceipt{}, r[0])
 
-	sdk.WaitAnchor(r[0].Anchor, 5000)
+	sdk.WaitAnchor(r[0].Anchor, anchorEntity.AnchorParams{})
 
 	rr, err := sdk.GetRecords(records)
 	assert.Nil(t, err)
@@ -110,8 +112,7 @@ func TestFunctionalVerifyProof(t *testing.T) {
 	assert.NotNil(t, p)
 	assert.NotEqual(t, proofEntity.Proof{}, p)
 
-	timestamp, err := sdk.VerifyProof(p, configEntity.BloockChain)
+	timestamp, err := sdk.VerifyProof(p, configEntity.NetworkParams{Network: configEntity.BloockChain})
 	assert.Nil(t, err)
 	assert.Greater(t, timestamp, 0)
 }
-

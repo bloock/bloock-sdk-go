@@ -2,7 +2,7 @@ package http
 
 import (
 	"encoding/json"
-	"github.com/enchainte/enchainte-sdk-go/internal/infrastructure/http/exception"
+	"github.com/bloock/bloock-sdk-go/internal/infrastructure/http/exception"
 	"github.com/stretchr/testify/assert"
 	"io"
 	"net/http"
