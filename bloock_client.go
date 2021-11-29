@@ -19,7 +19,7 @@ import (
 )
 
 /*
-BloockClient
+Client
 Entrypoint to the Bloock SDK:
 	This SDK offers all the features available in the Bloock Toolset:
 		- Write records
@@ -27,7 +27,7 @@ Entrypoint to the Bloock SDK:
 		- Validate proof
 		- Get records details
 */
-type BloockClient struct {
+type Client struct {
 	anchorService service.AnchorerService
 	configService configService.ConfigurerService
 	recordService recordService.RecorderService
@@ -36,12 +36,12 @@ type BloockClient struct {
 }
 
 /*
-NewBloockClient
+NewClient
 Constructor with API Key that enables accessing to Bloock's functionalities.
 Parameters:
 	{string} apiKey Client API Key.
 */
-func NewBloockClient(apiKey string) BloockClient {
+func NewClient(apiKey string) Client {
 	c := configRepository.NewConfigData()
 	cr := configRepository.NewConfigRepository(c)
 	cs := configService.NewConfigService(&cr)
@@ -59,7 +59,7 @@ func NewBloockClient(apiKey string) BloockClient {
 	pr := proofRepository.NewProofRepository(h, b, &cs)
 	ps := proofService.NewProofService(pr)
 
-	return BloockClient{
+	return Client{
 		configService: &cs,
 		httpClient:    h,
 		anchorService: as,
@@ -76,7 +76,7 @@ Parameters:
 Returns:
 	{void}
 */
-func (b BloockClient) SetApiHost(host string) {
+func (b Client) SetApiHost(host string) {
 	b.configService.SetApiHost(host)
 }
 
@@ -89,7 +89,7 @@ Parameters:
 Returns:
 	{void}
 */
-func (b BloockClient) SetNetworkConfiguration(network string, configuration configEntity.NetworkConfiguration) {
+func (b Client) SetNetworkConfiguration(network string, configuration configEntity.NetworkConfiguration) {
 	b.configService.SetNetworkConfiguration(network, configuration)
 }
 
@@ -106,7 +106,7 @@ Errors:
 	{HttpRequestException} Error return by Bloock's API.
 	{error} Native Golang error
 */
-func (b BloockClient) SendRecords(records []entity.RecordEntity) ([]entity.RecordReceipt, error) {
+func (b Client) SendRecords(records []entity.RecordEntity) ([]entity.RecordReceipt, error) {
 	return b.recordService.SendRecords(records)
 }
 
@@ -123,7 +123,7 @@ Errors:
 	{HttpRequestException} Error return by Bloock's API.
 	{error} Native Golang error
 */
-func (b BloockClient) GetRecords(records []entity.RecordEntity) ([]entity.RecordReceipt, error) {
+func (b Client) GetRecords(records []entity.RecordEntity) ([]entity.RecordReceipt, error) {
 	return b.recordService.GetRecords(records)
 }
 
@@ -140,7 +140,7 @@ Errors:
 	{HttpRequestException} Error return by Bloock's API.
 	{error} Native Golang error
 */
-func (b BloockClient) GetAnchor(anchor int) (anchorEntity.Anchor, error) {
+func (b Client) GetAnchor(anchor int) (anchorEntity.Anchor, error) {
 	return b.anchorService.GetAnchor(anchor)
 }
 
@@ -159,7 +159,7 @@ Errors:
 	{HttpRequestException} Error return by Bloock's API.
 	{error} Native Golang error
 */
-func (b BloockClient) WaitAnchor(anchor int, params anchorEntity.AnchorParams) (anchorEntity.Anchor, error) {
+func (b Client) WaitAnchor(anchor int, params anchorEntity.AnchorParams) (anchorEntity.Anchor, error) {
 	return b.anchorService.WaitAnchor(anchor, params)
 }
 
@@ -177,7 +177,7 @@ Errors:
 	{HttpRequestException} Error return by Bloock's API.
 	{error} Native Golang error
 */
-func (b BloockClient) GetProof(records []entity.RecordEntity) (proofEntity.Proof, error) {
+func (b Client) GetProof(records []entity.RecordEntity) (proofEntity.Proof, error) {
 	return b.proofService.RetrieveProof(records)
 }
 
@@ -194,7 +194,7 @@ Errors:
 	{Web3Exception} Error connecting to blockchain.
 	{error} Native Golang error
 */
-func (b BloockClient) VerifyProof(proof proofEntity.Proof, params configEntity.NetworkParams) (int, error) {
+func (b Client) VerifyProof(proof proofEntity.Proof, params configEntity.NetworkParams) (int, error) {
 	return b.proofService.VerifyProof(proof, params)
 }
 
@@ -213,7 +213,7 @@ Errors:
 	{Web3Exception} Error connecting to blockchain.
 	{error} Native Golang error
 */
-func (b BloockClient) VerifyRecords(records []entity.RecordEntity, params configEntity.NetworkParams) (int, error) {
+func (b Client) VerifyRecords(records []entity.RecordEntity, params configEntity.NetworkParams) (int, error) {
 	return b.proofService.VerifyRecords(records, params)
 }
 

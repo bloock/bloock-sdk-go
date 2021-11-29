@@ -98,7 +98,7 @@ import (
 
 apiKey := os.Getenv("API_KEY")
 
-client := bloock.NewBloockClient(apiKey)
+client := bloock.NewClient(apiKey)
 
 record := bloock.NewRecordFromString("Example Data 1")
 records := make([]bloock.Record, 0)
@@ -124,7 +124,7 @@ import (
 
 apiKey := os.Getenv("API_KEY")
 
-client := bloock.NewBloockClient(apiKey)
+client := bloock.NewClient(apiKey)
 
 record := bloock.NewRecordFromString("Example Data 1")
 record2 := bloock.NewRecordFromString("Example Data 2")
@@ -154,7 +154,7 @@ import (
 
 apiKey := os.Getenv("API_KEY")
 
-client := bloock.NewBloockClient(apiKey)
+client := bloock.NewClient(apiKey)
 
 record := bloock.NewRecordFromString("Example Data 1")
 records := make([]bloock.Record, 0)
@@ -194,7 +194,7 @@ import (
 
 apiKey := os.Getenv("API_KEY")
 
-client := bloock.NewBloockClient(apiKey)
+client := bloock.NewClient(apiKey)
 
 record := bloock.NewRecordFromString("Example Data 1")
 record2 := bloock.NewRecordFromString("Example Data 2")
@@ -253,13 +253,13 @@ func randomString(n int) string {
 
 func main() {
     apiKey := os.Getenv("API_KEY")
-    sdk := bloock.NewBloockClient(apiKey)
+    client := bloock.NewClient(apiKey)
 
     record := bloock.NewRecordFromString(randomString(64))
     records := make([]bloock.Record, 0)
     records = append(records, record)
 
-    r, err := sdk.SendRecords(records)
+    r, err := client.SendRecords(records)
     if err != nil {
         log.Println(err)
     }
@@ -270,20 +270,20 @@ func main() {
     }
 	
     // Default timeout: 120000
-    _, err = sdk.WaitAnchor(r[0].Anchor, bloock.NewAnchorParams())
+    _, err = client.WaitAnchor(r[0].Anchor, bloock.NewAnchorParams())
     if err != nil {
         log.Println(err)
     }
     log.Println("Record reached Blockchain!")
 
     // Retrieving record proof 
-    proof, err := sdk.GetProof(records)
+    proof, err := client.GetProof(records)
     if err != nil {
         log.Println(err)
     }
 	
     // Default: EthereumMainnet 
-    timestamp, err := sdk.VerifyProof(proof, bloock.NewNetworkParams())
+    timestamp, err := client.VerifyProof(proof, bloock.NewNetworkParams())
     if err != nil {
         log.Println(err)
     }
