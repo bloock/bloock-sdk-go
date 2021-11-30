@@ -11,10 +11,10 @@ import (
 	"testing"
 )
 
-func GetSdk() bloock.BloockClient {
+func GetSdk() bloock.Client {
 	apiKey := os.Getenv("API_KEY")
 	apiHost := os.Getenv("API_HOST")
-	client := bloock.NewBloockClient(apiKey)
+	client := bloock.NewClient(apiKey)
 	client.SetApiHost(apiHost)
 	return client
 }
