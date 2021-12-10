@@ -1,9 +1,0 @@
-env: "test"
-
-cloud:
-  azure:
-    test: true
-    protocol: "https://"
-    host: "enchainte-config.azconfig.io"
-    pathProd: "/kv?key=SDK_*&label=PROD"
-    pathTest: "/kv?key=SDK_*&label=TEST"
