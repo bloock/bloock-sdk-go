@@ -57,3 +57,17 @@ func ListOfNetworks() networks {
 		EthereumMainnet: configNetwork.EthereumMainnet,
 	}
 }
+
+/*
+NewNetworkConfiguration
+function that returns a new Network Configuration object in order to change your network options.
+Parameters:
+	{string} contractAddress of Smart Contract
+	{string} contractABI of Smart Contract
+	{string} httpProvider
+Returns:
+	{NetworkConfiguration}
+ */
+func NewNetworkConfiguration(contractAddress, contractABI, httpProvider string) configNetwork.NetworkConfiguration {
+	return configNetwork.NewNetworkConfiguration(contractAddress, contractABI, httpProvider)
+}
