@@ -7,7 +7,6 @@ import (
 	"github.com/bloock/bloock-sdk-go/internal/proof/repository"
 	"github.com/bloock/bloock-sdk-go/internal/record/entity"
 	entityException "github.com/bloock/bloock-sdk-go/internal/record/entity/exception"
-	"log"
 )
 
 type ProofService struct {
@@ -72,6 +71,6 @@ func (p ProofService) VerifyProof(proof proofEntity.Proof, params configEntity.N
 	if root == (entity.RecordEntity{}) {
 		return -1, errors.New("the provided proof is invalid")
 	}
-	log.Println(params.Network)
+
 	return p.proofRepository.ValidateRoot(params.Network, root)
 }
