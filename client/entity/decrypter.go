@@ -15,7 +15,7 @@ func NewAesDecrypter(password string) AesDecrypter {
 	return AesDecrypter{
 		Alg: proto.EncryptionAlg_A256GCM,
 		Args: DecrypterArgs{
-			Password: password,
+			Key: password,
 		},
 	}
 }
@@ -27,12 +27,54 @@ func (e AesDecrypter) ToProto() *proto.Decrypter {
 	}
 }
 
+type RsaDecrypter struct {
+	Alg  proto.EncryptionAlg
+	Args DecrypterArgs
+}
+
+func NewRsaDecrypter(key string) RsaDecrypter {
+	return RsaDecrypter{
+		Alg: proto.EncryptionAlg_RSA,
+		Args: DecrypterArgs{
+			Key: key,
+		},
+	}
+}
+
+func (e RsaDecrypter) ToProto() *proto.Decrypter {
+	return &proto.Decrypter{
+		Alg:  e.Alg,
+		Args: e.Args.ToProto(),
+	}
+}
+
+type EciesDecrypter struct {
+	Alg  proto.EncryptionAlg
+	Args DecrypterArgs
+}
+
+func NewEciesDecrypter(key string) RsaDecrypter {
+	return RsaDecrypter{
+		Alg: proto.EncryptionAlg_ECIES,
+		Args: DecrypterArgs{
+			Key: key,
+		},
+	}
+}
+
+func (e EciesDecrypter) ToProto() *proto.Decrypter {
+	return &proto.Decrypter{
+		Alg:  e.Alg,
+		Args: e.Args.ToProto(),
+	}
+}
+
 type DecrypterArgs struct {
-	Password string
+	Key string
 }
 
 func (e DecrypterArgs) ToProto() *proto.DecrypterArgs {
 	return &proto.DecrypterArgs{
-		Password: e.Password,
+		Key: e.Key,
 	}
 }

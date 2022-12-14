@@ -152,16 +152,50 @@ func (c *Client) ValidateRoot(root string, params entity.NetworkParams) (uint64,
 	return res.Timestamp, nil
 }
 
-func (c *Client) GenerateKeys() (entity.Keys, error) {
-	res, err := c.bridgeClient.Record().GenerateKeys(context.Background(), &proto.GenerateKeysRequest{})
+func (c *Client) GenerateKeys() (entity.KeyPair, error) {
+	res, err := c.bridgeClient.Record().GenerateKeys(context.Background(), &proto.GenerateKeysRequest{
+		ConfigData: config.NewConfigData(),
+	})
 
 	if err != nil {
-		return entity.Keys{}, err
+		return entity.KeyPair{}, err
 	}
 
 	if res.Error != nil {
-		return entity.Keys{}, errors.New(res.Error.Message)
+		return entity.KeyPair{}, errors.New(res.Error.Message)
 	}
 
 	return entity.NewKeysFromProto(res), nil
+}
+
+func (c *Client) GenerateRsaKeyPair() (entity.KeyPair, error) {
+	res, err := c.bridgeClient.Record().GenerateRsaKeyPair(context.Background(), &proto.GenerateRsaKeyPairRequest{
+		ConfigData: config.NewConfigData(),
+	})
+
+	if err != nil {
+		return entity.KeyPair{}, err
+	}
+
+	if res.Error != nil {
+		return entity.KeyPair{}, errors.New(res.Error.Message)
+	}
+
+	return entity.NewRsaKeyPairFromProto(res), nil
+}
+
+func (c *Client) GenerateEciesKeyPair() (entity.KeyPair, error) {
+	res, err := c.bridgeClient.Record().GenerateEciesKeyPair(context.Background(), &proto.GenerateEciesKeyPairRequest{
+		ConfigData: config.NewConfigData(),
+	})
+
+	if err != nil {
+		return entity.KeyPair{}, err
+	}
+
+	if res.Error != nil {
+		return entity.KeyPair{}, errors.New(res.Error.Message)
+	}
+
+	return entity.NewEciesKeyPairFromProto(res), nil
 }

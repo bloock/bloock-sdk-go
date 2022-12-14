@@ -25,7 +25,8 @@ func NewRecordFromProto(r *proto.Record) Record {
 
 func (r Record) ToProto() *proto.Record {
 	return &proto.Record{
-		Payload: r.Payload,
+		ConfigData: config.NewConfigData(),
+		Payload:    r.Payload,
 	}
 }
 
@@ -180,16 +181,36 @@ func NewRecordReceiptFromProto(r *proto.RecordReceipt) RecordReceipt {
 	}
 }
 
-type Keys struct {
+type KeyPair struct {
 	PublicKey  string
 	PrivateKey string
 }
 
-func NewKeysFromProto(k *proto.GenerateKeysResponse) Keys {
+func NewKeysFromProto(k *proto.GenerateKeysResponse) KeyPair {
 	if k == nil {
-		return Keys{}
+		return KeyPair{}
 	}
-	return Keys{
+	return KeyPair{
+		PublicKey:  k.PublicKey,
+		PrivateKey: k.PrivateKey,
+	}
+}
+
+func NewRsaKeyPairFromProto(k *proto.GenerateRsaKeyPairResponse) KeyPair {
+	if k == nil {
+		return KeyPair{}
+	}
+	return KeyPair{
+		PublicKey:  k.PublicKey,
+		PrivateKey: k.PrivateKey,
+	}
+}
+
+func NewEciesKeyPairFromProto(k *proto.GenerateEciesKeyPairResponse) KeyPair {
+	if k == nil {
+		return KeyPair{}
+	}
+	return KeyPair{
 		PublicKey:  k.PublicKey,
 		PrivateKey: k.PrivateKey,
 	}
