@@ -20,6 +20,7 @@ jobs:
           author_name: "bloock"
           message: "v${{ github.event.client_payload.version }}"
           cwd: bloock-lib-go
+          add: ". --no-ignore-removal"
           tag: "v${{ github.event.client_payload.version }} --force"
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
