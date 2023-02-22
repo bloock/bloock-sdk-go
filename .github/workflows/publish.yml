@@ -9,17 +9,17 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          path: bloock-lib-go
+          path: bloock_lib_go
       - run: |
-          curl -L -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" -H "Accept: application/octet-stream" $(curl -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" -s https://api.github.com/repos/bloock/bloock-sdk/releases/tags/v${{ github.event.client_payload.version }} | jq -r '.assets[] | select(.name == "bloock-lib-go-${{ github.event.client_payload.version }}.zip") | .url') --output bloock-lib-go-${{ github.event.client_payload.version }}.zip
-      - run: unzip bloock-lib-go-${{ github.event.client_payload.version }}.zip -d bloock-lib-go-${{ github.event.client_payload.version }}
-      - run: cp -r bloock-lib-go-${{ github.event.client_payload.version }}/bloock_lib_go/* bloock-lib-go/
+          curl -L -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" -H "Accept: application/octet-stream" $(curl -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" -s https://api.github.com/repos/bloock/bloock-sdk/releases/tags/v${{ github.event.client_payload.version }} | jq -r '.assets[] | select(.name == "bloock_lib_go-${{ github.event.client_payload.version }}.zip") | .url') --output bloock_lib_go-${{ github.event.client_payload.version }}.zip
+      - run: unzip bloock_lib_go-${{ github.event.client_payload.version }}.zip -d bloock_lib_go-${{ github.event.client_payload.version }}
+      - run: cp -r bloock_lib_go-${{ github.event.client_payload.version }}/bloock_lib_go/* bloock_lib_go/
       - name: commit and tag
         uses: EndBug/add-and-commit@v5
         with:
           author_name: "bloock"
           message: "v${{ github.event.client_payload.version }}"
-          cwd: bloock-lib-go
+          cwd: bloock_lib_go
           add: ". --no-ignore-removal"
           tag: "v${{ github.event.client_payload.version }} --force"
         env:
