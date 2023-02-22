@@ -13,6 +13,7 @@ jobs:
       - run: |
           curl -L -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" -H "Accept: application/octet-stream" $(curl -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" -s https://api.github.com/repos/bloock/bloock-sdk/releases/tags/v${{ github.event.client_payload.version }} | jq -r '.assets[] | select(.name == "bloock_lib_go-${{ github.event.client_payload.version }}.zip") | .url') --output bloock_lib_go-${{ github.event.client_payload.version }}.zip
       - run: unzip bloock_lib_go-${{ github.event.client_payload.version }}.zip -d bloock_lib_go-${{ github.event.client_payload.version }}
+      - run: find . -not -path './.git' -not -path './.git/*' -not -path './.github/*' -not -path './.github' -delete
       - run: cp -r bloock_lib_go-${{ github.event.client_payload.version }}/bloock_lib_go/* bloock_lib_go/
       - name: commit and tag
         uses: EndBug/add-and-commit@v5
