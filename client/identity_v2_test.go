@@ -119,6 +119,7 @@ func TestIdentityV2(t *testing.T) {
 		assert.NotNil(t, res.CredentialId)
 		assert.NotNil(t, res.AnchorID)
 		assert.NotNil(t, res.Credential)
+		assert.Equal(t, DrivingLicenseSchemaType, res.CredentialType)
 
 		credential := res.Credential
 		assert.Equal(t, issuer, credential.Issuer)
