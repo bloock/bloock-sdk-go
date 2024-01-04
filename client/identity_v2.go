@@ -12,24 +12,21 @@ import (
 )
 
 type IdentityClient struct {
-	bridgeClient   bridge.BloockBridge
-	configData     *proto.ConfigData
-	apiManagedHost string
+	bridgeClient bridge.BloockBridge
+	configData   *proto.ConfigData
 }
 
-func NewIdentityClient(apiManagedHost string) IdentityClient {
+func NewIdentityClient() IdentityClient {
 	return IdentityClient{
-		bridgeClient:   bridge.NewBloockBridge(),
-		configData:     config.NewConfigDataDefault(),
-		apiManagedHost: apiManagedHost,
+		bridgeClient: bridge.NewBloockBridge(),
+		configData:   config.NewConfigDataDefault(),
 	}
 }
 
-func NewIdentityClientWithConfig(configData *proto.ConfigData, apiManagedHost string) IdentityClient {
+func NewIdentityClientWithConfig(configData *proto.ConfigData) IdentityClient {
 	return IdentityClient{
-		bridgeClient:   bridge.NewBloockBridge(),
-		configData:     configData,
-		apiManagedHost: apiManagedHost,
+		bridgeClient: bridge.NewBloockBridge(),
+		configData:   configData,
 	}
 }
 
@@ -51,9 +48,8 @@ func (c *IdentityClient) CreateIdentity(issuerKey identityV2.IdentityKey, params
 	return res.Did, nil
 }
 
-func (c *IdentityClient) CreateIssuer(issuerKey identityV2.IdentityKey, params identityV2.DidParams, name, description, image string, publishInterval int64) (string, error) {
+func (c *IdentityClient) CreateIssuer(issuerKey identityV2.IdentityKey, publishInterval identityV2.PublishIntervalParams, params identityV2.DidParams, name, description, image string) (string, error) {
 	var iName, iDescription, iImage *string
-	var pInterval *int64
 	if name != "" {
 		iName = &name
 	}
@@ -63,9 +59,6 @@ func (c *IdentityClient) CreateIssuer(issuerKey identityV2.IdentityKey, params i
 	if image != "" {
 		iImage = &image
 	}
-	if publishInterval != 0 {
-		pInterval = &publishInterval
-	}
 
 	res, err := c.bridgeClient.IdentityV2().CreateIssuer(context.Background(), &proto.CreateIssuerRequest{
 		IssuerKey:       issuerKey.ToProto(),
@@ -73,7 +66,7 @@ func (c *IdentityClient) CreateIssuer(issuerKey identityV2.IdentityKey, params i
 		Name:            iName,
 		Description:     iDescription,
 		Image:           iImage,
-		PublishInterval: pInterval,
+		PublishInterval: identityV2.PublishIntervalParamsToProto[publishInterval],
 		ConfigData:      c.configData,
 	})
 
@@ -83,22 +76,6 @@ func (c *IdentityClient) CreateIssuer(issuerKey identityV2.IdentityKey, params i
 
 	if res.Error != nil {
 		return "", errors.New(res.Error.Message)
-	}
-
-	return res.Did, nil
-}
-
-func (c *IdentityClient) GetIssuerList() ([]string, error) {
-	res, err := c.bridgeClient.IdentityV2().GetIssuerList(context.Background(), &proto.GetIssuerListRequest{
-		ConfigData: c.configData,
-	})
-
-	if err != nil {
-		return []string{}, err
-	}
-
-	if res.Error != nil {
-		return []string{}, errors.New(res.Error.Message)
 	}
 
 	return res.Did, nil
@@ -143,13 +120,13 @@ func (c *IdentityClient) GetSchema(id string) (identityV2.Schema, error) {
 }
 
 func (c *IdentityClient) BuildCredential(schemaId, issuerDid, holderDid string, expiration int64, version int32) identityV2.CredentialBuilder {
-	return identityV2.NewCredentialBuilder(schemaId, issuerDid, holderDid, expiration, version, c.apiManagedHost, c.configData)
+	return identityV2.NewCredentialBuilder(schemaId, issuerDid, holderDid, expiration, version, c.configData)
 }
 
 func (c *IdentityClient) PublishIssuerState(issuerDid string, signer authenticity.Signer) (identityV2.IssuerStateReceipt, error) {
 	res, err := c.bridgeClient.IdentityV2().PublishIssuerState(context.Background(), &proto.PublishIssuerStateRequest{
 		ConfigData: c.configData,
-		IssuerDid: 	issuerDid,
+		IssuerDid:  issuerDid,
 		Signer:     signer.ToProto(),
 	})
 
@@ -198,4 +175,60 @@ func (c *IdentityClient) RevokeCredential(credential identityV2.Credential, sign
 	}
 
 	return res.Result.GetSuccess(), nil
+}
+
+func (c *IdentityClient) CreateVerification(proofRequest string) (identityV2.VerificationReceipt, error) {
+	res, err := c.bridgeClient.IdentityV2().CreateVerification(context.Background(), &proto.CreateVerificationRequest{
+		ConfigData:   c.configData,
+		ProofRequest: proofRequest,
+	})
+
+	if err != nil {
+		return identityV2.VerificationReceipt{}, err
+	}
+
+	if res.Error != nil {
+		return identityV2.VerificationReceipt{}, errors.New(res.Error.Message)
+	}
+
+	return identityV2.NewVerificationReceiptFromProto(res.GetResult()), nil
+}
+
+func (c *IdentityClient) WaitVerification(sessionID int64, params identityV2.VerificationParams) (bool, error) {
+	if params.Timeout == 0 {
+		params.Timeout = int64(120000)
+	}
+
+	res, err := c.bridgeClient.IdentityV2().WaitVerification(context.Background(), &proto.WaitVerificationRequest{
+		ConfigData: c.configData,
+		SessionId:  sessionID,
+		Timeout:    params.Timeout,
+	})
+
+	if err != nil {
+		return false, err
+	}
+
+	if res.Error != nil {
+		return false, errors.New(res.Error.Message)
+	}
+
+	return res.GetStatus(), nil
+}
+
+func (c *IdentityClient) GetVerificationStatus(sessionID int64) (bool, error) {
+	res, err := c.bridgeClient.IdentityV2().GetVerificationStatus(context.Background(), &proto.GetVerificationStatusRequest{
+		ConfigData: c.configData,
+		SessionId:  sessionID,
+	})
+
+	if err != nil {
+		return false, err
+	}
+
+	if res.Error != nil {
+		return false, errors.New(res.Error.Message)
+	}
+
+	return res.GetStatus(), nil
 }
