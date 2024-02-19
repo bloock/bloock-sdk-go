@@ -34,31 +34,22 @@ Package client provides a client for interacting with the Bloock SDK.
 - [type IdentityClient](#IdentityClient)
   - [func NewIdentityClient\(\) IdentityClient](#NewIdentityClient)
   - [func NewIdentityClientWithConfig\(configData \*proto.ConfigData\) IdentityClient](#NewIdentityClientWithConfig)
-  - [func \(c \*IdentityClient\) BuildCredential\(schemaId, issuerDid, holderDid string, expiration int64, version int32\) identityV2.CredentialBuilder](#IdentityClient.BuildCredential)
-  - [func \(c \*IdentityClient\) BuildSchema\(displayName string, schemaType, version, description string\) identityV2.SchemaBuilder](#IdentityClient.BuildSchema)
-  - [func \(c \*IdentityClient\) CreateIdentity\(issuerKey identityV2.IdentityKey, params identityV2.DidParams\) \(string, error\)](#IdentityClient.CreateIdentity)
-  - [func \(c \*IdentityClient\) CreateIssuer\(issuerKey identityV2.IdentityKey, publishInterval identityV2.PublishIntervalParams, params identityV2.DidParams, name, description, image string\) \(string, error\)](#IdentityClient.CreateIssuer)
-  - [func \(c \*IdentityClient\) CreateVerification\(proofRequest string\) \(identityV2.VerificationReceipt, error\)](#IdentityClient.CreateVerification)
-  - [func \(c \*IdentityClient\) GetCredentialProof\(issuerDid string, credentialId string\) \(identityV2.CredentialProof, error\)](#IdentityClient.GetCredentialProof)
-  - [func \(c \*IdentityClient\) GetIssuerByKey\(issuerKey identityV2.IdentityKey, params identityV2.DidParams\) \(string, error\)](#IdentityClient.GetIssuerByKey)
-  - [func \(c \*IdentityClient\) GetSchema\(id string\) \(identityV2.Schema, error\)](#IdentityClient.GetSchema)
+  - [func \(c \*IdentityClient\) BuildCredential\(issuer identity.Issuer, schemaId, holderDid string, expiration int64, version int32\) identity.CredentialBuilder](#IdentityClient.BuildCredential)
+  - [func \(c \*IdentityClient\) BuildSchema\(displayName string, schemaType, version, description string\) identity.SchemaBuilder](#IdentityClient.BuildSchema)
+  - [func \(c \*IdentityClient\) CreateHolder\(holderKey key.Key, didType identity.DidType\) \(identity.Holder, error\)](#IdentityClient.CreateHolder)
+  - [func \(c \*IdentityClient\) CreateIssuer\(issuerKey key.Key, publishInterval identity.PublishIntervalParams, didType identity.DidType, name, description, image string\) \(identity.Issuer, error\)](#IdentityClient.CreateIssuer)
+  - [func \(c \*IdentityClient\) CreateVerification\(proofRequest string\) \(identity.VerificationReceipt, error\)](#IdentityClient.CreateVerification)
+  - [func \(c \*IdentityClient\) ForcePublishIssuerState\(issuer identity.Issuer\) \(identity.IssuerStateReceipt, error\)](#IdentityClient.ForcePublishIssuerState)
+  - [func \(c \*IdentityClient\) GetCredentialProof\(issuerDid string, credentialId string\) \(identity.CredentialProof, error\)](#IdentityClient.GetCredentialProof)
+  - [func \(c \*IdentityClient\) GetSchema\(id string\) \(identity.Schema, error\)](#IdentityClient.GetSchema)
   - [func \(c \*IdentityClient\) GetVerificationStatus\(sessionID int64\) \(bool, error\)](#IdentityClient.GetVerificationStatus)
-  - [func \(c \*IdentityClient\) PublishIssuerState\(issuerDid string, signer authenticity.Signer\) \(identityV2.IssuerStateReceipt, error\)](#IdentityClient.PublishIssuerState)
-  - [func \(c \*IdentityClient\) RevokeCredential\(credential identityV2.Credential, signer authenticity.Signer\) \(bool, error\)](#IdentityClient.RevokeCredential)
-  - [func \(c \*IdentityClient\) WaitVerification\(sessionID int64, params identityV2.VerificationParams\) \(bool, error\)](#IdentityClient.WaitVerification)
-- [type IdentityLegacyClient](#IdentityLegacyClient)
-  - [func NewIdentityLegacyClient\(\) IdentityLegacyClient](#NewIdentityLegacyClient)
-  - [func NewIdentityLegacyClientWithConfig\(configData \*proto.ConfigData\) IdentityLegacyClient](#NewIdentityLegacyClientWithConfig)
-  - [func \(c \*IdentityLegacyClient\) BuildCredential\(schemaId string, holderKey string\) identity.CredentialBuilder](#IdentityLegacyClient.BuildCredential)
-  - [func \(c \*IdentityLegacyClient\) BuildSchema\(displayName string, technicalName string\) identity.SchemaBuilder](#IdentityLegacyClient.BuildSchema)
-  - [func \(c \*IdentityLegacyClient\) CreateIdentity\(\) \(identity.Identity, error\)](#IdentityLegacyClient.CreateIdentity)
-  - [func \(c \*IdentityLegacyClient\) GetOffer\(id string\) \(identity.CredentialOffer, error\)](#IdentityLegacyClient.GetOffer)
-  - [func \(c \*IdentityLegacyClient\) GetSchema\(id string\) \(identity.Schema, error\)](#IdentityLegacyClient.GetSchema)
-  - [func \(c \*IdentityLegacyClient\) LoadIdentity\(mnemonic string\) \(identity.Identity, error\)](#IdentityLegacyClient.LoadIdentity)
-  - [func \(c \*IdentityLegacyClient\) RedeemOffer\(credentialOffer identity.CredentialOffer, holderPrivateKey string\) \(identity.Credential, error\)](#IdentityLegacyClient.RedeemOffer)
-  - [func \(c \*IdentityLegacyClient\) RevokeCredential\(credential identity.Credential\) \(bool, error\)](#IdentityLegacyClient.RevokeCredential)
-  - [func \(c \*IdentityLegacyClient\) VerifyCredential\(credential identity.Credential\) \(identity.CredentialVerification, error\)](#IdentityLegacyClient.VerifyCredential)
-  - [func \(c \*IdentityLegacyClient\) WaitOffer\(offerID string\) \(identity.CredentialOffer, error\)](#IdentityLegacyClient.WaitOffer)
+  - [func \(c \*IdentityClient\) ImportIssuer\(issuerKey key.Key, didType identity.DidType\) \(identity.Issuer, error\)](#IdentityClient.ImportIssuer)
+  - [func \(c \*IdentityClient\) RevokeCredential\(credential identity.Credential, issuer identity.Issuer\) \(bool, error\)](#IdentityClient.RevokeCredential)
+  - [func \(c \*IdentityClient\) WaitVerification\(sessionID int64, params identity.VerificationParams\) \(bool, error\)](#IdentityClient.WaitVerification)
+- [type IdentityCoreClient](#IdentityCoreClient)
+  - [func NewIdentityCoreClient\(\) IdentityCoreClient](#NewIdentityCoreClient)
+  - [func NewIdentityCoreClientWithConfig\(configData \*proto.ConfigData\) IdentityCoreClient](#NewIdentityCoreClientWithConfig)
+  - [func \(c \*IdentityCoreClient\) BuildCredential\(issuer identity.Issuer, schemaId, holderDid string, expiration int64, version int32\) identity.CredentialCoreBuilder](#IdentityCoreClient.BuildCredential)
 - [type IntegrityClient](#IntegrityClient)
   - [func NewIntegrityClient\(\) IntegrityClient](#NewIntegrityClient)
   - [func NewIntegrityClientWithConfig\(configData \*proto.ConfigData\) IntegrityClient](#NewIntegrityClientWithConfig)
@@ -225,15 +216,15 @@ BloockClient represents a client for interacting with the Bloock SDK.
 
 ```go
 type BloockClient struct {
-    AuthenticityClient   AuthenticityClient
-    AvailabilityClient   AvailabilityClient
-    EncryptionClient     EncryptionClient
-    IdentityLegacyClient IdentityLegacyClient
-    IdentityClient       IdentityClient
-    IntegrityClient      IntegrityClient
-    KeyClient            KeyClient
-    RecordClient         RecordClient
-    WebhookClient        WebhookClient
+    AuthenticityClient AuthenticityClient
+    AvailabilityClient AvailabilityClient
+    EncryptionClient   EncryptionClient
+    IdentityCoreClient IdentityCoreClient
+    IdentityClient     IdentityClient
+    IntegrityClient    IntegrityClient
+    KeyClient          KeyClient
+    RecordClient       RecordClient
+    WebhookClient      WebhookClient
     // contains filtered or unexported fields
 }
 ```
@@ -345,7 +336,7 @@ NewIdentityClientWithConfig creates a new instance of the IdentityClient with th
 ### func \(\*IdentityClient\) BuildCredential
 
 ```go
-func (c *IdentityClient) BuildCredential(schemaId, issuerDid, holderDid string, expiration int64, version int32) identityV2.CredentialBuilder
+func (c *IdentityClient) BuildCredential(issuer identity.Issuer, schemaId, holderDid string, expiration int64, version int32) identity.CredentialBuilder
 ```
 
 BuildCredential creates a new credential builder for defining a credential on the Bloock Identity service.
@@ -354,61 +345,61 @@ BuildCredential creates a new credential builder for defining a credential on th
 ### func \(\*IdentityClient\) BuildSchema
 
 ```go
-func (c *IdentityClient) BuildSchema(displayName string, schemaType, version, description string) identityV2.SchemaBuilder
+func (c *IdentityClient) BuildSchema(displayName string, schemaType, version, description string) identity.SchemaBuilder
 ```
 
 BuildSchema creates a new schema builder for defining a schema on the Bloock Identity service.
 
-<a name="IdentityClient.CreateIdentity"></a>
-### func \(\*IdentityClient\) CreateIdentity
+<a name="IdentityClient.CreateHolder"></a>
+### func \(\*IdentityClient\) CreateHolder
 
 ```go
-func (c *IdentityClient) CreateIdentity(issuerKey identityV2.IdentityKey, params identityV2.DidParams) (string, error)
+func (c *IdentityClient) CreateHolder(holderKey key.Key, didType identity.DidType) (identity.Holder, error)
 ```
 
-CreateIdentity creates a new identity.
+CreateHolder creates a new holder identity.
 
 <a name="IdentityClient.CreateIssuer"></a>
 ### func \(\*IdentityClient\) CreateIssuer
 
 ```go
-func (c *IdentityClient) CreateIssuer(issuerKey identityV2.IdentityKey, publishInterval identityV2.PublishIntervalParams, params identityV2.DidParams, name, description, image string) (string, error)
+func (c *IdentityClient) CreateIssuer(issuerKey key.Key, publishInterval identity.PublishIntervalParams, didType identity.DidType, name, description, image string) (identity.Issuer, error)
 ```
 
-CreateIssuer creates a new issuer on the Bloock Identity service.
+CreateIssuer creates a new issuer identity on the Bloock Identity service.
 
 <a name="IdentityClient.CreateVerification"></a>
 ### func \(\*IdentityClient\) CreateVerification
 
 ```go
-func (c *IdentityClient) CreateVerification(proofRequest string) (identityV2.VerificationReceipt, error)
+func (c *IdentityClient) CreateVerification(proofRequest string) (identity.VerificationReceipt, error)
 ```
 
 CreateVerification creates a new verification session on the identity managed API provided.
+
+<a name="IdentityClient.ForcePublishIssuerState"></a>
+### func \(\*IdentityClient\) ForcePublishIssuerState
+
+```go
+func (c *IdentityClient) ForcePublishIssuerState(issuer identity.Issuer) (identity.IssuerStateReceipt, error)
+```
+
+ForcePublishIssuerState publishes the state of an issuer on the Bloock Identity service.
 
 <a name="IdentityClient.GetCredentialProof"></a>
 ### func \(\*IdentityClient\) GetCredentialProof
 
 ```go
-func (c *IdentityClient) GetCredentialProof(issuerDid string, credentialId string) (identityV2.CredentialProof, error)
+func (c *IdentityClient) GetCredentialProof(issuerDid string, credentialId string) (identity.CredentialProof, error)
 ```
 
 GetCredentialProof retrieves the proof of a credential on the Bloock Identity service.
-
-<a name="IdentityClient.GetIssuerByKey"></a>
-### func \(\*IdentityClient\) GetIssuerByKey
-
-```go
-func (c *IdentityClient) GetIssuerByKey(issuerKey identityV2.IdentityKey, params identityV2.DidParams) (string, error)
-```
-
-GetIssuerByKey retrieves the DID of an issuer based on the issuer key and DID parameters.
 
 <a name="IdentityClient.GetSchema"></a>
 ### func \(\*IdentityClient\) GetSchema
 
 ```go
-func (c *IdentityClient) GetSchema(id string) (identityV2.Schema, error)
+func (c *IdentityClient) GetSchema(id string) (identity.Schema, error)
 ```
 
 GetSchema retrieves a schema from the Bloock Identity service based on the schema ID \(ex: Qma1t4uzbnB93E4rasNdu5UWMDh5qg3wMkPm68cnEyfnoM\).
@@ -422,20 +413,20 @@ func (c *IdentityClient) GetVerificationStatus(sessionID int64) (bool, error)
 
 GetVerificationStatus retrieves the status of a verification session on the identity managed API provided.
 
-<a name="IdentityClient.PublishIssuerState"></a>
-### func \(\*IdentityClient\) PublishIssuerState
+<a name="IdentityClient.ImportIssuer"></a>
+### func \(\*IdentityClient\) ImportIssuer
 
 ```go
-func (c *IdentityClient) PublishIssuerState(issuerDid string, signer authenticity.Signer) (identityV2.IssuerStateReceipt, error)
+func (c *IdentityClient) ImportIssuer(issuerKey key.Key, didType identity.DidType) (identity.Issuer, error)
 ```
 
-PublishIssuerState publishes the state of an issuer on the Bloock Identity service.
+ImportIssuer retrieves the issuer based on the issuer key and DID type.
 
 <a name="IdentityClient.RevokeCredential"></a>
 ### func \(\*IdentityClient\) RevokeCredential
 
 ```go
-func (c *IdentityClient) RevokeCredential(credential identityV2.Credential, signer authenticity.Signer) (bool, error)
+func (c *IdentityClient) RevokeCredential(credential identity.Credential, issuer identity.Issuer) (bool, error)
 ```
 
 RevokeCredential revokes a credential on the Bloock Identity service.
@@ -444,129 +435,48 @@ RevokeCredential revokes a credential on the Bloock Identity service.
 ### func \(\*IdentityClient\) WaitVerification
 
 ```go
-func (c *IdentityClient) WaitVerification(sessionID int64, params identityV2.VerificationParams) (bool, error)
+func (c *IdentityClient) WaitVerification(sessionID int64, params identity.VerificationParams) (bool, error)
 ```
 
 WaitVerification waits for the completion of a verification session on the identity managed API provided.
 
-<a name="IdentityLegacyClient"></a>
-## type IdentityLegacyClient
+<a name="IdentityCoreClient"></a>
+## type IdentityCoreClient
 
-
+IdentityCoreClient represents a client for interacting with the [Bloock Identity service](https://bloock.com).
 
 ```go
-type IdentityLegacyClient struct {
+type IdentityCoreClient struct {
     // contains filtered or unexported fields
 }
 ```
 
-<a name="NewIdentityLegacyClient"></a>
-### func NewIdentityLegacyClient
+<a name="NewIdentityCoreClient"></a>
+### func NewIdentityCoreClient
 
 ```go
-func NewIdentityLegacyClient() IdentityLegacyClient
+func NewIdentityCoreClient() IdentityCoreClient
 ```
 
-Deprecated: Will be deleted in future versions. Use NewIdentityV2Client function instead.
+NewIdentityCoreClient creates a new instance of the IdentityCoreClient with default configuration.
 
-<a name="NewIdentityLegacyClientWithConfig"></a>
-### func NewIdentityLegacyClientWithConfig
+<a name="NewIdentityCoreClientWithConfig"></a>
+### func NewIdentityCoreClientWithConfig
 
 ```go
-func NewIdentityLegacyClientWithConfig(configData *proto.ConfigData) IdentityLegacyClient
+func NewIdentityCoreClientWithConfig(configData *proto.ConfigData) IdentityCoreClient
 ```
 
-Deprecated: Will be deleted in future versions. Use KeyClient.newLocalKey function instead.
+NewIdentityCoreClientWithConfig creates a new instance of the IdentityCoreClient with the provided configuration.
 
-<a name="IdentityLegacyClient.BuildCredential"></a>
-### func \(\*IdentityLegacyClient\) BuildCredential
+<a name="IdentityCoreClient.BuildCredential"></a>
+### func \(\*IdentityCoreClient\) BuildCredential
 
 ```go
-func (c *IdentityLegacyClient) BuildCredential(schemaId string, holderKey string) identity.CredentialBuilder
+func (c *IdentityCoreClient) BuildCredential(issuer identity.Issuer, schemaId, holderDid string, expiration int64, version int32) identity.CredentialCoreBuilder
 ```
 
-Deprecated: Will be deleted in future versions. Use KeyClient.newLocalKey function instead.
-
-<a name="IdentityLegacyClient.BuildSchema"></a>
-### func \(\*IdentityLegacyClient\) BuildSchema
-
-```go
-func (c *IdentityLegacyClient) BuildSchema(displayName string, technicalName string) identity.SchemaBuilder
-```
-
-Deprecated: Will be deleted in future versions. Use KeyClient.newLocalKey function instead.
-
-<a name="IdentityLegacyClient.CreateIdentity"></a>
-### func \(\*IdentityLegacyClient\) CreateIdentity
-
-```go
-func (c *IdentityLegacyClient) CreateIdentity() (identity.Identity, error)
-```
-
-Deprecated: Will be deleted in future versions. Use KeyClient.newLocalKey function instead.
-
-<a name="IdentityLegacyClient.GetOffer"></a>
-### func \(\*IdentityLegacyClient\) GetOffer
-
-```go
-func (c *IdentityLegacyClient) GetOffer(id string) (identity.CredentialOffer, error)
-```
-
-Deprecated: Will be deleted in future versions. Use KeyClient.newLocalKey function instead.
-
-<a name="IdentityLegacyClient.GetSchema"></a>
-### func \(\*IdentityLegacyClient\) GetSchema
-
-```go
-func (c *IdentityLegacyClient) GetSchema(id string) (identity.Schema, error)
-```
-
-Deprecated: Will be deleted in future versions. Use KeyClient.newLocalKey function instead.
-
-<a name="IdentityLegacyClient.LoadIdentity"></a>
-### func \(\*IdentityLegacyClient\) LoadIdentity
-
-```go
-func (c *IdentityLegacyClient) LoadIdentity(mnemonic string) (identity.Identity, error)
-```
-
-Deprecated: Will be deleted in future versions. Use KeyClient.newLocalKey function instead.
-
-<a name="IdentityLegacyClient.RedeemOffer"></a>
-### func \(\*IdentityLegacyClient\) RedeemOffer
-
-```go
-func (c *IdentityLegacyClient) RedeemOffer(credentialOffer identity.CredentialOffer, holderPrivateKey string) (identity.Credential, error)
-```
-
-Deprecated: Will be deleted in future versions. Use KeyClient.newLocalKey function instead.
-
-<a name="IdentityLegacyClient.RevokeCredential"></a>
-### func \(\*IdentityLegacyClient\) RevokeCredential
-
-```go
-func (c *IdentityLegacyClient) RevokeCredential(credential identity.Credential) (bool, error)
-```
-
-Deprecated: Will be deleted in future versions. Use KeyClient.newLocalKey function instead.
-
-<a name="IdentityLegacyClient.VerifyCredential"></a>
-### func \(\*IdentityLegacyClient\) VerifyCredential
-
-```go
-func (c *IdentityLegacyClient) VerifyCredential(credential identity.Credential) (identity.CredentialVerification, error)
-```
-
-Deprecated: Will be deleted in future versions. Use KeyClient.newLocalKey function instead.
-
-<a name="IdentityLegacyClient.WaitOffer"></a>
-### func \(\*IdentityLegacyClient\) WaitOffer
-
-```go
-func (c *IdentityLegacyClient) WaitOffer(offerID string) (identity.CredentialOffer, error)
-```
-
-Deprecated: Will be deleted in future versions. Use KeyClient.newLocalKey function instead.
+BuildCredential creates a new credential builder for defining a credential on the Bloock Identity service.
 
 <a name="IntegrityClient"></a>
 ## type IntegrityClient

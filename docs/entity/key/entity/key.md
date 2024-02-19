@@ -20,6 +20,8 @@ import "github.com/bloock/bloock-sdk-go/v2/entity/key"
 - [type CertificateType](#CertificateType)
 - [type ImportCertificateParams](#ImportCertificateParams)
   - [func NewImportCertificateParams\(\) ImportCertificateParams](#NewImportCertificateParams)
+- [type Key](#Key)
+  - [func \(s Key\) ToProto\(\) \*proto.Key](#Key.ToProto)
 - [type KeyPair](#KeyPair)
   - [func NewEcdsaKeysFromProto\(k \*proto.GenerateLocalKeyResponse\) KeyPair](#NewEcdsaKeysFromProto)
   - [func NewRsaKeyPairFromProto\(k \*proto.GenerateLocalKeyResponse\) KeyPair](#NewRsaKeyPairFromProto)
@@ -44,6 +46,7 @@ import "github.com/bloock/bloock-sdk-go/v2/entity/key"
 - [type ManagedKey](#ManagedKey)
   - [func NewManagedKeyFromProto\(s \*proto.ManagedKey\) ManagedKey](#NewManagedKeyFromProto)
   - [func \(s ManagedKey\) ToProto\(\) \*proto.ManagedKey](#ManagedKey.ToProto)
+  - [func \(s ManagedKey\) Type\(\) KeyType](#ManagedKey.Type)
 - [type ManagedKeyParams](#ManagedKeyParams)
   - [func NewManagedKeyParamsFromProto\(s \*proto.ManagedKeyParams\) ManagedKeyParams](#NewManagedKeyParamsFromProto)
   - [func \(s ManagedKeyParams\) ToProto\(\) \*proto.ManagedKeyParams](#ManagedKeyParams.ToProto)
@@ -230,6 +233,27 @@ func NewImportCertificateParams() ImportCertificateParams
 ```
 
 NewImportCertificateParams creates an ImportCertificateParams instance with default values.
+
+<a name="Key"></a>
+## type Key
+
+Key represents a key entity that can be either a ManagedKey or a LocalKey.
+
+```go
+type Key struct {
+    LocalKey   *LocalKey
+    ManagedKey *ManagedKey
+}
+```
+
+<a name="Key.ToProto"></a>
+### func \(Key\) ToProto
+
+```go
+func (s Key) ToProto() *proto.Key
+```
+
+
 
 <a name="KeyPair"></a>
 ## type KeyPair
@@ -527,6 +551,15 @@ func NewManagedKeyFromProto(s *proto.ManagedKey) ManagedKey
 
 ```go
 func (s ManagedKey) ToProto() *proto.ManagedKey
+```
+
+
+
+<a name="ManagedKey.Type"></a>
+### func \(ManagedKey\) Type
+
+```go
+func (s ManagedKey) Type() KeyType
 ```
 
 

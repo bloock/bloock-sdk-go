@@ -8,14 +8,20 @@ import "github.com/bloock/bloock-sdk-go/v2/entity/identity"
 
 ## Index
 
+- [Variables](#variables)
+- [func BlockchainToProto\(blockchain Blockchain\) \*proto.Blockchain](#BlockchainToProto)
+- [func DidTypeToProto\(didType DidType\) \*proto.DidType](#DidTypeToProto)
+- [func MethodToProto\(method Method\) \*proto.Method](#MethodToProto)
+- [func NetworkIdToProto\(networkId NetworkId\) \*proto.NetworkId](#NetworkIdToProto)
 - [type Attribute](#Attribute)
 - [type AttributeDescriptor](#AttributeDescriptor)
+- [type Blockchain](#Blockchain)
 - [type BooleanAttribute](#BooleanAttribute)
   - [func NewBooleanAttribute\(key string, value bool\) BooleanAttribute](#NewBooleanAttribute)
   - [func NewBooleanAttributeFromProto\(s \*proto.BooleanAttribute\) BooleanAttribute](#NewBooleanAttributeFromProto)
   - [func \(s BooleanAttribute\) ToProto\(\) \*proto.BooleanAttribute](#BooleanAttribute.ToProto)
 - [type BooleanAttributeDescriptor](#BooleanAttributeDescriptor)
-  - [func NewBooleanAttributeDescriptor\(name string, technicalName string, description string\) BooleanAttributeDescriptor](#NewBooleanAttributeDescriptor)
+  - [func NewBooleanAttributeDescriptor\(name string, id string, description string, required bool\) BooleanAttributeDescriptor](#NewBooleanAttributeDescriptor)
   - [func NewBooleanAttributeDescriptorFromProto\(s \*proto.BooleanAttributeDefinition\) BooleanAttributeDescriptor](#NewBooleanAttributeDescriptorFromProto)
   - [func \(s BooleanAttributeDescriptor\) ToProto\(\) \*proto.BooleanAttributeDefinition](#BooleanAttributeDescriptor.ToProto)
 - [type Credential](#Credential)
@@ -24,24 +30,23 @@ import "github.com/bloock/bloock-sdk-go/v2/entity/identity"
   - [func \(c Credential\) ToJson\(\) \(string, error\)](#Credential.ToJson)
   - [func \(c Credential\) ToProto\(\) \*proto.Credential](#Credential.ToProto)
 - [type CredentialBuilder](#CredentialBuilder)
-  - [func NewCredentialBuilder\(schemaId string, holderKey string, configData \*proto.ConfigData\) CredentialBuilder](#NewCredentialBuilder)
+  - [func NewCredentialBuilder\(issuer Issuer, schemaId, holderDid string, expiration int64, version int32, configData \*proto.ConfigData\) CredentialBuilder](#NewCredentialBuilder)
   - [func \(c CredentialBuilder\) Build\(\) \(CredentialReceipt, error\)](#CredentialBuilder.Build)
   - [func \(c CredentialBuilder\) WithBooleanAttribute\(key string, value bool\) CredentialBuilder](#CredentialBuilder.WithBooleanAttribute)
-  - [func \(c CredentialBuilder\) WithDateAttribute\(key string, value int64\) CredentialBuilder](#CredentialBuilder.WithDateAttribute)
-  - [func \(c CredentialBuilder\) WithDatetimeAttribute\(key string, value int64\) CredentialBuilder](#CredentialBuilder.WithDatetimeAttribute)
-  - [func \(c CredentialBuilder\) WithNumberAttribute\(key string, value int64\) CredentialBuilder](#CredentialBuilder.WithNumberAttribute)
+  - [func \(c CredentialBuilder\) WithDateAttribute\(key string, value time.Time\) CredentialBuilder](#CredentialBuilder.WithDateAttribute)
+  - [func \(c CredentialBuilder\) WithDatetimeAttribute\(key string, value time.Time\) CredentialBuilder](#CredentialBuilder.WithDatetimeAttribute)
+  - [func \(c CredentialBuilder\) WithDecimalAttribute\(key string, value float64\) CredentialBuilder](#CredentialBuilder.WithDecimalAttribute)
+  - [func \(c CredentialBuilder\) WithIntegerAttribute\(key string, value int64\) CredentialBuilder](#CredentialBuilder.WithIntegerAttribute)
   - [func \(c CredentialBuilder\) WithStringAttribute\(key string, value string\) CredentialBuilder](#CredentialBuilder.WithStringAttribute)
-- [type CredentialOffer](#CredentialOffer)
-  - [func NewCredentialOfferFromJson\(json string\) \(CredentialOffer, error\)](#NewCredentialOfferFromJson)
-  - [func NewCredentialOfferFromProto\(s \*proto.CredentialOffer\) CredentialOffer](#NewCredentialOfferFromProto)
-  - [func \(c CredentialOffer\) ToJson\(\) \(string, error\)](#CredentialOffer.ToJson)
-  - [func \(c CredentialOffer\) ToProto\(\) \*proto.CredentialOffer](#CredentialOffer.ToProto)
-- [type CredentialOfferBody](#CredentialOfferBody)
-  - [func NewCredentialOfferBodyFromProto\(s \*proto.CredentialOfferBody\) CredentialOfferBody](#NewCredentialOfferBodyFromProto)
-  - [func \(c CredentialOfferBody\) ToProto\(\) \*proto.CredentialOfferBody](#CredentialOfferBody.ToProto)
-- [type CredentialOfferCredential](#CredentialOfferCredential)
-  - [func NewCredentialOfferCredentialsFromProto\(s \*proto.CredentialOfferBodyCredentials\) CredentialOfferCredential](#NewCredentialOfferCredentialsFromProto)
-  - [func \(c CredentialOfferCredential\) ToProto\(\) \*proto.CredentialOfferBodyCredentials](#CredentialOfferCredential.ToProto)
+- [type CredentialCoreBuilder](#CredentialCoreBuilder)
+  - [func NewCredentialCoreBuilder\(issuer Issuer, schemaId, holderDid string, expiration int64, version int32, configData \*proto.ConfigData\) CredentialCoreBuilder](#NewCredentialCoreBuilder)
+  - [func \(c CredentialCoreBuilder\) Build\(\) \(CredentialReceipt, error\)](#CredentialCoreBuilder.Build)
+  - [func \(c CredentialCoreBuilder\) WithBooleanAttribute\(key string, value bool\) CredentialCoreBuilder](#CredentialCoreBuilder.WithBooleanAttribute)
+  - [func \(c CredentialCoreBuilder\) WithDateAttribute\(key string, value time.Time\) CredentialCoreBuilder](#CredentialCoreBuilder.WithDateAttribute)
+  - [func \(c CredentialCoreBuilder\) WithDatetimeAttribute\(key string, value time.Time\) CredentialCoreBuilder](#CredentialCoreBuilder.WithDatetimeAttribute)
+  - [func \(c CredentialCoreBuilder\) WithDecimalAttribute\(key string, value float64\) CredentialCoreBuilder](#CredentialCoreBuilder.WithDecimalAttribute)
+  - [func \(c CredentialCoreBuilder\) WithIntegerAttribute\(key string, value int64\) CredentialCoreBuilder](#CredentialCoreBuilder.WithIntegerAttribute)
+  - [func \(c CredentialCoreBuilder\) WithStringAttribute\(key string, value string\) CredentialCoreBuilder](#CredentialCoreBuilder.WithStringAttribute)
 - [type CredentialProof](#CredentialProof)
   - [func NewCredentialProofFromProto\(s \*proto.CredentialProof\) CredentialProof](#NewCredentialProofFromProto)
   - [func \(c CredentialProof\) ToProto\(\) \*proto.CredentialProof](#CredentialProof.ToProto)
@@ -54,61 +59,154 @@ import "github.com/bloock/bloock-sdk-go/v2/entity/identity"
 - [type CredentialStatus](#CredentialStatus)
   - [func NewCredentialStatusFromProto\(s \*proto.CredentialStatus\) CredentialStatus](#NewCredentialStatusFromProto)
   - [func \(c CredentialStatus\) ToProto\(\) \*proto.CredentialStatus](#CredentialStatus.ToProto)
-- [type CredentialVerification](#CredentialVerification)
-  - [func NewCredentialVerificationFromProto\(s \*proto.CredentialVerification\) CredentialVerification](#NewCredentialVerificationFromProto)
-  - [func \(c CredentialVerification\) ToProto\(\) \*proto.CredentialVerification](#CredentialVerification.ToProto)
 - [type DateAttribute](#DateAttribute)
-  - [func NewDateAttribute\(key string, value int64\) DateAttribute](#NewDateAttribute)
+  - [func NewDateAttribute\(key string, value time.Time\) DateAttribute](#NewDateAttribute)
   - [func NewDateAttributeFromProto\(s \*proto.DateAttribute\) DateAttribute](#NewDateAttributeFromProto)
   - [func \(s DateAttribute\) ToProto\(\) \*proto.DateAttribute](#DateAttribute.ToProto)
 - [type DateAttributeDescriptor](#DateAttributeDescriptor)
-  - [func NewDateAttributeDescriptor\(name string, technicalName string, description string\) DateAttributeDescriptor](#NewDateAttributeDescriptor)
+  - [func NewDateAttributeDescriptor\(name string, id string, description string, required bool\) DateAttributeDescriptor](#NewDateAttributeDescriptor)
   - [func NewDateAttributeDescriptorFromProto\(s \*proto.DateAttributeDefinition\) DateAttributeDescriptor](#NewDateAttributeDescriptorFromProto)
   - [func \(s DateAttributeDescriptor\) ToProto\(\) \*proto.DateAttributeDefinition](#DateAttributeDescriptor.ToProto)
 - [type DatetimeAttribute](#DatetimeAttribute)
-  - [func NewDatetimeAttribute\(key string, value int64\) DatetimeAttribute](#NewDatetimeAttribute)
+  - [func NewDatetimeAttribute\(key string, value time.Time\) DatetimeAttribute](#NewDatetimeAttribute)
   - [func NewDatetimeAttributeFromProto\(s \*proto.DateTimeAttribute\) DatetimeAttribute](#NewDatetimeAttributeFromProto)
   - [func \(s DatetimeAttribute\) ToProto\(\) \*proto.DateTimeAttribute](#DatetimeAttribute.ToProto)
 - [type DatetimeAttributeDescriptor](#DatetimeAttributeDescriptor)
-  - [func NewDatetimeAttributeDescriptor\(name string, technicalName string, description string\) DatetimeAttributeDescriptor](#NewDatetimeAttributeDescriptor)
+  - [func NewDatetimeAttributeDescriptor\(name string, id string, description string, required bool\) DatetimeAttributeDescriptor](#NewDatetimeAttributeDescriptor)
   - [func NewDatetimeAttributeDescriptorFromProto\(s \*proto.DateTimeAttributeDefinition\) DatetimeAttributeDescriptor](#NewDatetimeAttributeDescriptorFromProto)
   - [func \(s DatetimeAttributeDescriptor\) ToProto\(\) \*proto.DateTimeAttributeDefinition](#DatetimeAttributeDescriptor.ToProto)
-- [type Identity](#Identity)
-  - [func NewIdentityFromProto\(s \*proto.Identity\) Identity](#NewIdentityFromProto)
-  - [func \(c Identity\) ToProto\(\) \*proto.Identity](#Identity.ToProto)
-- [type NumberAttribute](#NumberAttribute)
-  - [func NewNumberAttribute\(key string, value int64\) NumberAttribute](#NewNumberAttribute)
-  - [func NewNumberAttributeFromProto\(s \*proto.NumberAttribute\) NumberAttribute](#NewNumberAttributeFromProto)
-  - [func \(s NumberAttribute\) ToProto\(\) \*proto.NumberAttribute](#NumberAttribute.ToProto)
-- [type NumberAttributeDescriptor](#NumberAttributeDescriptor)
-  - [func NewNumberAttributeDescriptor\(name string, technicalName string, description string\) NumberAttributeDescriptor](#NewNumberAttributeDescriptor)
-  - [func NewNumberAttributeDescriptorFromProto\(s \*proto.NumberAttributeDefinition\) NumberAttributeDescriptor](#NewNumberAttributeDescriptorFromProto)
-  - [func \(s NumberAttributeDescriptor\) ToProto\(\) \*proto.NumberAttributeDefinition](#NumberAttributeDescriptor.ToProto)
+- [type DecimalAttribute](#DecimalAttribute)
+  - [func NewDecimalAttribute\(key string, value float64\) DecimalAttribute](#NewDecimalAttribute)
+  - [func NewDecimalAttributeFromProto\(s \*proto.DecimalAttribute\) DecimalAttribute](#NewDecimalAttributeFromProto)
+  - [func \(s DecimalAttribute\) ToProto\(\) \*proto.DecimalAttribute](#DecimalAttribute.ToProto)
+- [type DecimalAttributeDescriptor](#DecimalAttributeDescriptor)
+  - [func NewDecimalAttributeDescriptor\(name string, id string, description string, required bool\) DecimalAttributeDescriptor](#NewDecimalAttributeDescriptor)
+  - [func NewDecimalAttributeDescriptorFromProto\(s \*proto.DecimalAttributeDefinition\) DecimalAttributeDescriptor](#NewDecimalAttributeDescriptorFromProto)
+  - [func \(s DecimalAttributeDescriptor\) ToProto\(\) \*proto.DecimalAttributeDefinition](#DecimalAttributeDescriptor.ToProto)
+- [type DecimalEnumAttributeDescriptor](#DecimalEnumAttributeDescriptor)
+  - [func NewDecimalEnumAttributeDescriptor\(name string, id string, description string, required bool, enum \[\]float64\) DecimalEnumAttributeDescriptor](#NewDecimalEnumAttributeDescriptor)
+  - [func NewDecimalEnumAttributeDescriptorFromProto\(s \*proto.DecimalEnumAttributeDefinition\) DecimalEnumAttributeDescriptor](#NewDecimalEnumAttributeDescriptorFromProto)
+  - [func \(s DecimalEnumAttributeDescriptor\) ToProto\(\) \*proto.DecimalEnumAttributeDefinition](#DecimalEnumAttributeDescriptor.ToProto)
+- [type Did](#Did)
+  - [func NewDid\(did string, didType DidType\) Did](#NewDid)
+- [type DidType](#DidType)
+  - [func NewDidType\(\) DidType](#NewDidType)
+- [type Holder](#Holder)
+  - [func NewHolder\(did string, didType DidType, key key.Key\) Holder](#NewHolder)
+- [type IntegerAttribute](#IntegerAttribute)
+  - [func NewIntegerAttribute\(key string, value int64\) IntegerAttribute](#NewIntegerAttribute)
+  - [func NewIntegerAttributeFromProto\(s \*proto.IntegerAttribute\) IntegerAttribute](#NewIntegerAttributeFromProto)
+  - [func \(s IntegerAttribute\) ToProto\(\) \*proto.IntegerAttribute](#IntegerAttribute.ToProto)
+- [type IntegerAttributeDescriptor](#IntegerAttributeDescriptor)
+  - [func NewIntegerAttributeDescriptor\(name string, id string, description string, required bool\) IntegerAttributeDescriptor](#NewIntegerAttributeDescriptor)
+  - [func NewNumberAttributeDescriptorFromProto\(s \*proto.IntegerAttributeDefinition\) IntegerAttributeDescriptor](#NewNumberAttributeDescriptorFromProto)
+  - [func \(s IntegerAttributeDescriptor\) ToProto\(\) \*proto.IntegerAttributeDefinition](#IntegerAttributeDescriptor.ToProto)
+- [type IntegerEnumAttributeDescriptor](#IntegerEnumAttributeDescriptor)
+  - [func NewIntegerEnumAttributeDescriptor\(name string, id string, description string, required bool, enum \[\]int64\) IntegerEnumAttributeDescriptor](#NewIntegerEnumAttributeDescriptor)
+  - [func NewIntegerEnumAttributeDescriptorFromProto\(s \*proto.IntegerEnumAttributeDefinition\) IntegerEnumAttributeDescriptor](#NewIntegerEnumAttributeDescriptorFromProto)
+  - [func \(s IntegerEnumAttributeDescriptor\) ToProto\(\) \*proto.IntegerEnumAttributeDefinition](#IntegerEnumAttributeDescriptor.ToProto)
+- [type Issuer](#Issuer)
+  - [func NewIssuer\(did string, didType DidType, key key.Key\) Issuer](#NewIssuer)
+- [type IssuerStateReceipt](#IssuerStateReceipt)
+  - [func NewIssuerStateReceiptFromProto\(s \*proto.IssuerStateReceipt\) IssuerStateReceipt](#NewIssuerStateReceiptFromProto)
+  - [func \(i IssuerStateReceipt\) ToProto\(\) \*proto.IssuerStateReceipt](#IssuerStateReceipt.ToProto)
+- [type Method](#Method)
+- [type NetworkId](#NetworkId)
+- [type PublishIntervalParams](#PublishIntervalParams)
 - [type Schema](#Schema)
   - [func NewSchemaFromProto\(s \*proto.Schema\) Schema](#NewSchemaFromProto)
   - [func \(c Schema\) ToProto\(\) \*proto.Schema](#Schema.ToProto)
 - [type SchemaBuilder](#SchemaBuilder)
-  - [func NewSchemaBuilder\(displayName string, technicalName string, configData \*proto.ConfigData\) SchemaBuilder](#NewSchemaBuilder)
-  - [func \(c SchemaBuilder\) AddBooleanAttribute\(name string, technicalName string, description string\) SchemaBuilder](#SchemaBuilder.AddBooleanAttribute)
-  - [func \(c SchemaBuilder\) AddDateAttribute\(name string, technicalName string, description string\) SchemaBuilder](#SchemaBuilder.AddDateAttribute)
-  - [func \(c SchemaBuilder\) AddDatetimeAttribute\(name string, technicalName string, description string\) SchemaBuilder](#SchemaBuilder.AddDatetimeAttribute)
-  - [func \(c SchemaBuilder\) AddNumberAttribute\(name string, technicalName string, description string\) SchemaBuilder](#SchemaBuilder.AddNumberAttribute)
-  - [func \(c SchemaBuilder\) AddStringAttribute\(name string, technicalName string, description string\) SchemaBuilder](#SchemaBuilder.AddStringAttribute)
+  - [func NewSchemaBuilder\(displayName string, schemaType, version, description string, configData \*proto.ConfigData\) SchemaBuilder](#NewSchemaBuilder)
+  - [func \(c SchemaBuilder\) AddBooleanAttribute\(name string, id string, description string, required bool\) SchemaBuilder](#SchemaBuilder.AddBooleanAttribute)
+  - [func \(c SchemaBuilder\) AddDateAttribute\(name string, id string, description string, required bool\) SchemaBuilder](#SchemaBuilder.AddDateAttribute)
+  - [func \(c SchemaBuilder\) AddDatetimeAttribute\(name string, id string, description string, required bool\) SchemaBuilder](#SchemaBuilder.AddDatetimeAttribute)
+  - [func \(c SchemaBuilder\) AddDecimalAttribute\(name string, id string, description string, required bool\) SchemaBuilder](#SchemaBuilder.AddDecimalAttribute)
+  - [func \(c SchemaBuilder\) AddDecimalEnumAttribute\(name string, id string, description string, required bool, enum \[\]float64\) SchemaBuilder](#SchemaBuilder.AddDecimalEnumAttribute)
+  - [func \(c SchemaBuilder\) AddIntegerAttribute\(name string, id string, description string, required bool\) SchemaBuilder](#SchemaBuilder.AddIntegerAttribute)
+  - [func \(c SchemaBuilder\) AddIntegerEnumAttribute\(name string, id string, description string, required bool, enum \[\]int64\) SchemaBuilder](#SchemaBuilder.AddIntegerEnumAttribute)
+  - [func \(c SchemaBuilder\) AddStringAttribute\(name string, id string, description string, required bool\) SchemaBuilder](#SchemaBuilder.AddStringAttribute)
+  - [func \(c SchemaBuilder\) AddStringEnumAttribute\(name string, id string, description string, required bool, enum \[\]string\) SchemaBuilder](#SchemaBuilder.AddStringEnumAttribute)
   - [func \(c SchemaBuilder\) Build\(\) \(Schema, error\)](#SchemaBuilder.Build)
 - [type StringAttribute](#StringAttribute)
   - [func NewStringAttribute\(key string, value string\) StringAttribute](#NewStringAttribute)
   - [func NewStringAttributeFromProto\(s \*proto.StringAttribute\) StringAttribute](#NewStringAttributeFromProto)
   - [func \(s StringAttribute\) ToProto\(\) \*proto.StringAttribute](#StringAttribute.ToProto)
 - [type StringAttributeDescriptor](#StringAttributeDescriptor)
-  - [func NewStringAttributeDescriptor\(name string, technicalName string, description string\) StringAttributeDescriptor](#NewStringAttributeDescriptor)
+  - [func NewStringAttributeDescriptor\(name string, id string, description string, required bool\) StringAttributeDescriptor](#NewStringAttributeDescriptor)
   - [func NewStringAttributeDescriptorFromProto\(s \*proto.StringAttributeDefinition\) StringAttributeDescriptor](#NewStringAttributeDescriptorFromProto)
   - [func \(s StringAttributeDescriptor\) ToProto\(\) \*proto.StringAttributeDefinition](#StringAttributeDescriptor.ToProto)
+- [type StringEnumAttributeDescriptor](#StringEnumAttributeDescriptor)
+  - [func NewStringEnumAttributeDescriptor\(name string, id string, description string, required bool, enum \[\]string\) StringEnumAttributeDescriptor](#NewStringEnumAttributeDescriptor)
+  - [func NewStringEnumAttributeDescriptorFromProto\(s \*proto.StringEnumAttributeDefinition\) StringEnumAttributeDescriptor](#NewStringEnumAttributeDescriptorFromProto)
+  - [func \(s StringEnumAttributeDescriptor\) ToProto\(\) \*proto.StringEnumAttributeDefinition](#StringEnumAttributeDescriptor.ToProto)
+- [type VerificationParams](#VerificationParams)
+  - [func NewVerificationParams\(\) VerificationParams](#NewVerificationParams)
+- [type VerificationReceipt](#VerificationReceipt)
+  - [func NewVerificationReceiptFromProto\(s \*proto.VerificationReceipt\) VerificationReceipt](#NewVerificationReceiptFromProto)
+  - [func \(i VerificationReceipt\) ToProto\(\) \*proto.VerificationReceipt](#VerificationReceipt.ToProto)
+
+
+## Variables
+
+<a name="PublishIntervalParamsFromProto"></a>
+
+```go
+var (
+    PublishIntervalParamsFromProto = map[proto.PublishInterval]PublishIntervalParams{
+        proto.PublishInterval_INTERVAL_5:  Interval5,
+        proto.PublishInterval_INTERVAL_15: Interval15,
+        proto.PublishInterval_INTERVAL_60: Interval60,
+    }
+
+    PublishIntervalParamsToProto = map[PublishIntervalParams]proto.PublishInterval{
+        Interval5:  proto.PublishInterval_INTERVAL_5,
+        Interval15: proto.PublishInterval_INTERVAL_15,
+        Interval60: proto.PublishInterval_INTERVAL_60,
+    }
+)
+```
+
+<a name="BlockchainToProto"></a>
+## func BlockchainToProto
+
+```go
+func BlockchainToProto(blockchain Blockchain) *proto.Blockchain
+```
+
+
+
+<a name="DidTypeToProto"></a>
+## func DidTypeToProto
+
+```go
+func DidTypeToProto(didType DidType) *proto.DidType
+```
+
+
+
+<a name="MethodToProto"></a>
+## func MethodToProto
+
+```go
+func MethodToProto(method Method) *proto.Method
+```
+
+
+
+<a name="NetworkIdToProto"></a>
+## func NetworkIdToProto
+
+```go
+func NetworkIdToProto(networkId NetworkId) *proto.NetworkId
+```
+
 
 
 <a name="Attribute"></a>
 ## type Attribute
 
-
+Attribute represents an attribute with an identifier and a corresponding value.
 
 ```go
 type Attribute struct {
@@ -120,20 +218,34 @@ type Attribute struct {
 <a name="AttributeDescriptor"></a>
 ## type AttributeDescriptor
 
-
+AttributeDescriptor represents a descriptor for an attribute.
 
 ```go
 type AttributeDescriptor struct {
-    DisplayName   string
-    TechnicalName string
-    Description   string
+    // DisplayName is the human-readable display name of the attribute.
+    DisplayName string
+    // Id is the identifier for the attribute.
+    Id  string
+    // Description is a description providing additional information about the attribute.
+    Description string
+    // Required specifies whether the attribute is required.
+    Required bool
 }
+```
+
+<a name="Blockchain"></a>
+## type Blockchain
+
+Blockchain represents an enumeration of blockchains used in the DID.
+
+```go
+type Blockchain = proto.Blockchain
 ```
 
 <a name="BooleanAttribute"></a>
 ## type BooleanAttribute
 
-
+BooleanAttribute represents an attribute with a boolean value.
 
 ```go
 type BooleanAttribute struct {
@@ -148,7 +260,7 @@ type BooleanAttribute struct {
 func NewBooleanAttribute(key string, value bool) BooleanAttribute
 ```
 
-
+NewBooleanAttribute creates a new BooleanAttribute instance with the provided key and value.
 
 <a name="NewBooleanAttributeFromProto"></a>
 ### func NewBooleanAttributeFromProto
@@ -171,7 +283,7 @@ func (s BooleanAttribute) ToProto() *proto.BooleanAttribute
 <a name="BooleanAttributeDescriptor"></a>
 ## type BooleanAttributeDescriptor
 
-
+BooleanAttributeDescriptor represents a descriptor for a boolean attribute.
 
 ```go
 type BooleanAttributeDescriptor struct {
@@ -183,10 +295,10 @@ type BooleanAttributeDescriptor struct {
 ### func NewBooleanAttributeDescriptor
 
 ```go
-func NewBooleanAttributeDescriptor(name string, technicalName string, description string) BooleanAttributeDescriptor
+func NewBooleanAttributeDescriptor(name string, id string, description string, required bool) BooleanAttributeDescriptor
 ```
 
-
+NewBooleanAttributeDescriptor creates a new BooleanAttributeDescriptor instance with the provided details.
 
 <a name="NewBooleanAttributeDescriptorFromProto"></a>
 ### func NewBooleanAttributeDescriptorFromProto
@@ -209,7 +321,7 @@ func (s BooleanAttributeDescriptor) ToProto() *proto.BooleanAttributeDefinition
 <a name="Credential"></a>
 ## type Credential
 
-
+Credential represents a verifiable credential with its associated information. [Verifiable Credentials Data Model v2.0](https://www.w3.org/TR/vc-data-model-2.0/).
 
 ```go
 type Credential struct {
@@ -217,6 +329,7 @@ type Credential struct {
     Id                string
     Type              []string
     IssuanceDate      string
+    Expiration        string
     CredentialSubject interface{}
     CredentialStatus  CredentialStatus
     Issuer            string
@@ -232,7 +345,7 @@ type Credential struct {
 func NewCredentialFromJson(json string) (Credential, error)
 ```
 
-
+NewCredentialFromJson creates a Credential instance from a JSON string representation.
 
 <a name="NewCredentialFromProto"></a>
 ### func NewCredentialFromProto
@@ -250,7 +363,7 @@ func NewCredentialFromProto(s *proto.Credential) Credential
 func (c Credential) ToJson() (string, error)
 ```
 
-
+ToJson converts the Credential instance to its JSON string representation.
 
 <a name="Credential.ToProto"></a>
 ### func \(Credential\) ToProto
@@ -264,7 +377,7 @@ func (c Credential) ToProto() *proto.Credential
 <a name="CredentialBuilder"></a>
 ## type CredentialBuilder
 
-
+CredentialBuilder helps construct credentials by specifying various attributes.
 
 ```go
 type CredentialBuilder struct {
@@ -276,10 +389,10 @@ type CredentialBuilder struct {
 ### func NewCredentialBuilder
 
 ```go
-func NewCredentialBuilder(schemaId string, holderKey string, configData *proto.ConfigData) CredentialBuilder
+func NewCredentialBuilder(issuer Issuer, schemaId, holderDid string, expiration int64, version int32, configData *proto.ConfigData) CredentialBuilder
 ```
 
-
+NewCredentialBuilder creates a new CredentialBuilder instance with the specified parameters.
 
 <a name="CredentialBuilder.Build"></a>
 ### func \(CredentialBuilder\) Build
@@ -288,7 +401,7 @@ func NewCredentialBuilder(schemaId string, holderKey string, configData *proto.C
 func (c CredentialBuilder) Build() (CredentialReceipt, error)
 ```
 
-
+Build creates and returns a Credential using the specified attributes.
 
 <a name="CredentialBuilder.WithBooleanAttribute"></a>
 ### func \(CredentialBuilder\) WithBooleanAttribute
@@ -297,34 +410,43 @@ func (c CredentialBuilder) Build() (CredentialReceipt, error)
 func (c CredentialBuilder) WithBooleanAttribute(key string, value bool) CredentialBuilder
 ```
 
-
+WithBooleanAttribute adds a boolean attribute to the CredentialBuilder.
 
 <a name="CredentialBuilder.WithDateAttribute"></a>
 ### func \(CredentialBuilder\) WithDateAttribute
 
 ```go
-func (c CredentialBuilder) WithDateAttribute(key string, value int64) CredentialBuilder
+func (c CredentialBuilder) WithDateAttribute(key string, value time.Time) CredentialBuilder
 ```
 
-
+WithDateAttribute adds a date attribute to the CredentialBuilder.
 
 <a name="CredentialBuilder.WithDatetimeAttribute"></a>
 ### func \(CredentialBuilder\) WithDatetimeAttribute
 
 ```go
-func (c CredentialBuilder) WithDatetimeAttribute(key string, value int64) CredentialBuilder
+func (c CredentialBuilder) WithDatetimeAttribute(key string, value time.Time) CredentialBuilder
 ```
 
+WithDatetimeAttribute adds a datetime attribute to the CredentialBuilder.
 
-
-<a name="CredentialBuilder.WithNumberAttribute"></a>
-### func \(CredentialBuilder\) WithNumberAttribute
+<a name="CredentialBuilder.WithDecimalAttribute"></a>
+### func \(CredentialBuilder\) WithDecimalAttribute
 
 ```go
-func (c CredentialBuilder) WithNumberAttribute(key string, value int64) CredentialBuilder
+func (c CredentialBuilder) WithDecimalAttribute(key string, value float64) CredentialBuilder
 ```
 
+WithDecimalAttribute adds a decimal attribute to the CredentialBuilder.
 
+<a name="CredentialBuilder.WithIntegerAttribute"></a>
+### func \(CredentialBuilder\) WithIntegerAttribute
+
+```go
+func (c CredentialBuilder) WithIntegerAttribute(key string, value int64) CredentialBuilder
+```
+
+WithIntegerAttribute adds an integer attribute to the CredentialBuilder.
 
 <a name="CredentialBuilder.WithStringAttribute"></a>
 ### func \(CredentialBuilder\) WithStringAttribute
@@ -333,127 +455,100 @@ func (c CredentialBuilder) WithNumberAttribute(key string, value int64) Credenti
 func (c CredentialBuilder) WithStringAttribute(key string, value string) CredentialBuilder
 ```
 
+WithStringAttribute adds a string attribute to the CredentialBuilder.
 
+<a name="CredentialCoreBuilder"></a>
+## type CredentialCoreBuilder
 
-<a name="CredentialOffer"></a>
-## type CredentialOffer
-
-
+CredentialCoreBuilder helps construct credentials by specifying various attributes.
 
 ```go
-type CredentialOffer struct {
-    Thid string
-    Body CredentialOfferBody
-    From string
-    To   string
+type CredentialCoreBuilder struct {
+    // contains filtered or unexported fields
 }
 ```
 
-<a name="NewCredentialOfferFromJson"></a>
-### func NewCredentialOfferFromJson
+<a name="NewCredentialCoreBuilder"></a>
+### func NewCredentialCoreBuilder
 
 ```go
-func NewCredentialOfferFromJson(json string) (CredentialOffer, error)
+func NewCredentialCoreBuilder(issuer Issuer, schemaId, holderDid string, expiration int64, version int32, configData *proto.ConfigData) CredentialCoreBuilder
 ```
 
+NewCredentialCoreBuilder creates a new CredentialCoreBuilder instance with the specified parameters.
 
-
-<a name="NewCredentialOfferFromProto"></a>
-### func NewCredentialOfferFromProto
+<a name="CredentialCoreBuilder.Build"></a>
+### func \(CredentialCoreBuilder\) Build
 
 ```go
-func NewCredentialOfferFromProto(s *proto.CredentialOffer) CredentialOffer
+func (c CredentialCoreBuilder) Build() (CredentialReceipt, error)
 ```
 
+Build creates and returns a Credential using the specified attributes.
 
-
-<a name="CredentialOffer.ToJson"></a>
-### func \(CredentialOffer\) ToJson
+<a name="CredentialCoreBuilder.WithBooleanAttribute"></a>
+### func \(CredentialCoreBuilder\) WithBooleanAttribute
 
 ```go
-func (c CredentialOffer) ToJson() (string, error)
+func (c CredentialCoreBuilder) WithBooleanAttribute(key string, value bool) CredentialCoreBuilder
 ```
 
+WithBooleanAttribute adds a boolean attribute to the CredentialCoreBuilder.
 
-
-<a name="CredentialOffer.ToProto"></a>
-### func \(CredentialOffer\) ToProto
+<a name="CredentialCoreBuilder.WithDateAttribute"></a>
+### func \(CredentialCoreBuilder\) WithDateAttribute
 
 ```go
-func (c CredentialOffer) ToProto() *proto.CredentialOffer
+func (c CredentialCoreBuilder) WithDateAttribute(key string, value time.Time) CredentialCoreBuilder
 ```
 
+WithDateAttribute adds a date attribute to the CredentialCoreBuilder.
 
-
-<a name="CredentialOfferBody"></a>
-## type CredentialOfferBody
-
-
+<a name="CredentialCoreBuilder.WithDatetimeAttribute"></a>
+### func \(CredentialCoreBuilder\) WithDatetimeAttribute
 
 ```go
-type CredentialOfferBody struct {
-    Url         string
-    Credentials []CredentialOfferCredential
-}
+func (c CredentialCoreBuilder) WithDatetimeAttribute(key string, value time.Time) CredentialCoreBuilder
 ```
 
-<a name="NewCredentialOfferBodyFromProto"></a>
-### func NewCredentialOfferBodyFromProto
+WithDatetimeAttribute adds a datetime attribute to the CredentialCoreBuilder.
+
+<a name="CredentialCoreBuilder.WithDecimalAttribute"></a>
+### func \(CredentialCoreBuilder\) WithDecimalAttribute
 
 ```go
-func NewCredentialOfferBodyFromProto(s *proto.CredentialOfferBody) CredentialOfferBody
+func (c CredentialCoreBuilder) WithDecimalAttribute(key string, value float64) CredentialCoreBuilder
 ```
 
+WithDecimalAttribute adds a decimal attribute to the CredentialCoreBuilder.
 
-
-<a name="CredentialOfferBody.ToProto"></a>
-### func \(CredentialOfferBody\) ToProto
+<a name="CredentialCoreBuilder.WithIntegerAttribute"></a>
+### func \(CredentialCoreBuilder\) WithIntegerAttribute
 
 ```go
-func (c CredentialOfferBody) ToProto() *proto.CredentialOfferBody
+func (c CredentialCoreBuilder) WithIntegerAttribute(key string, value int64) CredentialCoreBuilder
 ```
 
+WithIntegerAttribute adds an integer attribute to the CredentialCoreBuilder.
 
-
-<a name="CredentialOfferCredential"></a>
-## type CredentialOfferCredential
-
-
+<a name="CredentialCoreBuilder.WithStringAttribute"></a>
+### func \(CredentialCoreBuilder\) WithStringAttribute
 
 ```go
-type CredentialOfferCredential struct {
-    Id          string
-    Description string
-}
+func (c CredentialCoreBuilder) WithStringAttribute(key string, value string) CredentialCoreBuilder
 ```
 
-<a name="NewCredentialOfferCredentialsFromProto"></a>
-### func NewCredentialOfferCredentialsFromProto
-
-```go
-func NewCredentialOfferCredentialsFromProto(s *proto.CredentialOfferBodyCredentials) CredentialOfferCredential
-```
-
-
-
-<a name="CredentialOfferCredential.ToProto"></a>
-### func \(CredentialOfferCredential\) ToProto
-
-```go
-func (c CredentialOfferCredential) ToProto() *proto.CredentialOfferBodyCredentials
-```
-
-
+WithStringAttribute adds a string attribute to the CredentialCoreBuilder.
 
 <a name="CredentialProof"></a>
 ## type CredentialProof
 
-
+CredentialProof represents the proof associated with a credential, including signature and sparse merkle tree proof.
 
 ```go
 type CredentialProof struct {
-    BloockProof    integrity.Proof
-    SignatureProof authenticity.SignatureJws
+    SignatureProof string
+    SparseMtProof  string
 }
 ```
 
@@ -478,12 +573,13 @@ func (c CredentialProof) ToProto() *proto.CredentialProof
 <a name="CredentialReceipt"></a>
 ## type CredentialReceipt
 
-
+CredentialReceipt represents a receipt for a credential, including the credential itself, its ID, and type.
 
 ```go
 type CredentialReceipt struct {
-    Id       string
-    AnchorID int64
+    Credential     Credential
+    CredentialId   string
+    CredentialType string
 }
 ```
 
@@ -508,7 +604,7 @@ func (c CredentialReceipt) ToProto() *proto.CredentialReceipt
 <a name="CredentialSchema"></a>
 ## type CredentialSchema
 
-
+CredentialSchema represents the schema information for a credential, including its ID and type.
 
 ```go
 type CredentialSchema struct {
@@ -538,7 +634,7 @@ func (c CredentialSchema) ToProto() *proto.CredentialSchema
 <a name="CredentialStatus"></a>
 ## type CredentialStatus
 
-
+CredentialStatus represents the status information for a credential, including its ID, revocation nonce, and type.
 
 ```go
 type CredentialStatus struct {
@@ -566,41 +662,10 @@ func (c CredentialStatus) ToProto() *proto.CredentialStatus
 
 
 
-<a name="CredentialVerification"></a>
-## type CredentialVerification
-
-
-
-```go
-type CredentialVerification struct {
-    Timestamp  uint64
-    Issuer     string
-    Revocation uint64
-}
-```
-
-<a name="NewCredentialVerificationFromProto"></a>
-### func NewCredentialVerificationFromProto
-
-```go
-func NewCredentialVerificationFromProto(s *proto.CredentialVerification) CredentialVerification
-```
-
-
-
-<a name="CredentialVerification.ToProto"></a>
-### func \(CredentialVerification\) ToProto
-
-```go
-func (c CredentialVerification) ToProto() *proto.CredentialVerification
-```
-
-
-
 <a name="DateAttribute"></a>
 ## type DateAttribute
 
-
+DateAttribute represents an attribute with a date value, including its key and formatted value.
 
 ```go
 type DateAttribute struct {
@@ -612,10 +677,10 @@ type DateAttribute struct {
 ### func NewDateAttribute
 
 ```go
-func NewDateAttribute(key string, value int64) DateAttribute
+func NewDateAttribute(key string, value time.Time) DateAttribute
 ```
 
-
+NewDateAttribute creates a new DateAttribute instance with the provided key and time value.
 
 <a name="NewDateAttributeFromProto"></a>
 ### func NewDateAttributeFromProto
@@ -638,7 +703,7 @@ func (s DateAttribute) ToProto() *proto.DateAttribute
 <a name="DateAttributeDescriptor"></a>
 ## type DateAttributeDescriptor
 
-
+DateAttributeDescriptor represents a descriptor for a date attribute, including its display name, ID, description, and required status.
 
 ```go
 type DateAttributeDescriptor struct {
@@ -650,10 +715,10 @@ type DateAttributeDescriptor struct {
 ### func NewDateAttributeDescriptor
 
 ```go
-func NewDateAttributeDescriptor(name string, technicalName string, description string) DateAttributeDescriptor
+func NewDateAttributeDescriptor(name string, id string, description string, required bool) DateAttributeDescriptor
 ```
 
-
+NewDateAttributeDescriptor creates a new DateAttributeDescriptor instance with the provided details.
 
 <a name="NewDateAttributeDescriptorFromProto"></a>
 ### func NewDateAttributeDescriptorFromProto
@@ -676,7 +741,7 @@ func (s DateAttributeDescriptor) ToProto() *proto.DateAttributeDefinition
 <a name="DatetimeAttribute"></a>
 ## type DatetimeAttribute
 
-
+DatetimeAttribute represents an attribute with a datetime value.
 
 ```go
 type DatetimeAttribute struct {
@@ -688,10 +753,10 @@ type DatetimeAttribute struct {
 ### func NewDatetimeAttribute
 
 ```go
-func NewDatetimeAttribute(key string, value int64) DatetimeAttribute
+func NewDatetimeAttribute(key string, value time.Time) DatetimeAttribute
 ```
 
-
+NewDatetimeAttribute creates a new DatetimeAttribute instance with the provided key and value.
 
 <a name="NewDatetimeAttributeFromProto"></a>
 ### func NewDatetimeAttributeFromProto
@@ -714,7 +779,7 @@ func (s DatetimeAttribute) ToProto() *proto.DateTimeAttribute
 <a name="DatetimeAttributeDescriptor"></a>
 ## type DatetimeAttributeDescriptor
 
-
+DatetimeAttributeDescriptor represents a descriptor for an attribute with a datetime value.
 
 ```go
 type DatetimeAttributeDescriptor struct {
@@ -726,10 +791,10 @@ type DatetimeAttributeDescriptor struct {
 ### func NewDatetimeAttributeDescriptor
 
 ```go
-func NewDatetimeAttributeDescriptor(name string, technicalName string, description string) DatetimeAttributeDescriptor
+func NewDatetimeAttributeDescriptor(name string, id string, description string, required bool) DatetimeAttributeDescriptor
 ```
 
-
+NewDatetimeAttributeDescriptor creates a new DatetimeAttributeDescriptor instance with the provided details.
 
 <a name="NewDatetimeAttributeDescriptorFromProto"></a>
 ### func NewDatetimeAttributeDescriptorFromProto
@@ -749,122 +814,401 @@ func (s DatetimeAttributeDescriptor) ToProto() *proto.DateTimeAttributeDefinitio
 
 
 
-<a name="Identity"></a>
-## type Identity
+<a name="DecimalAttribute"></a>
+## type DecimalAttribute
 
-
-
-```go
-type Identity struct {
-    Mnemonic   string
-    Key        string
-    PrivateKey string
-}
-```
-
-<a name="NewIdentityFromProto"></a>
-### func NewIdentityFromProto
+DecimalAttribute represents an attribute with a decimal value.
 
 ```go
-func NewIdentityFromProto(s *proto.Identity) Identity
-```
-
-
-
-<a name="Identity.ToProto"></a>
-### func \(Identity\) ToProto
-
-```go
-func (c Identity) ToProto() *proto.Identity
-```
-
-
-
-<a name="NumberAttribute"></a>
-## type NumberAttribute
-
-
-
-```go
-type NumberAttribute struct {
+type DecimalAttribute struct {
     Attribute
 }
 ```
 
-<a name="NewNumberAttribute"></a>
-### func NewNumberAttribute
+<a name="NewDecimalAttribute"></a>
+### func NewDecimalAttribute
 
 ```go
-func NewNumberAttribute(key string, value int64) NumberAttribute
+func NewDecimalAttribute(key string, value float64) DecimalAttribute
+```
+
+NewDecimalAttribute creates a new DecimalAttribute instance with the provided key and value.
+
+<a name="NewDecimalAttributeFromProto"></a>
+### func NewDecimalAttributeFromProto
+
+```go
+func NewDecimalAttributeFromProto(s *proto.DecimalAttribute) DecimalAttribute
 ```
 
 
 
-<a name="NewNumberAttributeFromProto"></a>
-### func NewNumberAttributeFromProto
+<a name="DecimalAttribute.ToProto"></a>
+### func \(DecimalAttribute\) ToProto
 
 ```go
-func NewNumberAttributeFromProto(s *proto.NumberAttribute) NumberAttribute
+func (s DecimalAttribute) ToProto() *proto.DecimalAttribute
 ```
 
 
 
-<a name="NumberAttribute.ToProto"></a>
-### func \(NumberAttribute\) ToProto
+<a name="DecimalAttributeDescriptor"></a>
+## type DecimalAttributeDescriptor
+
+DecimalAttributeDescriptor represents a descriptor for an attribute with a decimal value.
 
 ```go
-func (s NumberAttribute) ToProto() *proto.NumberAttribute
-```
-
-
-
-<a name="NumberAttributeDescriptor"></a>
-## type NumberAttributeDescriptor
-
-
-
-```go
-type NumberAttributeDescriptor struct {
+type DecimalAttributeDescriptor struct {
     AttributeDescriptor
 }
 ```
 
-<a name="NewNumberAttributeDescriptor"></a>
-### func NewNumberAttributeDescriptor
+<a name="NewDecimalAttributeDescriptor"></a>
+### func NewDecimalAttributeDescriptor
 
 ```go
-func NewNumberAttributeDescriptor(name string, technicalName string, description string) NumberAttributeDescriptor
+func NewDecimalAttributeDescriptor(name string, id string, description string, required bool) DecimalAttributeDescriptor
+```
+
+NewDecimalAttributeDescriptor creates a new DecimalAttributeDescriptor instance with the provided details.
+
+<a name="NewDecimalAttributeDescriptorFromProto"></a>
+### func NewDecimalAttributeDescriptorFromProto
+
+```go
+func NewDecimalAttributeDescriptorFromProto(s *proto.DecimalAttributeDefinition) DecimalAttributeDescriptor
 ```
 
 
+
+<a name="DecimalAttributeDescriptor.ToProto"></a>
+### func \(DecimalAttributeDescriptor\) ToProto
+
+```go
+func (s DecimalAttributeDescriptor) ToProto() *proto.DecimalAttributeDefinition
+```
+
+
+
+<a name="DecimalEnumAttributeDescriptor"></a>
+## type DecimalEnumAttributeDescriptor
+
+DecimalEnumAttributeDescriptor represents a descriptor for an attribute with a decimal enum value.
+
+```go
+type DecimalEnumAttributeDescriptor struct {
+    AttributeDescriptor
+    Enum []float64
+}
+```
+
+<a name="NewDecimalEnumAttributeDescriptor"></a>
+### func NewDecimalEnumAttributeDescriptor
+
+```go
+func NewDecimalEnumAttributeDescriptor(name string, id string, description string, required bool, enum []float64) DecimalEnumAttributeDescriptor
+```
+
+NewDecimalEnumAttributeDescriptor creates a new DecimalEnumAttributeDescriptor instance with the provided details.
+
+<a name="NewDecimalEnumAttributeDescriptorFromProto"></a>
+### func NewDecimalEnumAttributeDescriptorFromProto
+
+```go
+func NewDecimalEnumAttributeDescriptorFromProto(s *proto.DecimalEnumAttributeDefinition) DecimalEnumAttributeDescriptor
+```
+
+
+
+<a name="DecimalEnumAttributeDescriptor.ToProto"></a>
+### func \(DecimalEnumAttributeDescriptor\) ToProto
+
+```go
+func (s DecimalEnumAttributeDescriptor) ToProto() *proto.DecimalEnumAttributeDefinition
+```
+
+
+
+<a name="Did"></a>
+## type Did
+
+Did represents a DID.
+
+```go
+type Did struct {
+    Did     string
+    DidType DidType
+}
+```
+
+<a name="NewDid"></a>
+### func NewDid
+
+```go
+func NewDid(did string, didType DidType) Did
+```
+
+NewDid returns a new instance of Did for the given parameters.
+
+<a name="DidType"></a>
+## type DidType
+
+DidType represents parameters used for generating DIDs.
+
+```go
+type DidType struct {
+    Method     Method
+    Blockchain Blockchain
+    NetworkId  NetworkId
+}
+```
+
+<a name="NewDidType"></a>
+### func NewDidType
+
+```go
+func NewDidType() DidType
+```
+
+NewDidType returns a new instance of DidType with default values.
+
+<a name="Holder"></a>
+## type Holder
+
+Holder represents a Holder identity.
+
+```go
+type Holder struct {
+    Did Did
+    Key key.Key
+}
+```
+
+<a name="NewHolder"></a>
+### func NewHolder
+
+```go
+func NewHolder(did string, didType DidType, key key.Key) Holder
+```
+
+NewHolder returns a new instance of Holder identity for the given parameters.
+
+<a name="IntegerAttribute"></a>
+## type IntegerAttribute
+
+IntegerAttribute represents an attribute with an integer value.
+
+```go
+type IntegerAttribute struct {
+    Attribute
+}
+```
+
+<a name="NewIntegerAttribute"></a>
+### func NewIntegerAttribute
+
+```go
+func NewIntegerAttribute(key string, value int64) IntegerAttribute
+```
+
+NewIntegerAttribute creates a new IntegerAttribute instance with the provided key and value.
+
+<a name="NewIntegerAttributeFromProto"></a>
+### func NewIntegerAttributeFromProto
+
+```go
+func NewIntegerAttributeFromProto(s *proto.IntegerAttribute) IntegerAttribute
+```
+
+
+
+<a name="IntegerAttribute.ToProto"></a>
+### func \(IntegerAttribute\) ToProto
+
+```go
+func (s IntegerAttribute) ToProto() *proto.IntegerAttribute
+```
+
+
+
+<a name="IntegerAttributeDescriptor"></a>
+## type IntegerAttributeDescriptor
+
+IntegerAttributeDescriptor represents a descriptor for an attribute with an integer value.
+
+```go
+type IntegerAttributeDescriptor struct {
+    AttributeDescriptor
+}
+```
+
+<a name="NewIntegerAttributeDescriptor"></a>
+### func NewIntegerAttributeDescriptor
+
+```go
+func NewIntegerAttributeDescriptor(name string, id string, description string, required bool) IntegerAttributeDescriptor
+```
+
+NewIntegerAttributeDescriptor creates a new IntegerAttributeDescriptor instance with the provided details.
 
 <a name="NewNumberAttributeDescriptorFromProto"></a>
 ### func NewNumberAttributeDescriptorFromProto
 
 ```go
-func NewNumberAttributeDescriptorFromProto(s *proto.NumberAttributeDefinition) NumberAttributeDescriptor
+func NewNumberAttributeDescriptorFromProto(s *proto.IntegerAttributeDefinition) IntegerAttributeDescriptor
 ```
 
 
 
-<a name="NumberAttributeDescriptor.ToProto"></a>
-### func \(NumberAttributeDescriptor\) ToProto
+<a name="IntegerAttributeDescriptor.ToProto"></a>
+### func \(IntegerAttributeDescriptor\) ToProto
 
 ```go
-func (s NumberAttributeDescriptor) ToProto() *proto.NumberAttributeDefinition
+func (s IntegerAttributeDescriptor) ToProto() *proto.IntegerAttributeDefinition
 ```
 
 
+
+<a name="IntegerEnumAttributeDescriptor"></a>
+## type IntegerEnumAttributeDescriptor
+
+IntegerEnumAttributeDescriptor represents a descriptor for an attribute with an integer enum value.
+
+```go
+type IntegerEnumAttributeDescriptor struct {
+    AttributeDescriptor
+    Enum []int64
+}
+```
+
+<a name="NewIntegerEnumAttributeDescriptor"></a>
+### func NewIntegerEnumAttributeDescriptor
+
+```go
+func NewIntegerEnumAttributeDescriptor(name string, id string, description string, required bool, enum []int64) IntegerEnumAttributeDescriptor
+```
+
+NewIntegerEnumAttributeDescriptor creates a new IntegerEnumAttributeDescriptor instance with the provided details.
+
+<a name="NewIntegerEnumAttributeDescriptorFromProto"></a>
+### func NewIntegerEnumAttributeDescriptorFromProto
+
+```go
+func NewIntegerEnumAttributeDescriptorFromProto(s *proto.IntegerEnumAttributeDefinition) IntegerEnumAttributeDescriptor
+```
+
+
+
+<a name="IntegerEnumAttributeDescriptor.ToProto"></a>
+### func \(IntegerEnumAttributeDescriptor\) ToProto
+
+```go
+func (s IntegerEnumAttributeDescriptor) ToProto() *proto.IntegerEnumAttributeDefinition
+```
+
+
+
+<a name="Issuer"></a>
+## type Issuer
+
+Issuer represents an Issuer identity.
+
+```go
+type Issuer struct {
+    Did Did
+    Key key.Key
+}
+```
+
+<a name="NewIssuer"></a>
+### func NewIssuer
+
+```go
+func NewIssuer(did string, didType DidType, key key.Key) Issuer
+```
+
+NewIssuer returns a new instance of Issuer identity for the given parameters.
+
+<a name="IssuerStateReceipt"></a>
+## type IssuerStateReceipt
+
+IssuerStateReceipt represents a receipt for the issuer's state.
+
+```go
+type IssuerStateReceipt struct {
+    TxHash string
+}
+```
+
+<a name="NewIssuerStateReceiptFromProto"></a>
+### func NewIssuerStateReceiptFromProto
+
+```go
+func NewIssuerStateReceiptFromProto(s *proto.IssuerStateReceipt) IssuerStateReceipt
+```
+
+
+
+<a name="IssuerStateReceipt.ToProto"></a>
+### func \(IssuerStateReceipt\) ToProto
+
+```go
+func (i IssuerStateReceipt) ToProto() *proto.IssuerStateReceipt
+```
+
+
+
+<a name="Method"></a>
+## type Method
+
+Method represents an enumeration of methods used in the DID.
+
+```go
+type Method = proto.Method
+```
+
+<a name="NetworkId"></a>
+## type NetworkId
+
+NetworkId represents an enumeration of network identifiers.
+
+```go
+type NetworkId = proto.NetworkId
+```
+
+<a name="PublishIntervalParams"></a>
+## type PublishIntervalParams
+
+PublishIntervalParams represents different publish intervals.
+
+```go
+type PublishIntervalParams int32
+```
+
+<a name="Interval5"></a>
+
+```go
+const (
+    // Interval5 represents a 5-minute publish interval.
+    Interval5 PublishIntervalParams = iota
+    // Interval15 represents a 15-minute publish interval.
+    Interval15 PublishIntervalParams = iota
+    // Interval60 represents a 60-minute publish interval.
+    Interval60 PublishIntervalParams = iota
+)
+```
 
 <a name="Schema"></a>
 ## type Schema
 
-
+Schema represents a schema with its attributes.
 
 ```go
 type Schema struct {
-    Id   string
-    Json string
+    Cid        string
+    CidJsonLd  string
+    SchemaType string
+    Json       string
 }
 ```
 
@@ -889,7 +1233,7 @@ func (c Schema) ToProto() *proto.Schema
 <a name="SchemaBuilder"></a>
 ## type SchemaBuilder
 
-
+SchemaBuilder is a builder pattern for constructing schema instances.
 
 ```go
 type SchemaBuilder struct {
@@ -901,55 +1245,91 @@ type SchemaBuilder struct {
 ### func NewSchemaBuilder
 
 ```go
-func NewSchemaBuilder(displayName string, technicalName string, configData *proto.ConfigData) SchemaBuilder
+func NewSchemaBuilder(displayName string, schemaType, version, description string, configData *proto.ConfigData) SchemaBuilder
 ```
 
-
+NewSchemaBuilder creates a new instance of SchemaBuilder with initial values.
 
 <a name="SchemaBuilder.AddBooleanAttribute"></a>
 ### func \(SchemaBuilder\) AddBooleanAttribute
 
 ```go
-func (c SchemaBuilder) AddBooleanAttribute(name string, technicalName string, description string) SchemaBuilder
+func (c SchemaBuilder) AddBooleanAttribute(name string, id string, description string, required bool) SchemaBuilder
 ```
 
-
+AddBooleanAttribute adds a boolean attribute descriptor to the schema builder.
 
 <a name="SchemaBuilder.AddDateAttribute"></a>
 ### func \(SchemaBuilder\) AddDateAttribute
 
 ```go
-func (c SchemaBuilder) AddDateAttribute(name string, technicalName string, description string) SchemaBuilder
+func (c SchemaBuilder) AddDateAttribute(name string, id string, description string, required bool) SchemaBuilder
 ```
 
-
+AddDateAttribute adds a date attribute descriptor to the schema builder.
 
 <a name="SchemaBuilder.AddDatetimeAttribute"></a>
 ### func \(SchemaBuilder\) AddDatetimeAttribute
 
 ```go
-func (c SchemaBuilder) AddDatetimeAttribute(name string, technicalName string, description string) SchemaBuilder
+func (c SchemaBuilder) AddDatetimeAttribute(name string, id string, description string, required bool) SchemaBuilder
 ```
 
+AddDatetimeAttribute adds a datetime attribute descriptor to the schema builder.
 
-
-<a name="SchemaBuilder.AddNumberAttribute"></a>
-### func \(SchemaBuilder\) AddNumberAttribute
+<a name="SchemaBuilder.AddDecimalAttribute"></a>
+### func \(SchemaBuilder\) AddDecimalAttribute
 
 ```go
-func (c SchemaBuilder) AddNumberAttribute(name string, technicalName string, description string) SchemaBuilder
+func (c SchemaBuilder) AddDecimalAttribute(name string, id string, description string, required bool) SchemaBuilder
 ```
 
+AddDecimalAttribute adds a decimal attribute descriptor to the schema builder.
 
+<a name="SchemaBuilder.AddDecimalEnumAttribute"></a>
+### func \(SchemaBuilder\) AddDecimalEnumAttribute
+
+```go
+func (c SchemaBuilder) AddDecimalEnumAttribute(name string, id string, description string, required bool, enum []float64) SchemaBuilder
+```
+
+AddDecimalEnumAttribute adds a decimal enum attribute descriptor to the schema builder.
+
+<a name="SchemaBuilder.AddIntegerAttribute"></a>
+### func \(SchemaBuilder\) AddIntegerAttribute
+
+```go
+func (c SchemaBuilder) AddIntegerAttribute(name string, id string, description string, required bool) SchemaBuilder
+```
+
+AddIntegerAttribute adds an integer attribute descriptor to the schema builder.
+
+<a name="SchemaBuilder.AddIntegerEnumAttribute"></a>
+### func \(SchemaBuilder\) AddIntegerEnumAttribute
+
+```go
+func (c SchemaBuilder) AddIntegerEnumAttribute(name string, id string, description string, required bool, enum []int64) SchemaBuilder
+```
+
+AddIntegerEnumAttribute adds an integer enum attribute descriptor to the schema builder.
 
 <a name="SchemaBuilder.AddStringAttribute"></a>
 ### func \(SchemaBuilder\) AddStringAttribute
 
 ```go
-func (c SchemaBuilder) AddStringAttribute(name string, technicalName string, description string) SchemaBuilder
+func (c SchemaBuilder) AddStringAttribute(name string, id string, description string, required bool) SchemaBuilder
 ```
 
+AddStringAttribute adds a string attribute descriptor to the schema builder.
 
+<a name="SchemaBuilder.AddStringEnumAttribute"></a>
+### func \(SchemaBuilder\) AddStringEnumAttribute
+
+```go
+func (c SchemaBuilder) AddStringEnumAttribute(name string, id string, description string, required bool, enum []string) SchemaBuilder
+```
+
+AddStringEnumAttribute adds a string enum attribute descriptor to the schema builder.
 
 <a name="SchemaBuilder.Build"></a>
 ### func \(SchemaBuilder\) Build
@@ -958,12 +1338,12 @@ func (c SchemaBuilder) AddStringAttribute(name string, technicalName string, des
 func (c SchemaBuilder) Build() (Schema, error)
 ```
 
-
+Build creates a schema using the configured attributes.
 
 <a name="StringAttribute"></a>
 ## type StringAttribute
 
-
+StringAttribute represents an attribute with a string value.
 
 ```go
 type StringAttribute struct {
@@ -978,7 +1358,7 @@ type StringAttribute struct {
 func NewStringAttribute(key string, value string) StringAttribute
 ```
 
-
+NewStringAttribute creates a new StringAttribute instance with the provided key and value.
 
 <a name="NewStringAttributeFromProto"></a>
 ### func NewStringAttributeFromProto
@@ -1001,7 +1381,7 @@ func (s StringAttribute) ToProto() *proto.StringAttribute
 <a name="StringAttributeDescriptor"></a>
 ## type StringAttributeDescriptor
 
-
+StringAttributeDescriptor represents a descriptor for an attribute with a string value.
 
 ```go
 type StringAttributeDescriptor struct {
@@ -1013,10 +1393,10 @@ type StringAttributeDescriptor struct {
 ### func NewStringAttributeDescriptor
 
 ```go
-func NewStringAttributeDescriptor(name string, technicalName string, description string) StringAttributeDescriptor
+func NewStringAttributeDescriptor(name string, id string, description string, required bool) StringAttributeDescriptor
 ```
 
-
+NewStringAttributeDescriptor creates a new StringAttributeDescriptor instance with the provided details.
 
 <a name="NewStringAttributeDescriptorFromProto"></a>
 ### func NewStringAttributeDescriptorFromProto
@@ -1032,6 +1412,95 @@ func NewStringAttributeDescriptorFromProto(s *proto.StringAttributeDefinition) S
 
 ```go
 func (s StringAttributeDescriptor) ToProto() *proto.StringAttributeDefinition
+```
+
+
+
+<a name="StringEnumAttributeDescriptor"></a>
+## type StringEnumAttributeDescriptor
+
+StringEnumAttributeDescriptor represents a descriptor for an attribute with a string enum value.
+
+```go
+type StringEnumAttributeDescriptor struct {
+    AttributeDescriptor
+    Enum []string
+}
+```
+
+<a name="NewStringEnumAttributeDescriptor"></a>
+### func NewStringEnumAttributeDescriptor
+
+```go
+func NewStringEnumAttributeDescriptor(name string, id string, description string, required bool, enum []string) StringEnumAttributeDescriptor
+```
+
+NewStringEnumAttributeDescriptor creates a new StringEnumAttributeDescriptor instance with the provided details.
+
+<a name="NewStringEnumAttributeDescriptorFromProto"></a>
+### func NewStringEnumAttributeDescriptorFromProto
+
+```go
+func NewStringEnumAttributeDescriptorFromProto(s *proto.StringEnumAttributeDefinition) StringEnumAttributeDescriptor
+```
+
+
+
+<a name="StringEnumAttributeDescriptor.ToProto"></a>
+### func \(StringEnumAttributeDescriptor\) ToProto
+
+```go
+func (s StringEnumAttributeDescriptor) ToProto() *proto.StringEnumAttributeDefinition
+```
+
+
+
+<a name="VerificationParams"></a>
+## type VerificationParams
+
+VerificationParams represents parameters for verification.
+
+```go
+type VerificationParams struct {
+    Timeout int64
+}
+```
+
+<a name="NewVerificationParams"></a>
+### func NewVerificationParams
+
+```go
+func NewVerificationParams() VerificationParams
+```
+
+NewVerificationParams creates a new VerificationParams instance with default values.
+
+<a name="VerificationReceipt"></a>
+## type VerificationReceipt
+
+VerificationReceipt represents a receipt for a verification session.
+
+```go
+type VerificationReceipt struct {
+    SessionID           int64
+    VerificationRequest string
+}
+```
+
+<a name="NewVerificationReceiptFromProto"></a>
+### func NewVerificationReceiptFromProto
+
+```go
+func NewVerificationReceiptFromProto(s *proto.VerificationReceipt) VerificationReceipt
+```
+
+
+
+<a name="VerificationReceipt.ToProto"></a>
+### func \(VerificationReceipt\) ToProto
+
+```go
+func (i VerificationReceipt) ToProto() *proto.VerificationReceipt
 ```
 
 
