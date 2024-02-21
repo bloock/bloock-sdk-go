@@ -36,14 +36,16 @@ Package client provides a client for interacting with the Bloock SDK.
   - [func NewIdentityClientWithConfig\(configData \*proto.ConfigData\) IdentityClient](#NewIdentityClientWithConfig)
   - [func \(c \*IdentityClient\) BuildCredential\(issuer identity.Issuer, schemaId, holderDid string, expiration int64, version int32\) identity.CredentialBuilder](#IdentityClient.BuildCredential)
   - [func \(c \*IdentityClient\) BuildSchema\(displayName string, schemaType, version, description string\) identity.SchemaBuilder](#IdentityClient.BuildSchema)
-  - [func \(c \*IdentityClient\) CreateHolder\(holderKey key.Key, didType identity.DidType\) \(identity.Holder, error\)](#IdentityClient.CreateHolder)
-  - [func \(c \*IdentityClient\) CreateIssuer\(issuerKey key.Key, publishInterval identity.PublishIntervalParams, didType identity.DidType, name, description, image string\) \(identity.Issuer, error\)](#IdentityClient.CreateIssuer)
+  - [func \(c \*IdentityClient\) CreateHolder\(holderKey key.Key, didMethod identity.DidMethod\) \(identity.Holder, error\)](#IdentityClient.CreateHolder)
+  - [func \(c \*IdentityClient\) CreateIssuer\(issuerKey key.Key, publishInterval identity.PublishIntervalParams, didMethod identity.DidMethod, name, description, image string\) \(identity.Issuer, error\)](#IdentityClient.CreateIssuer)
   - [func \(c \*IdentityClient\) CreateVerification\(proofRequest string\) \(identity.VerificationReceipt, error\)](#IdentityClient.CreateVerification)
   - [func \(c \*IdentityClient\) ForcePublishIssuerState\(issuer identity.Issuer\) \(identity.IssuerStateReceipt, error\)](#IdentityClient.ForcePublishIssuerState)
+  - [func \(c \*IdentityClient\) GetCredential\(credentialId string\) \(identity.Credential, error\)](#IdentityClient.GetCredential)
+  - [func \(c \*IdentityClient\) GetCredentialOffer\(issuer identity.Issuer, credentialId string\) \(string, error\)](#IdentityClient.GetCredentialOffer)
   - [func \(c \*IdentityClient\) GetCredentialProof\(issuerDid string, credentialId string\) \(identity.CredentialProof, error\)](#IdentityClient.GetCredentialProof)
   - [func \(c \*IdentityClient\) GetSchema\(id string\) \(identity.Schema, error\)](#IdentityClient.GetSchema)
   - [func \(c \*IdentityClient\) GetVerificationStatus\(sessionID int64\) \(bool, error\)](#IdentityClient.GetVerificationStatus)
-  - [func \(c \*IdentityClient\) ImportIssuer\(issuerKey key.Key, didType identity.DidType\) \(identity.Issuer, error\)](#IdentityClient.ImportIssuer)
+  - [func \(c \*IdentityClient\) ImportIssuer\(issuerKey key.Key, didMethod identity.DidMethod\) \(identity.Issuer, error\)](#IdentityClient.ImportIssuer)
   - [func \(c \*IdentityClient\) RevokeCredential\(credential identity.Credential, issuer identity.Issuer\) \(bool, error\)](#IdentityClient.RevokeCredential)
   - [func \(c \*IdentityClient\) WaitVerification\(sessionID int64, params identity.VerificationParams\) \(bool, error\)](#IdentityClient.WaitVerification)
 - [type IdentityCoreClient](#IdentityCoreClient)
@@ -354,7 +356,7 @@ BuildSchema creates a new schema builder for defining a schema on the Bloock Ide
 ### func \(\*IdentityClient\) CreateHolder
 
 ```go
-func (c *IdentityClient) CreateHolder(holderKey key.Key, didType identity.DidType) (identity.Holder, error)
+func (c *IdentityClient) CreateHolder(holderKey key.Key, didMethod identity.DidMethod) (identity.Holder, error)
 ```
 
 CreateHolder creates a new holder identity.
@@ -363,7 +365,7 @@ CreateHolder creates a new holder identity.
 ### func \(\*IdentityClient\) CreateIssuer
 
 ```go
-func (c *IdentityClient) CreateIssuer(issuerKey key.Key, publishInterval identity.PublishIntervalParams, didType identity.DidType, name, description, image string) (identity.Issuer, error)
+func (c *IdentityClient) CreateIssuer(issuerKey key.Key, publishInterval identity.PublishIntervalParams, didMethod identity.DidMethod, name, description, image string) (identity.Issuer, error)
 ```
 
 CreateIssuer creates a new issuer identity on the Bloock Identity service.
@@ -385,6 +387,24 @@ func (c *IdentityClient) ForcePublishIssuerState(issuer identity.Issuer) (identi
 ```
 
 ForcePublishIssuerState publishes the state of an issuer on the Bloock Identity service.
+
+<a name="IdentityClient.GetCredential"></a>
+### func \(\*IdentityClient\) GetCredential
+
+```go
+func (c *IdentityClient) GetCredential(credentialId string) (identity.Credential, error)
+```
+
+GetCredential retrieves the Verifiable Credential entity based on the credential ID \(UUID\). \(ex: 1bf0c79e\-55e6\-4f14\-aa9d\-fb55619ba0cf\)
+
+<a name="IdentityClient.GetCredentialOffer"></a>
+### func \(\*IdentityClient\) GetCredentialOffer
+
+```go
+func (c *IdentityClient) GetCredentialOffer(issuer identity.Issuer, credentialId string) (string, error)
+```
+
+GetCredentialOffer retrieves the json raw offer based on the credential ID \(UUID\). \(ex: 1bf0c79e\-55e6\-4f14\-aa9d\-fb55619ba0cf\)
 
 <a name="IdentityClient.GetCredentialProof"></a>
 ### func \(\*IdentityClient\) GetCredentialProof
@@ -417,10 +437,10 @@ GetVerificationStatus retrieves the status of a verification session on the iden
 ### func \(\*IdentityClient\) ImportIssuer
 
 ```go
-func (c *IdentityClient) ImportIssuer(issuerKey key.Key, didType identity.DidType) (identity.Issuer, error)
+func (c *IdentityClient) ImportIssuer(issuerKey key.Key, didMethod identity.DidMethod) (identity.Issuer, error)
 ```
 
-ImportIssuer retrieves the issuer based on the issuer key and DID type.
+ImportIssuer retrieves the issuer based on the issuer key and DID method.
 
 <a name="IdentityClient.RevokeCredential"></a>
 ### func \(\*IdentityClient\) RevokeCredential

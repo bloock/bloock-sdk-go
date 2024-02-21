@@ -9,13 +9,8 @@ import "github.com/bloock/bloock-sdk-go/v2/entity/identity"
 ## Index
 
 - [Variables](#variables)
-- [func BlockchainToProto\(blockchain Blockchain\) \*proto.Blockchain](#BlockchainToProto)
-- [func DidTypeToProto\(didType DidType\) \*proto.DidType](#DidTypeToProto)
-- [func MethodToProto\(method Method\) \*proto.Method](#MethodToProto)
-- [func NetworkIdToProto\(networkId NetworkId\) \*proto.NetworkId](#NetworkIdToProto)
 - [type Attribute](#Attribute)
 - [type AttributeDescriptor](#AttributeDescriptor)
-- [type Blockchain](#Blockchain)
 - [type BooleanAttribute](#BooleanAttribute)
   - [func NewBooleanAttribute\(key string, value bool\) BooleanAttribute](#NewBooleanAttribute)
   - [func NewBooleanAttributeFromProto\(s \*proto.BooleanAttribute\) BooleanAttribute](#NewBooleanAttributeFromProto)
@@ -88,11 +83,10 @@ import "github.com/bloock/bloock-sdk-go/v2/entity/identity"
   - [func NewDecimalEnumAttributeDescriptorFromProto\(s \*proto.DecimalEnumAttributeDefinition\) DecimalEnumAttributeDescriptor](#NewDecimalEnumAttributeDescriptorFromProto)
   - [func \(s DecimalEnumAttributeDescriptor\) ToProto\(\) \*proto.DecimalEnumAttributeDefinition](#DecimalEnumAttributeDescriptor.ToProto)
 - [type Did](#Did)
-  - [func NewDid\(did string, didType DidType\) Did](#NewDid)
-- [type DidType](#DidType)
-  - [func NewDidType\(\) DidType](#NewDidType)
+  - [func NewDid\(did string, didMethod DidMethod\) Did](#NewDid)
+- [type DidMethod](#DidMethod)
 - [type Holder](#Holder)
-  - [func NewHolder\(did string, didType DidType, key key.Key\) Holder](#NewHolder)
+  - [func NewHolder\(did string, didMethod DidMethod, key key.Key\) Holder](#NewHolder)
 - [type IntegerAttribute](#IntegerAttribute)
   - [func NewIntegerAttribute\(key string, value int64\) IntegerAttribute](#NewIntegerAttribute)
   - [func NewIntegerAttributeFromProto\(s \*proto.IntegerAttribute\) IntegerAttribute](#NewIntegerAttributeFromProto)
@@ -106,12 +100,10 @@ import "github.com/bloock/bloock-sdk-go/v2/entity/identity"
   - [func NewIntegerEnumAttributeDescriptorFromProto\(s \*proto.IntegerEnumAttributeDefinition\) IntegerEnumAttributeDescriptor](#NewIntegerEnumAttributeDescriptorFromProto)
   - [func \(s IntegerEnumAttributeDescriptor\) ToProto\(\) \*proto.IntegerEnumAttributeDefinition](#IntegerEnumAttributeDescriptor.ToProto)
 - [type Issuer](#Issuer)
-  - [func NewIssuer\(did string, didType DidType, key key.Key\) Issuer](#NewIssuer)
+  - [func NewIssuer\(did string, didMethod DidMethod, key key.Key\) Issuer](#NewIssuer)
 - [type IssuerStateReceipt](#IssuerStateReceipt)
   - [func NewIssuerStateReceiptFromProto\(s \*proto.IssuerStateReceipt\) IssuerStateReceipt](#NewIssuerStateReceiptFromProto)
   - [func \(i IssuerStateReceipt\) ToProto\(\) \*proto.IssuerStateReceipt](#IssuerStateReceipt.ToProto)
-- [type Method](#Method)
-- [type NetworkId](#NetworkId)
 - [type PublishIntervalParams](#PublishIntervalParams)
 - [type Schema](#Schema)
   - [func NewSchemaFromProto\(s \*proto.Schema\) Schema](#NewSchemaFromProto)
@@ -149,6 +141,22 @@ import "github.com/bloock/bloock-sdk-go/v2/entity/identity"
 
 ## Variables
 
+<a name="DidMethodEnumFromProto"></a>
+
+```go
+var (
+    DidMethodEnumFromProto = map[proto.DidMethod]DidMethod{
+        proto.DidMethod_POLYGON_ID:      PolygonID,
+        proto.DidMethod_POLYGON_ID_TEST: PolygonIDTest,
+    }
+
+    DidMethodEnumToProto = map[DidMethod]proto.DidMethod{
+        PolygonID:     proto.DidMethod_POLYGON_ID,
+        PolygonIDTest: proto.DidMethod_POLYGON_ID_TEST,
+    }
+)
+```
+
 <a name="PublishIntervalParamsFromProto"></a>
 
 ```go
@@ -166,42 +174,6 @@ var (
     }
 )
 ```
-
-<a name="BlockchainToProto"></a>
-## func BlockchainToProto
-
-```go
-func BlockchainToProto(blockchain Blockchain) *proto.Blockchain
-```
-
-
-
-<a name="DidTypeToProto"></a>
-## func DidTypeToProto
-
-```go
-func DidTypeToProto(didType DidType) *proto.DidType
-```
-
-
-
-<a name="MethodToProto"></a>
-## func MethodToProto
-
-```go
-func MethodToProto(method Method) *proto.Method
-```
-
-
-
-<a name="NetworkIdToProto"></a>
-## func NetworkIdToProto
-
-```go
-func NetworkIdToProto(networkId NetworkId) *proto.NetworkId
-```
-
-
 
 <a name="Attribute"></a>
 ## type Attribute
@@ -231,15 +203,6 @@ type AttributeDescriptor struct {
     // Required specifies whether the attribute is required.
     Required bool
 }
-```
-
-<a name="Blockchain"></a>
-## type Blockchain
-
-Blockchain represents an enumeration of blockchains used in the DID.
-
-```go
-type Blockchain = proto.Blockchain
 ```
 
 <a name="BooleanAttribute"></a>
@@ -936,8 +899,8 @@ Did represents a DID.
 
 ```go
 type Did struct {
-    Did     string
-    DidType DidType
+    Did       string
+    DidMethod DidMethod
 }
 ```
 
@@ -945,32 +908,30 @@ type Did struct {
 ### func NewDid
 
 ```go
-func NewDid(did string, didType DidType) Did
+func NewDid(did string, didMethod DidMethod) Did
 ```
 
 NewDid returns a new instance of Did for the given parameters.
 
-<a name="DidType"></a>
-## type DidType
+<a name="DidMethod"></a>
+## type DidMethod
 
-DidType represents parameters used for generating DIDs.
-
-```go
-type DidType struct {
-    Method     Method
-    Blockchain Blockchain
-    NetworkId  NetworkId
-}
-```
-
-<a name="NewDidType"></a>
-### func NewDidType
+DidMethod represents the type of method did.
 
 ```go
-func NewDidType() DidType
+type DidMethod int32
 ```
 
-NewDidType returns a new instance of DidType with default values.
+<a name="PolygonID"></a>
+
+```go
+const (
+    // PolygonID represents the polygon id method did.
+    PolygonID DidMethod = iota
+    // PolygonIDTest represents the polygon id test method did.
+    PolygonIDTest DidMethod = iota
+)
+```
 
 <a name="Holder"></a>
 ## type Holder
@@ -988,7 +949,7 @@ type Holder struct {
 ### func NewHolder
 
 ```go
-func NewHolder(did string, didType DidType, key key.Key) Holder
+func NewHolder(did string, didMethod DidMethod, key key.Key) Holder
 ```
 
 NewHolder returns a new instance of Holder identity for the given parameters.
@@ -1124,7 +1085,7 @@ type Issuer struct {
 ### func NewIssuer
 
 ```go
-func NewIssuer(did string, didType DidType, key key.Key) Issuer
+func NewIssuer(did string, didMethod DidMethod, key key.Key) Issuer
 ```
 
 NewIssuer returns a new instance of Issuer identity for the given parameters.
@@ -1157,24 +1118,6 @@ func (i IssuerStateReceipt) ToProto() *proto.IssuerStateReceipt
 ```
 
 
-
-<a name="Method"></a>
-## type Method
-
-Method represents an enumeration of methods used in the DID.
-
-```go
-type Method = proto.Method
-```
-
-<a name="NetworkId"></a>
-## type NetworkId
-
-NetworkId represents an enumeration of network identifiers.
-
-```go
-type NetworkId = proto.NetworkId
-```
 
 <a name="PublishIntervalParams"></a>
 ## type PublishIntervalParams

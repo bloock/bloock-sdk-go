@@ -36,10 +36,10 @@ func NewIdentityClientWithConfig(configData *proto.ConfigData) IdentityClient {
 }
 
 // CreateHolder creates a new holder identity.
-func (c *IdentityClient) CreateHolder(holderKey key.Key, didType identity.DidType) (identity.Holder, error) {
+func (c *IdentityClient) CreateHolder(holderKey key.Key, didMethod identity.DidMethod) (identity.Holder, error) {
 	res, err := c.bridgeClient.Identity().CreateHolder(context.Background(), &proto.CreateHolderRequest{
 		Key:        holderKey.ToProto(),
-		DidType:    identity.DidTypeToProto(didType),
+		DidMethod:  identity.DidMethodEnumToProto[didMethod],
 		ConfigData: c.configData,
 	})
 
@@ -51,11 +51,11 @@ func (c *IdentityClient) CreateHolder(holderKey key.Key, didType identity.DidTyp
 		return identity.Holder{}, errors.New(res.Error.Message)
 	}
 
-	return identity.NewHolder(res.Did, didType, holderKey), nil
+	return identity.NewHolder(res.Did, didMethod, holderKey), nil
 }
 
 // CreateIssuer creates a new issuer identity on the Bloock Identity service.
-func (c *IdentityClient) CreateIssuer(issuerKey key.Key, publishInterval identity.PublishIntervalParams, didType identity.DidType, name, description, image string) (identity.Issuer, error) {
+func (c *IdentityClient) CreateIssuer(issuerKey key.Key, publishInterval identity.PublishIntervalParams, didMethod identity.DidMethod, name, description, image string) (identity.Issuer, error) {
 	var iName, iDescription, iImage *string
 	if name != "" {
 		iName = &name
@@ -69,7 +69,7 @@ func (c *IdentityClient) CreateIssuer(issuerKey key.Key, publishInterval identit
 
 	res, err := c.bridgeClient.Identity().CreateIssuer(context.Background(), &proto.CreateIssuerRequest{
 		Key:             issuerKey.ToProto(),
-		DidType:         identity.DidTypeToProto(didType),
+		DidMethod:       identity.DidMethodEnumToProto[didMethod],
 		Name:            iName,
 		Description:     iDescription,
 		Image:           iImage,
@@ -85,15 +85,15 @@ func (c *IdentityClient) CreateIssuer(issuerKey key.Key, publishInterval identit
 		return identity.Issuer{}, errors.New(res.Error.Message)
 	}
 
-	return identity.NewIssuer(res.GetDid(), didType, issuerKey), nil
+	return identity.NewIssuer(res.GetDid(), didMethod, issuerKey), nil
 }
 
-// ImportIssuer retrieves the issuer based on the issuer key and DID type.
-func (c *IdentityClient) ImportIssuer(issuerKey key.Key, didType identity.DidType) (identity.Issuer, error) {
+// ImportIssuer retrieves the issuer based on the issuer key and DID method.
+func (c *IdentityClient) ImportIssuer(issuerKey key.Key, didMethod identity.DidMethod) (identity.Issuer, error) {
 	res, err := c.bridgeClient.Identity().ImportIssuer(context.Background(), &proto.ImportIssuerRequest{
 		ConfigData: c.configData,
 		Key:        issuerKey.ToProto(),
-		DidType:    identity.DidTypeToProto(didType),
+		DidMethod:  identity.DidMethodEnumToProto[didMethod],
 	})
 	if err != nil {
 		return identity.Issuer{}, err
@@ -103,7 +103,7 @@ func (c *IdentityClient) ImportIssuer(issuerKey key.Key, didType identity.DidTyp
 		return identity.Issuer{}, errors.New(res.Error.Message)
 	}
 
-	return identity.NewIssuer(res.GetDid(), didType, issuerKey), nil
+	return identity.NewIssuer(res.GetDid(), didMethod, issuerKey), nil
 }
 
 // BuildSchema creates a new schema builder for defining a schema on the Bloock Identity service.
@@ -132,6 +132,43 @@ func (c *IdentityClient) GetSchema(id string) (identity.Schema, error) {
 // BuildCredential creates a new credential builder for defining a credential on the Bloock Identity service.
 func (c *IdentityClient) BuildCredential(issuer identity.Issuer, schemaId, holderDid string, expiration int64, version int32) identity.CredentialBuilder {
 	return identity.NewCredentialBuilder(issuer, schemaId, holderDid, expiration, version, c.configData)
+}
+
+// GetCredential retrieves the Verifiable Credential entity based on the credential ID (UUID). (ex: 1bf0c79e-55e6-4f14-aa9d-fb55619ba0cf)
+func (c *IdentityClient) GetCredential(credentialId string) (identity.Credential, error) {
+	res, err := c.bridgeClient.Identity().GetCredential(context.Background(), &proto.GetCredentialRequest{
+		ConfigData:   c.configData,
+		CredentialId: credentialId,
+	})
+
+	if err != nil {
+		return identity.Credential{}, err
+	}
+
+	if res.Error != nil {
+		return identity.Credential{}, errors.New(res.Error.Message)
+	}
+
+	return identity.NewCredentialFromProto(res.GetCredential()), nil
+}
+
+// GetCredentialOffer retrieves the json raw offer based on the credential ID (UUID). (ex: 1bf0c79e-55e6-4f14-aa9d-fb55619ba0cf)
+func (c *IdentityClient) GetCredentialOffer(issuer identity.Issuer, credentialId string) (string, error) {
+	res, err := c.bridgeClient.Identity().GetCredentialOffer(context.Background(), &proto.GetCredentialOfferRequest{
+		ConfigData:   c.configData,
+		CredentialId: credentialId,
+		Key:          issuer.Key.ToProto(),
+	})
+
+	if err != nil {
+		return "", err
+	}
+
+	if res.Error != nil {
+		return "", errors.New(res.Error.Message)
+	}
+
+	return res.GetCredentialOffer(), nil
 }
 
 // ForcePublishIssuerState publishes the state of an issuer on the Bloock Identity service.
