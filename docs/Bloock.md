@@ -13,7 +13,7 @@ For information about Bloock SDK in Go, see https://bloock.com.
 ## Index
 
 - [Variables](#variables)
-- [func SetContractAddess\(network integrity.Network, contractAddress string\)](#SetContractAddess)
+- [func SetContractAddress\(network integrity.Network, contractAddress string\)](#SetContractAddress)
 - [func SetProvider\(network integrity.Network, provider string\)](#SetProvider)
 
 
@@ -55,14 +55,14 @@ var IdentityApiHost string = ""
 var NetworkConfig map[int32]*proto.NetworkConfig = make(map[int32]*proto.NetworkConfig)
 ```
 
-<a name="SetContractAddess"></a>
-## func SetContractAddess
+<a name="SetContractAddress"></a>
+## func SetContractAddress
 
 ```go
-func SetContractAddess(network integrity.Network, contractAddress string)
+func SetContractAddress(network integrity.Network, contractAddress string)
 ```
 
-SetContractAddess sets the contract address for the specified network in the Bloock SDK configuration.
+SetContractAddress sets the contract address for the specified network in the Bloock SDK configuration.
 
 <a name="SetProvider"></a>
 ## func SetProvider
