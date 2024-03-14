@@ -23,7 +23,7 @@ Package client provides a client for interacting with the Bloock SDK.
   - [func \(c \*AvailabilityClient\) Publish\(r record.Record, publisher availability.Publisher\) \(string, error\)](#AvailabilityClient.Publish)
   - [func \(c \*AvailabilityClient\) Retrieve\(loader availability.Loader\) \(record.Record, error\)](#AvailabilityClient.Retrieve)
 - [type BloockClient](#BloockClient)
-  - [func NewBloockClient\(apiKey string, identityApiHost \*string, forceEnv \*string\) BloockClient](#NewBloockClient)
+  - [func NewBloockClient\(apiKey string, identityApiHost \*string\) BloockClient](#NewBloockClient)
 - [type EncryptionClient](#EncryptionClient)
   - [func NewEncryptionClient\(\) EncryptionClient](#NewEncryptionClient)
   - [func NewEncryptionClientWithConfig\(configData \*proto.ConfigData\) EncryptionClient](#NewEncryptionClientWithConfig)
@@ -235,7 +235,7 @@ type BloockClient struct {
 ### func NewBloockClient
 
 ```go
-func NewBloockClient(apiKey string, identityApiHost *string, forceEnv *string) BloockClient
+func NewBloockClient(apiKey string, identityApiHost *string) BloockClient
 ```
 
 NewBloockClient creates a new instance of the Bloock SDK client with the specified configuration.

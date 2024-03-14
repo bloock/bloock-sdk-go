@@ -31,18 +31,6 @@ var ApiHost string
 var ApiKey string
 ```
 
-<a name="DisableAnalytics"></a>DisableAnalytics is a boolean variable that, when set to true, disables the analytics feature in the Bloock SDK.
-
-```go
-var DisableAnalytics bool = false
-```
-
-<a name="ForceEnv"></a>ForceEnv is a string variable used to force a specific environment configuration. It allows developers to set a predefined environment for the Bloock SDK.
-
-```go
-var ForceEnv string = ""
-```
-
 <a name="IdentityApiHost"></a>IdentityApiHost is a string variable representing the host URL used for Identity Managed API. Required to be set for identity\-related features of the Bloock SDK.
 
 ```go
