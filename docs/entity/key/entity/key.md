@@ -17,6 +17,7 @@ import "github.com/bloock/bloock-sdk-go/v2/entity/key"
 - [type AccessControlTotp](#AccessControlTotp)
   - [func NewAccessControlTotp\(code string\) \*AccessControlTotp](#NewAccessControlTotp)
   - [func \(a AccessControlTotp\) ToProto\(\) \*proto.AccessControlTotp](#AccessControlTotp.ToProto)
+- [type AccessControlType](#AccessControlType)
 - [type CertificateType](#CertificateType)
 - [type ImportCertificateParams](#ImportCertificateParams)
   - [func NewImportCertificateParams\(\) ImportCertificateParams](#NewImportCertificateParams)
@@ -56,6 +57,24 @@ import "github.com/bloock/bloock-sdk-go/v2/entity/key"
 
 
 ## Variables
+
+<a name="AccessControlTypeFromProto"></a>
+
+```go
+var (
+    AccessControlTypeFromProto = map[proto.AccessControlType]AccessControlType{
+        proto.AccessControlType_NO_ACCESS_CONTROL: ACCESS_CONTROL_NONE,
+        proto.AccessControlType_TOTP:              ACCESS_CONTROL_TOTP,
+        proto.AccessControlType_SECRET:            ACCESS_CONTROL_SECRET,
+    }
+
+    AccessControlTypeToProto = map[AccessControlType]proto.AccessControlType{
+        ACCESS_CONTROL_NONE:   proto.AccessControlType_NO_ACCESS_CONTROL,
+        ACCESS_CONTROL_TOTP:   proto.AccessControlType_TOTP,
+        ACCESS_CONTROL_SECRET: proto.AccessControlType_SECRET,
+    }
+)
+```
 
 <a name="CertificateTypeFromProto"></a>
 
@@ -193,6 +212,28 @@ func (a AccessControlTotp) ToProto() *proto.AccessControlTotp
 ```
 
 
+
+<a name="AccessControlType"></a>
+## type AccessControlType
+
+AccessControlType represents the access control type of a key.
+
+```go
+type AccessControlType int32
+```
+
+<a name="ACCESS_CONTROL_NONE"></a>
+
+```go
+const (
+    // ACCESS_CONTROL_NONE indicates that the key is not protected by access control.
+    ACCESS_CONTROL_NONE AccessControlType = iota
+    // ACCESS_CONTROL_TOTP indicates that the key is protected by a TOTP-based access control.
+    ACCESS_CONTROL_TOTP AccessControlType = iota
+    // ACCESS_CONTROL_SECRET indicates that the key is protected by a SECRET-based access control.
+    ACCESS_CONTROL_SECRET AccessControlType = iota
+)
+```
 
 <a name="CertificateType"></a>
 ## type CertificateType
@@ -460,6 +501,8 @@ type ManagedCertificate struct {
     Expiration int64
     // Key is the certificate public key.
     Key string
+    // AccessControlType is the access control type for the key.
+    AccessControlType AccessControlType
 }
 ```
 
@@ -534,6 +577,8 @@ type ManagedKey struct {
     Expiration int64
     // Key is the actual public key.
     Key string
+    // AccessControlType is the access control type for the key.
+    AccessControlType AccessControlType
 }
 ```
 
