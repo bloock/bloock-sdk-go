@@ -58,7 +58,7 @@ import "github.com/bloock/bloock-sdk-go/v2/entity/key"
 
 ## Variables
 
-<a name="AccessControlTypeFromProto"></a>
+###### AccessControlTypeFromProto {#AccessControlTypeFromProto}
 
 ```go
 var (
@@ -76,7 +76,7 @@ var (
 )
 ```
 
-<a name="CertificateTypeFromProto"></a>
+###### CertificateTypeFromProto {#CertificateTypeFromProto}
 
 ```go
 var (
@@ -92,7 +92,7 @@ var (
 )
 ```
 
-<a name="KeyProtectionLevelFromProto"></a>
+###### KeyProtectionLevelFromProto {#KeyProtectionLevelFromProto}
 
 ```go
 var (
@@ -108,7 +108,7 @@ var (
 )
 ```
 
-<a name="KeyTypeFromProto"></a>
+###### KeyTypeFromProto {#KeyTypeFromProto}
 
 ```go
 var (
@@ -134,7 +134,7 @@ var (
 )
 ```
 
-<a name="AccessControl"></a>
+###### AccessControl {#AccessControl}
 ## type AccessControl
 
 AccessControl represents access control information, including Time\-based One\-Time Password \(TOTP\) and secret\-based access.
@@ -146,7 +146,7 @@ type AccessControl struct {
 }
 ```
 
-<a name="AccessControl.ToProto"></a>
+###### AccessControl.ToProto {#AccessControl.ToProto}
 ### func \(AccessControl\) ToProto
 
 ```go
@@ -155,7 +155,7 @@ func (a AccessControl) ToProto() *proto.AccessControl
 
 
 
-<a name="AccessControlSecret"></a>
+###### AccessControlSecret {#AccessControlSecret}
 ## type AccessControlSecret
 
 AccessControlSecret represents a secret used for secret\-based access control.
@@ -166,7 +166,7 @@ type AccessControlSecret struct {
 }
 ```
 
-<a name="NewAccessControlSecret"></a>
+###### NewAccessControlSecret {#NewAccessControlSecret}
 ### func NewAccessControlSecret
 
 ```go
@@ -175,7 +175,7 @@ func NewAccessControlSecret(secret string) *AccessControlSecret
 
 NewAccessControlSecret creates a new AccessControlSecret instance with the provided secret.
 
-<a name="AccessControlSecret.ToProto"></a>
+###### AccessControlSecret.ToProto {#AccessControlSecret.ToProto}
 ### func \(AccessControlSecret\) ToProto
 
 ```go
@@ -184,7 +184,7 @@ func (a AccessControlSecret) ToProto() *proto.AccessControlSecret
 
 
 
-<a name="AccessControlTotp"></a>
+###### AccessControlTotp {#AccessControlTotp}
 ## type AccessControlTotp
 
 AccessControlTotp represents a Time\-based One\-Time Password \([TOTP](https://datatracker.ietf.org/doc/html/rfc6238)\) code used for access control.
@@ -195,7 +195,7 @@ type AccessControlTotp struct {
 }
 ```
 
-<a name="NewAccessControlTotp"></a>
+###### NewAccessControlTotp {#NewAccessControlTotp}
 ### func NewAccessControlTotp
 
 ```go
@@ -204,7 +204,7 @@ func NewAccessControlTotp(code string) *AccessControlTotp
 
 NewAccessControlTotp creates a new AccessControlTotp instance with the provided TOTP code.
 
-<a name="AccessControlTotp.ToProto"></a>
+###### AccessControlTotp.ToProto {#AccessControlTotp.ToProto}
 ### func \(AccessControlTotp\) ToProto
 
 ```go
@@ -213,7 +213,7 @@ func (a AccessControlTotp) ToProto() *proto.AccessControlTotp
 
 
 
-<a name="AccessControlType"></a>
+###### AccessControlType {#AccessControlType}
 ## type AccessControlType
 
 AccessControlType represents the access control type of a key.
@@ -222,7 +222,7 @@ AccessControlType represents the access control type of a key.
 type AccessControlType int32
 ```
 
-<a name="ACCESS_CONTROL_NONE"></a>
+###### ACCESS_CONTROL_NONE {#ACCESS_CONTROL_NONE}
 
 ```go
 const (
@@ -235,7 +235,7 @@ const (
 )
 ```
 
-<a name="CertificateType"></a>
+###### CertificateType {#CertificateType}
 ## type CertificateType
 
 CertificateType represents the type of certificate.
@@ -244,7 +244,7 @@ CertificateType represents the type of certificate.
 type CertificateType int32
 ```
 
-<a name="PEM"></a>
+###### PEM {#PEM}
 
 ```go
 const (
@@ -255,7 +255,7 @@ const (
 )
 ```
 
-<a name="ImportCertificateParams"></a>
+###### ImportCertificateParams {#ImportCertificateParams}
 ## type ImportCertificateParams
 
 ImportCertificateParams represents parameters for importing a certificate.
@@ -266,7 +266,7 @@ type ImportCertificateParams struct {
 }
 ```
 
-<a name="NewImportCertificateParams"></a>
+###### NewImportCertificateParams {#NewImportCertificateParams}
 ### func NewImportCertificateParams
 
 ```go
@@ -275,7 +275,7 @@ func NewImportCertificateParams() ImportCertificateParams
 
 NewImportCertificateParams creates an ImportCertificateParams instance with default values.
 
-<a name="Key"></a>
+###### Key {#Key}
 ## type Key
 
 Key represents a key entity that can be either a ManagedKey or a LocalKey.
@@ -287,7 +287,7 @@ type Key struct {
 }
 ```
 
-<a name="Key.ToProto"></a>
+###### Key.ToProto {#Key.ToProto}
 ### func \(Key\) ToProto
 
 ```go
@@ -296,7 +296,7 @@ func (s Key) ToProto() *proto.Key
 
 
 
-<a name="KeyPair"></a>
+###### KeyPair {#KeyPair}
 ## type KeyPair
 
 KeyPair represents a pair of public and private keys.
@@ -308,7 +308,7 @@ type KeyPair struct {
 }
 ```
 
-<a name="NewEcdsaKeysFromProto"></a>
+###### NewEcdsaKeysFromProto {#NewEcdsaKeysFromProto}
 ### func NewEcdsaKeysFromProto
 
 ```go
@@ -317,7 +317,7 @@ func NewEcdsaKeysFromProto(k *proto.GenerateLocalKeyResponse) KeyPair
 
 
 
-<a name="NewRsaKeyPairFromProto"></a>
+###### NewRsaKeyPairFromProto {#NewRsaKeyPairFromProto}
 ### func NewRsaKeyPairFromProto
 
 ```go
@@ -326,7 +326,7 @@ func NewRsaKeyPairFromProto(k *proto.GenerateLocalKeyResponse) KeyPair
 
 
 
-<a name="KeyProtectionLevel"></a>
+###### KeyProtectionLevel {#KeyProtectionLevel}
 ## type KeyProtectionLevel
 
 KeyProtectionLevel represents the protection level of a cryptographic key.
@@ -335,7 +335,7 @@ KeyProtectionLevel represents the protection level of a cryptographic key.
 type KeyProtectionLevel int32
 ```
 
-<a name="KEY_PROTECTION_SOFTWARE"></a>
+###### KEY_PROTECTION_SOFTWARE {#KEY_PROTECTION_SOFTWARE}
 
 ```go
 const (
@@ -346,7 +346,7 @@ const (
 )
 ```
 
-<a name="KeyType"></a>
+###### KeyType {#KeyType}
 ## type KeyType
 
 KeyType represents the type of cryptographic key.
@@ -355,7 +355,7 @@ KeyType represents the type of cryptographic key.
 type KeyType int32
 ```
 
-<a name="EcP256k"></a>
+###### EcP256k {#EcP256k}
 
 ```go
 const (
@@ -376,7 +376,7 @@ const (
 )
 ```
 
-<a name="LocalCertificate"></a>
+###### LocalCertificate {#LocalCertificate}
 ## type LocalCertificate
 
 LocalCertificate represents a local certificate along with its password.
@@ -388,7 +388,7 @@ type LocalCertificate struct {
 }
 ```
 
-<a name="NewLocalCertificateFromProto"></a>
+###### NewLocalCertificateFromProto {#NewLocalCertificateFromProto}
 ### func NewLocalCertificateFromProto
 
 ```go
@@ -397,7 +397,7 @@ func NewLocalCertificateFromProto(s *proto.LocalCertificate) LocalCertificate
 
 
 
-<a name="LocalCertificate.ToProto"></a>
+###### LocalCertificate.ToProto {#LocalCertificate.ToProto}
 ### func \(LocalCertificate\) ToProto
 
 ```go
@@ -406,7 +406,7 @@ func (s LocalCertificate) ToProto() *proto.LocalCertificate
 
 
 
-<a name="LocalCertificateParams"></a>
+###### LocalCertificateParams {#LocalCertificateParams}
 ## type LocalCertificateParams
 
 LocalCertificateParams represents the parameters for generating a local certificate.
@@ -420,7 +420,7 @@ type LocalCertificateParams struct {
 }
 ```
 
-<a name="NewLocalCertificateParamsFromProto"></a>
+###### NewLocalCertificateParamsFromProto {#NewLocalCertificateParamsFromProto}
 ### func NewLocalCertificateParamsFromProto
 
 ```go
@@ -429,7 +429,7 @@ func NewLocalCertificateParamsFromProto(s *proto.LocalCertificateParams) LocalCe
 
 
 
-<a name="LocalCertificateParams.ToProto"></a>
+###### LocalCertificateParams.ToProto {#LocalCertificateParams.ToProto}
 ### func \(LocalCertificateParams\) ToProto
 
 ```go
@@ -438,7 +438,7 @@ func (s LocalCertificateParams) ToProto() *proto.LocalCertificateParams
 
 
 
-<a name="LocalKey"></a>
+###### LocalKey {#LocalKey}
 ## type LocalKey
 
 LocalKey represents a local key with its public and private components.
@@ -454,7 +454,7 @@ type LocalKey struct {
 }
 ```
 
-<a name="NewLocalKeyFromProto"></a>
+###### NewLocalKeyFromProto {#NewLocalKeyFromProto}
 ### func NewLocalKeyFromProto
 
 ```go
@@ -463,7 +463,7 @@ func NewLocalKeyFromProto(s *proto.LocalKey) LocalKey
 
 
 
-<a name="LocalKey.ToProto"></a>
+###### LocalKey.ToProto {#LocalKey.ToProto}
 ### func \(LocalKey\) ToProto
 
 ```go
@@ -472,7 +472,7 @@ func (s LocalKey) ToProto() *proto.LocalKey
 
 
 
-<a name="Managed"></a>
+###### Managed {#Managed}
 ## type Managed
 
 Managed represents a managed entity that can be either a ManagedKey or a ManagedCertificate.
@@ -484,7 +484,7 @@ type Managed struct {
 }
 ```
 
-<a name="ManagedCertificate"></a>
+###### ManagedCertificate {#ManagedCertificate}
 ## type ManagedCertificate
 
 ManagedCertificate represents a managed certificate with its details.
@@ -506,7 +506,7 @@ type ManagedCertificate struct {
 }
 ```
 
-<a name="NewManagedCertificateFromProto"></a>
+###### NewManagedCertificateFromProto {#NewManagedCertificateFromProto}
 ### func NewManagedCertificateFromProto
 
 ```go
@@ -515,7 +515,7 @@ func NewManagedCertificateFromProto(s *proto.ManagedCertificate) ManagedCertific
 
 
 
-<a name="ManagedCertificate.ToProto"></a>
+###### ManagedCertificate.ToProto {#ManagedCertificate.ToProto}
 ### func \(ManagedCertificate\) ToProto
 
 ```go
@@ -524,7 +524,7 @@ func (s ManagedCertificate) ToProto() *proto.ManagedCertificate
 
 
 
-<a name="ManagedCertificateParams"></a>
+###### ManagedCertificateParams {#ManagedCertificateParams}
 ## type ManagedCertificateParams
 
 ManagedCertificateParams represents parameters for creating a managed certificate.
@@ -540,7 +540,7 @@ type ManagedCertificateParams struct {
 }
 ```
 
-<a name="NewManagedCertificateParamsFromProto"></a>
+###### NewManagedCertificateParamsFromProto {#NewManagedCertificateParamsFromProto}
 ### func NewManagedCertificateParamsFromProto
 
 ```go
@@ -549,7 +549,7 @@ func NewManagedCertificateParamsFromProto(s *proto.ManagedCertificateParams) Man
 
 
 
-<a name="ManagedCertificateParams.ToProto"></a>
+###### ManagedCertificateParams.ToProto {#ManagedCertificateParams.ToProto}
 ### func \(ManagedCertificateParams\) ToProto
 
 ```go
@@ -558,7 +558,7 @@ func (s ManagedCertificateParams) ToProto() *proto.ManagedCertificateParams
 
 
 
-<a name="ManagedKey"></a>
+###### ManagedKey {#ManagedKey}
 ## type ManagedKey
 
 ManagedKey represents a managed key.
@@ -582,7 +582,7 @@ type ManagedKey struct {
 }
 ```
 
-<a name="NewManagedKeyFromProto"></a>
+###### NewManagedKeyFromProto {#NewManagedKeyFromProto}
 ### func NewManagedKeyFromProto
 
 ```go
@@ -591,7 +591,7 @@ func NewManagedKeyFromProto(s *proto.ManagedKey) ManagedKey
 
 
 
-<a name="ManagedKey.ToProto"></a>
+###### ManagedKey.ToProto {#ManagedKey.ToProto}
 ### func \(ManagedKey\) ToProto
 
 ```go
@@ -600,7 +600,7 @@ func (s ManagedKey) ToProto() *proto.ManagedKey
 
 
 
-<a name="ManagedKey.Type"></a>
+###### ManagedKey.Type {#ManagedKey.Type}
 ### func \(ManagedKey\) Type
 
 ```go
@@ -609,7 +609,7 @@ func (s ManagedKey) Type() KeyType
 
 
 
-<a name="ManagedKeyParams"></a>
+###### ManagedKeyParams {#ManagedKeyParams}
 ## type ManagedKeyParams
 
 ManagedKeyParams represents the parameters for creating a managed key.
@@ -627,7 +627,7 @@ type ManagedKeyParams struct {
 }
 ```
 
-<a name="NewManagedKeyParamsFromProto"></a>
+###### NewManagedKeyParamsFromProto {#NewManagedKeyParamsFromProto}
 ### func NewManagedKeyParamsFromProto
 
 ```go
@@ -636,7 +636,7 @@ func NewManagedKeyParamsFromProto(s *proto.ManagedKeyParams) ManagedKeyParams
 
 
 
-<a name="ManagedKeyParams.ToProto"></a>
+###### ManagedKeyParams.ToProto {#ManagedKeyParams.ToProto}
 ### func \(ManagedKeyParams\) ToProto
 
 ```go
@@ -645,7 +645,7 @@ func (s ManagedKeyParams) ToProto() *proto.ManagedKeyParams
 
 
 
-<a name="SubjectCertificateParams"></a>
+###### SubjectCertificateParams {#SubjectCertificateParams}
 ## type SubjectCertificateParams
 
 SubjectCertificateParams represents parameters for generating a subject certificate.
@@ -667,7 +667,7 @@ type SubjectCertificateParams struct {
 }
 ```
 
-<a name="TotpAccessControlReceipt"></a>
+###### TotpAccessControlReceipt {#TotpAccessControlReceipt}
 ## type TotpAccessControlReceipt
 
 TotpAccessControlReceipt represents a receipt for a Time\-based One\-Time Password \(TOTP\) access control.
@@ -680,7 +680,7 @@ type TotpAccessControlReceipt struct {
 }
 ```
 
-<a name="New"></a>
+###### New {#New}
 ### func New
 
 ```go

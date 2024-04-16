@@ -19,31 +19,31 @@ For information about Bloock SDK in Go, see https://bloock.com.
 
 ## Variables
 
-<a name="ApiHost"></a>ApiHost is a string variable representing the host URL used for API communication with the Bloock SDK.
+###### ApiHost {#ApiHost}ApiHost is a string variable representing the host URL used for API communication with the Bloock SDK.
 
 ```go
 var ApiHost string
 ```
 
-<a name="ApiKey"></a>ApiKey is a string variable representing the API key used for authentication with the Bloock SDK. Create one \[here\]. \[here\]: https://dashboard.bloock.com/login
+###### ApiKey {#ApiKey}ApiKey is a string variable representing the API key used for authentication with the Bloock SDK. Create one \[here\]. \[here\]: https://dashboard.bloock.com/login
 
 ```go
 var ApiKey string
 ```
 
-<a name="IdentityApiHost"></a>IdentityApiHost is a string variable representing the host URL used for Identity Managed API. Required to be set for identity\-related features of the Bloock SDK.
+###### IdentityApiHost {#IdentityApiHost}IdentityApiHost is a string variable representing the host URL used for Identity Managed API. Required to be set for identity\-related features of the Bloock SDK.
 
 ```go
 var IdentityApiHost string = ""
 ```
 
-<a name="NetworkConfig"></a>NetworkConfig is a map variable that holds network configurations associated with specific network IDs in the Bloock SDK.
+###### NetworkConfig {#NetworkConfig}NetworkConfig is a map variable that holds network configurations associated with specific network IDs in the Bloock SDK.
 
 ```go
 var NetworkConfig map[int32]*proto.NetworkConfig = make(map[int32]*proto.NetworkConfig)
 ```
 
-<a name="SetContractAddress"></a>
+###### SetContractAddress {#SetContractAddress}
 ## func SetContractAddress
 
 ```go
@@ -52,7 +52,7 @@ func SetContractAddress(network integrity.Network, contractAddress string)
 
 SetContractAddress sets the contract address for the specified network in the Bloock SDK configuration.
 
-<a name="SetProvider"></a>
+###### SetProvider {#SetProvider}
 ## func SetProvider
 
 ```go

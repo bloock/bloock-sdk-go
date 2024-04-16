@@ -141,7 +141,7 @@ import "github.com/bloock/bloock-sdk-go/v2/entity/identity"
 
 ## Variables
 
-<a name="DidMethodEnumFromProto"></a>
+###### DidMethodEnumFromProto {#DidMethodEnumFromProto}
 
 ```go
 var (
@@ -157,7 +157,7 @@ var (
 )
 ```
 
-<a name="PublishIntervalParamsFromProto"></a>
+###### PublishIntervalParamsFromProto {#PublishIntervalParamsFromProto}
 
 ```go
 var (
@@ -175,7 +175,7 @@ var (
 )
 ```
 
-<a name="Attribute"></a>
+###### Attribute {#Attribute}
 ## type Attribute
 
 Attribute represents an attribute with an identifier and a corresponding value.
@@ -187,7 +187,7 @@ type Attribute struct {
 }
 ```
 
-<a name="AttributeDescriptor"></a>
+###### AttributeDescriptor {#AttributeDescriptor}
 ## type AttributeDescriptor
 
 AttributeDescriptor represents a descriptor for an attribute.
@@ -205,7 +205,7 @@ type AttributeDescriptor struct {
 }
 ```
 
-<a name="BooleanAttribute"></a>
+###### BooleanAttribute {#BooleanAttribute}
 ## type BooleanAttribute
 
 BooleanAttribute represents an attribute with a boolean value.
@@ -216,7 +216,7 @@ type BooleanAttribute struct {
 }
 ```
 
-<a name="NewBooleanAttribute"></a>
+###### NewBooleanAttribute {#NewBooleanAttribute}
 ### func NewBooleanAttribute
 
 ```go
@@ -225,7 +225,7 @@ func NewBooleanAttribute(key string, value bool) BooleanAttribute
 
 NewBooleanAttribute creates a new BooleanAttribute instance with the provided key and value.
 
-<a name="NewBooleanAttributeFromProto"></a>
+###### NewBooleanAttributeFromProto {#NewBooleanAttributeFromProto}
 ### func NewBooleanAttributeFromProto
 
 ```go
@@ -234,7 +234,7 @@ func NewBooleanAttributeFromProto(s *proto.BooleanAttribute) BooleanAttribute
 
 
 
-<a name="BooleanAttribute.ToProto"></a>
+###### BooleanAttribute.ToProto {#BooleanAttribute.ToProto}
 ### func \(BooleanAttribute\) ToProto
 
 ```go
@@ -243,7 +243,7 @@ func (s BooleanAttribute) ToProto() *proto.BooleanAttribute
 
 
 
-<a name="BooleanAttributeDescriptor"></a>
+###### BooleanAttributeDescriptor {#BooleanAttributeDescriptor}
 ## type BooleanAttributeDescriptor
 
 BooleanAttributeDescriptor represents a descriptor for a boolean attribute.
@@ -254,7 +254,7 @@ type BooleanAttributeDescriptor struct {
 }
 ```
 
-<a name="NewBooleanAttributeDescriptor"></a>
+###### NewBooleanAttributeDescriptor {#NewBooleanAttributeDescriptor}
 ### func NewBooleanAttributeDescriptor
 
 ```go
@@ -263,7 +263,7 @@ func NewBooleanAttributeDescriptor(name string, id string, description string, r
 
 NewBooleanAttributeDescriptor creates a new BooleanAttributeDescriptor instance with the provided details.
 
-<a name="NewBooleanAttributeDescriptorFromProto"></a>
+###### NewBooleanAttributeDescriptorFromProto {#NewBooleanAttributeDescriptorFromProto}
 ### func NewBooleanAttributeDescriptorFromProto
 
 ```go
@@ -272,7 +272,7 @@ func NewBooleanAttributeDescriptorFromProto(s *proto.BooleanAttributeDefinition)
 
 
 
-<a name="BooleanAttributeDescriptor.ToProto"></a>
+###### BooleanAttributeDescriptor.ToProto {#BooleanAttributeDescriptor.ToProto}
 ### func \(BooleanAttributeDescriptor\) ToProto
 
 ```go
@@ -281,7 +281,7 @@ func (s BooleanAttributeDescriptor) ToProto() *proto.BooleanAttributeDefinition
 
 
 
-<a name="Credential"></a>
+###### Credential {#Credential}
 ## type Credential
 
 Credential represents a verifiable credential with its associated information. [Verifiable Credentials Data Model v2.0](https://www.w3.org/TR/vc-data-model-2.0/).
@@ -301,7 +301,7 @@ type Credential struct {
 }
 ```
 
-<a name="NewCredentialFromJson"></a>
+###### NewCredentialFromJson {#NewCredentialFromJson}
 ### func NewCredentialFromJson
 
 ```go
@@ -310,7 +310,7 @@ func NewCredentialFromJson(json string) (Credential, error)
 
 NewCredentialFromJson creates a Credential instance from a JSON string representation.
 
-<a name="NewCredentialFromProto"></a>
+###### NewCredentialFromProto {#NewCredentialFromProto}
 ### func NewCredentialFromProto
 
 ```go
@@ -319,7 +319,7 @@ func NewCredentialFromProto(s *proto.Credential) Credential
 
 
 
-<a name="Credential.ToJson"></a>
+###### Credential.ToJson {#Credential.ToJson}
 ### func \(Credential\) ToJson
 
 ```go
@@ -328,7 +328,7 @@ func (c Credential) ToJson() (string, error)
 
 ToJson converts the Credential instance to its JSON string representation.
 
-<a name="Credential.ToProto"></a>
+###### Credential.ToProto {#Credential.ToProto}
 ### func \(Credential\) ToProto
 
 ```go
@@ -337,7 +337,7 @@ func (c Credential) ToProto() *proto.Credential
 
 
 
-<a name="CredentialBuilder"></a>
+###### CredentialBuilder {#CredentialBuilder}
 ## type CredentialBuilder
 
 CredentialBuilder helps construct credentials by specifying various attributes.
@@ -348,7 +348,7 @@ type CredentialBuilder struct {
 }
 ```
 
-<a name="NewCredentialBuilder"></a>
+###### NewCredentialBuilder {#NewCredentialBuilder}
 ### func NewCredentialBuilder
 
 ```go
@@ -357,7 +357,7 @@ func NewCredentialBuilder(issuer Issuer, schemaId, holderDid string, expiration 
 
 NewCredentialBuilder creates a new CredentialBuilder instance with the specified parameters.
 
-<a name="CredentialBuilder.Build"></a>
+###### CredentialBuilder.Build {#CredentialBuilder.Build}
 ### func \(CredentialBuilder\) Build
 
 ```go
@@ -366,7 +366,7 @@ func (c CredentialBuilder) Build() (CredentialReceipt, error)
 
 Build creates and returns a Credential using the specified attributes.
 
-<a name="CredentialBuilder.WithBooleanAttribute"></a>
+###### CredentialBuilder.WithBooleanAttribute {#CredentialBuilder.WithBooleanAttribute}
 ### func \(CredentialBuilder\) WithBooleanAttribute
 
 ```go
@@ -375,7 +375,7 @@ func (c CredentialBuilder) WithBooleanAttribute(key string, value bool) Credenti
 
 WithBooleanAttribute adds a boolean attribute to the CredentialBuilder.
 
-<a name="CredentialBuilder.WithDateAttribute"></a>
+###### CredentialBuilder.WithDateAttribute {#CredentialBuilder.WithDateAttribute}
 ### func \(CredentialBuilder\) WithDateAttribute
 
 ```go
@@ -384,7 +384,7 @@ func (c CredentialBuilder) WithDateAttribute(key string, value time.Time) Creden
 
 WithDateAttribute adds a date attribute to the CredentialBuilder.
 
-<a name="CredentialBuilder.WithDatetimeAttribute"></a>
+###### CredentialBuilder.WithDatetimeAttribute {#CredentialBuilder.WithDatetimeAttribute}
 ### func \(CredentialBuilder\) WithDatetimeAttribute
 
 ```go
@@ -393,7 +393,7 @@ func (c CredentialBuilder) WithDatetimeAttribute(key string, value time.Time) Cr
 
 WithDatetimeAttribute adds a datetime attribute to the CredentialBuilder.
 
-<a name="CredentialBuilder.WithDecimalAttribute"></a>
+###### CredentialBuilder.WithDecimalAttribute {#CredentialBuilder.WithDecimalAttribute}
 ### func \(CredentialBuilder\) WithDecimalAttribute
 
 ```go
@@ -402,7 +402,7 @@ func (c CredentialBuilder) WithDecimalAttribute(key string, value float64) Crede
 
 WithDecimalAttribute adds a decimal attribute to the CredentialBuilder.
 
-<a name="CredentialBuilder.WithIntegerAttribute"></a>
+###### CredentialBuilder.WithIntegerAttribute {#CredentialBuilder.WithIntegerAttribute}
 ### func \(CredentialBuilder\) WithIntegerAttribute
 
 ```go
@@ -411,7 +411,7 @@ func (c CredentialBuilder) WithIntegerAttribute(key string, value int64) Credent
 
 WithIntegerAttribute adds an integer attribute to the CredentialBuilder.
 
-<a name="CredentialBuilder.WithStringAttribute"></a>
+###### CredentialBuilder.WithStringAttribute {#CredentialBuilder.WithStringAttribute}
 ### func \(CredentialBuilder\) WithStringAttribute
 
 ```go
@@ -420,7 +420,7 @@ func (c CredentialBuilder) WithStringAttribute(key string, value string) Credent
 
 WithStringAttribute adds a string attribute to the CredentialBuilder.
 
-<a name="CredentialCoreBuilder"></a>
+###### CredentialCoreBuilder {#CredentialCoreBuilder}
 ## type CredentialCoreBuilder
 
 CredentialCoreBuilder helps construct credentials by specifying various attributes.
@@ -431,7 +431,7 @@ type CredentialCoreBuilder struct {
 }
 ```
 
-<a name="NewCredentialCoreBuilder"></a>
+###### NewCredentialCoreBuilder {#NewCredentialCoreBuilder}
 ### func NewCredentialCoreBuilder
 
 ```go
@@ -440,7 +440,7 @@ func NewCredentialCoreBuilder(issuer Issuer, schemaId, holderDid string, expirat
 
 NewCredentialCoreBuilder creates a new CredentialCoreBuilder instance with the specified parameters.
 
-<a name="CredentialCoreBuilder.Build"></a>
+###### CredentialCoreBuilder.Build {#CredentialCoreBuilder.Build}
 ### func \(CredentialCoreBuilder\) Build
 
 ```go
@@ -449,7 +449,7 @@ func (c CredentialCoreBuilder) Build() (CredentialReceipt, error)
 
 Build creates and returns a Credential using the specified attributes.
 
-<a name="CredentialCoreBuilder.WithBooleanAttribute"></a>
+###### CredentialCoreBuilder.WithBooleanAttribute {#CredentialCoreBuilder.WithBooleanAttribute}
 ### func \(CredentialCoreBuilder\) WithBooleanAttribute
 
 ```go
@@ -458,7 +458,7 @@ func (c CredentialCoreBuilder) WithBooleanAttribute(key string, value bool) Cred
 
 WithBooleanAttribute adds a boolean attribute to the CredentialCoreBuilder.
 
-<a name="CredentialCoreBuilder.WithDateAttribute"></a>
+###### CredentialCoreBuilder.WithDateAttribute {#CredentialCoreBuilder.WithDateAttribute}
 ### func \(CredentialCoreBuilder\) WithDateAttribute
 
 ```go
@@ -467,7 +467,7 @@ func (c CredentialCoreBuilder) WithDateAttribute(key string, value time.Time) Cr
 
 WithDateAttribute adds a date attribute to the CredentialCoreBuilder.
 
-<a name="CredentialCoreBuilder.WithDatetimeAttribute"></a>
+###### CredentialCoreBuilder.WithDatetimeAttribute {#CredentialCoreBuilder.WithDatetimeAttribute}
 ### func \(CredentialCoreBuilder\) WithDatetimeAttribute
 
 ```go
@@ -476,7 +476,7 @@ func (c CredentialCoreBuilder) WithDatetimeAttribute(key string, value time.Time
 
 WithDatetimeAttribute adds a datetime attribute to the CredentialCoreBuilder.
 
-<a name="CredentialCoreBuilder.WithDecimalAttribute"></a>
+###### CredentialCoreBuilder.WithDecimalAttribute {#CredentialCoreBuilder.WithDecimalAttribute}
 ### func \(CredentialCoreBuilder\) WithDecimalAttribute
 
 ```go
@@ -485,7 +485,7 @@ func (c CredentialCoreBuilder) WithDecimalAttribute(key string, value float64) C
 
 WithDecimalAttribute adds a decimal attribute to the CredentialCoreBuilder.
 
-<a name="CredentialCoreBuilder.WithIntegerAttribute"></a>
+###### CredentialCoreBuilder.WithIntegerAttribute {#CredentialCoreBuilder.WithIntegerAttribute}
 ### func \(CredentialCoreBuilder\) WithIntegerAttribute
 
 ```go
@@ -494,7 +494,7 @@ func (c CredentialCoreBuilder) WithIntegerAttribute(key string, value int64) Cre
 
 WithIntegerAttribute adds an integer attribute to the CredentialCoreBuilder.
 
-<a name="CredentialCoreBuilder.WithStringAttribute"></a>
+###### CredentialCoreBuilder.WithStringAttribute {#CredentialCoreBuilder.WithStringAttribute}
 ### func \(CredentialCoreBuilder\) WithStringAttribute
 
 ```go
@@ -503,7 +503,7 @@ func (c CredentialCoreBuilder) WithStringAttribute(key string, value string) Cre
 
 WithStringAttribute adds a string attribute to the CredentialCoreBuilder.
 
-<a name="CredentialProof"></a>
+###### CredentialProof {#CredentialProof}
 ## type CredentialProof
 
 CredentialProof represents the proof associated with a credential, including signature and sparse merkle tree proof.
@@ -515,7 +515,7 @@ type CredentialProof struct {
 }
 ```
 
-<a name="NewCredentialProofFromProto"></a>
+###### NewCredentialProofFromProto {#NewCredentialProofFromProto}
 ### func NewCredentialProofFromProto
 
 ```go
@@ -524,7 +524,7 @@ func NewCredentialProofFromProto(s *proto.CredentialProof) CredentialProof
 
 
 
-<a name="CredentialProof.ToProto"></a>
+###### CredentialProof.ToProto {#CredentialProof.ToProto}
 ### func \(CredentialProof\) ToProto
 
 ```go
@@ -533,7 +533,7 @@ func (c CredentialProof) ToProto() *proto.CredentialProof
 
 
 
-<a name="CredentialReceipt"></a>
+###### CredentialReceipt {#CredentialReceipt}
 ## type CredentialReceipt
 
 CredentialReceipt represents a receipt for a credential, including the credential itself, its ID, and type.
@@ -546,7 +546,7 @@ type CredentialReceipt struct {
 }
 ```
 
-<a name="NewCredentialReceiptFromProto"></a>
+###### NewCredentialReceiptFromProto {#NewCredentialReceiptFromProto}
 ### func NewCredentialReceiptFromProto
 
 ```go
@@ -555,7 +555,7 @@ func NewCredentialReceiptFromProto(s *proto.CredentialReceipt) CredentialReceipt
 
 
 
-<a name="CredentialReceipt.ToProto"></a>
+###### CredentialReceipt.ToProto {#CredentialReceipt.ToProto}
 ### func \(CredentialReceipt\) ToProto
 
 ```go
@@ -564,7 +564,7 @@ func (c CredentialReceipt) ToProto() *proto.CredentialReceipt
 
 
 
-<a name="CredentialSchema"></a>
+###### CredentialSchema {#CredentialSchema}
 ## type CredentialSchema
 
 CredentialSchema represents the schema information for a credential, including its ID and type.
@@ -576,7 +576,7 @@ type CredentialSchema struct {
 }
 ```
 
-<a name="NewCredentialSchemaFromProto"></a>
+###### NewCredentialSchemaFromProto {#NewCredentialSchemaFromProto}
 ### func NewCredentialSchemaFromProto
 
 ```go
@@ -585,7 +585,7 @@ func NewCredentialSchemaFromProto(s *proto.CredentialSchema) CredentialSchema
 
 
 
-<a name="CredentialSchema.ToProto"></a>
+###### CredentialSchema.ToProto {#CredentialSchema.ToProto}
 ### func \(CredentialSchema\) ToProto
 
 ```go
@@ -594,7 +594,7 @@ func (c CredentialSchema) ToProto() *proto.CredentialSchema
 
 
 
-<a name="CredentialStatus"></a>
+###### CredentialStatus {#CredentialStatus}
 ## type CredentialStatus
 
 CredentialStatus represents the status information for a credential, including its ID, revocation nonce, and type.
@@ -607,7 +607,7 @@ type CredentialStatus struct {
 }
 ```
 
-<a name="NewCredentialStatusFromProto"></a>
+###### NewCredentialStatusFromProto {#NewCredentialStatusFromProto}
 ### func NewCredentialStatusFromProto
 
 ```go
@@ -616,7 +616,7 @@ func NewCredentialStatusFromProto(s *proto.CredentialStatus) CredentialStatus
 
 
 
-<a name="CredentialStatus.ToProto"></a>
+###### CredentialStatus.ToProto {#CredentialStatus.ToProto}
 ### func \(CredentialStatus\) ToProto
 
 ```go
@@ -625,7 +625,7 @@ func (c CredentialStatus) ToProto() *proto.CredentialStatus
 
 
 
-<a name="DateAttribute"></a>
+###### DateAttribute {#DateAttribute}
 ## type DateAttribute
 
 DateAttribute represents an attribute with a date value, including its key and formatted value.
@@ -636,7 +636,7 @@ type DateAttribute struct {
 }
 ```
 
-<a name="NewDateAttribute"></a>
+###### NewDateAttribute {#NewDateAttribute}
 ### func NewDateAttribute
 
 ```go
@@ -645,7 +645,7 @@ func NewDateAttribute(key string, value time.Time) DateAttribute
 
 NewDateAttribute creates a new DateAttribute instance with the provided key and time value.
 
-<a name="NewDateAttributeFromProto"></a>
+###### NewDateAttributeFromProto {#NewDateAttributeFromProto}
 ### func NewDateAttributeFromProto
 
 ```go
@@ -654,7 +654,7 @@ func NewDateAttributeFromProto(s *proto.DateAttribute) DateAttribute
 
 
 
-<a name="DateAttribute.ToProto"></a>
+###### DateAttribute.ToProto {#DateAttribute.ToProto}
 ### func \(DateAttribute\) ToProto
 
 ```go
@@ -663,7 +663,7 @@ func (s DateAttribute) ToProto() *proto.DateAttribute
 
 
 
-<a name="DateAttributeDescriptor"></a>
+###### DateAttributeDescriptor {#DateAttributeDescriptor}
 ## type DateAttributeDescriptor
 
 DateAttributeDescriptor represents a descriptor for a date attribute, including its display name, ID, description, and required status.
@@ -674,7 +674,7 @@ type DateAttributeDescriptor struct {
 }
 ```
 
-<a name="NewDateAttributeDescriptor"></a>
+###### NewDateAttributeDescriptor {#NewDateAttributeDescriptor}
 ### func NewDateAttributeDescriptor
 
 ```go
@@ -683,7 +683,7 @@ func NewDateAttributeDescriptor(name string, id string, description string, requ
 
 NewDateAttributeDescriptor creates a new DateAttributeDescriptor instance with the provided details.
 
-<a name="NewDateAttributeDescriptorFromProto"></a>
+###### NewDateAttributeDescriptorFromProto {#NewDateAttributeDescriptorFromProto}
 ### func NewDateAttributeDescriptorFromProto
 
 ```go
@@ -692,7 +692,7 @@ func NewDateAttributeDescriptorFromProto(s *proto.DateAttributeDefinition) DateA
 
 
 
-<a name="DateAttributeDescriptor.ToProto"></a>
+###### DateAttributeDescriptor.ToProto {#DateAttributeDescriptor.ToProto}
 ### func \(DateAttributeDescriptor\) ToProto
 
 ```go
@@ -701,7 +701,7 @@ func (s DateAttributeDescriptor) ToProto() *proto.DateAttributeDefinition
 
 
 
-<a name="DatetimeAttribute"></a>
+###### DatetimeAttribute {#DatetimeAttribute}
 ## type DatetimeAttribute
 
 DatetimeAttribute represents an attribute with a datetime value.
@@ -712,7 +712,7 @@ type DatetimeAttribute struct {
 }
 ```
 
-<a name="NewDatetimeAttribute"></a>
+###### NewDatetimeAttribute {#NewDatetimeAttribute}
 ### func NewDatetimeAttribute
 
 ```go
@@ -721,7 +721,7 @@ func NewDatetimeAttribute(key string, value time.Time) DatetimeAttribute
 
 NewDatetimeAttribute creates a new DatetimeAttribute instance with the provided key and value.
 
-<a name="NewDatetimeAttributeFromProto"></a>
+###### NewDatetimeAttributeFromProto {#NewDatetimeAttributeFromProto}
 ### func NewDatetimeAttributeFromProto
 
 ```go
@@ -730,7 +730,7 @@ func NewDatetimeAttributeFromProto(s *proto.DateTimeAttribute) DatetimeAttribute
 
 
 
-<a name="DatetimeAttribute.ToProto"></a>
+###### DatetimeAttribute.ToProto {#DatetimeAttribute.ToProto}
 ### func \(DatetimeAttribute\) ToProto
 
 ```go
@@ -739,7 +739,7 @@ func (s DatetimeAttribute) ToProto() *proto.DateTimeAttribute
 
 
 
-<a name="DatetimeAttributeDescriptor"></a>
+###### DatetimeAttributeDescriptor {#DatetimeAttributeDescriptor}
 ## type DatetimeAttributeDescriptor
 
 DatetimeAttributeDescriptor represents a descriptor for an attribute with a datetime value.
@@ -750,7 +750,7 @@ type DatetimeAttributeDescriptor struct {
 }
 ```
 
-<a name="NewDatetimeAttributeDescriptor"></a>
+###### NewDatetimeAttributeDescriptor {#NewDatetimeAttributeDescriptor}
 ### func NewDatetimeAttributeDescriptor
 
 ```go
@@ -759,7 +759,7 @@ func NewDatetimeAttributeDescriptor(name string, id string, description string, 
 
 NewDatetimeAttributeDescriptor creates a new DatetimeAttributeDescriptor instance with the provided details.
 
-<a name="NewDatetimeAttributeDescriptorFromProto"></a>
+###### NewDatetimeAttributeDescriptorFromProto {#NewDatetimeAttributeDescriptorFromProto}
 ### func NewDatetimeAttributeDescriptorFromProto
 
 ```go
@@ -768,7 +768,7 @@ func NewDatetimeAttributeDescriptorFromProto(s *proto.DateTimeAttributeDefinitio
 
 
 
-<a name="DatetimeAttributeDescriptor.ToProto"></a>
+###### DatetimeAttributeDescriptor.ToProto {#DatetimeAttributeDescriptor.ToProto}
 ### func \(DatetimeAttributeDescriptor\) ToProto
 
 ```go
@@ -777,7 +777,7 @@ func (s DatetimeAttributeDescriptor) ToProto() *proto.DateTimeAttributeDefinitio
 
 
 
-<a name="DecimalAttribute"></a>
+###### DecimalAttribute {#DecimalAttribute}
 ## type DecimalAttribute
 
 DecimalAttribute represents an attribute with a decimal value.
@@ -788,7 +788,7 @@ type DecimalAttribute struct {
 }
 ```
 
-<a name="NewDecimalAttribute"></a>
+###### NewDecimalAttribute {#NewDecimalAttribute}
 ### func NewDecimalAttribute
 
 ```go
@@ -797,7 +797,7 @@ func NewDecimalAttribute(key string, value float64) DecimalAttribute
 
 NewDecimalAttribute creates a new DecimalAttribute instance with the provided key and value.
 
-<a name="NewDecimalAttributeFromProto"></a>
+###### NewDecimalAttributeFromProto {#NewDecimalAttributeFromProto}
 ### func NewDecimalAttributeFromProto
 
 ```go
@@ -806,7 +806,7 @@ func NewDecimalAttributeFromProto(s *proto.DecimalAttribute) DecimalAttribute
 
 
 
-<a name="DecimalAttribute.ToProto"></a>
+###### DecimalAttribute.ToProto {#DecimalAttribute.ToProto}
 ### func \(DecimalAttribute\) ToProto
 
 ```go
@@ -815,7 +815,7 @@ func (s DecimalAttribute) ToProto() *proto.DecimalAttribute
 
 
 
-<a name="DecimalAttributeDescriptor"></a>
+###### DecimalAttributeDescriptor {#DecimalAttributeDescriptor}
 ## type DecimalAttributeDescriptor
 
 DecimalAttributeDescriptor represents a descriptor for an attribute with a decimal value.
@@ -826,7 +826,7 @@ type DecimalAttributeDescriptor struct {
 }
 ```
 
-<a name="NewDecimalAttributeDescriptor"></a>
+###### NewDecimalAttributeDescriptor {#NewDecimalAttributeDescriptor}
 ### func NewDecimalAttributeDescriptor
 
 ```go
@@ -835,7 +835,7 @@ func NewDecimalAttributeDescriptor(name string, id string, description string, r
 
 NewDecimalAttributeDescriptor creates a new DecimalAttributeDescriptor instance with the provided details.
 
-<a name="NewDecimalAttributeDescriptorFromProto"></a>
+###### NewDecimalAttributeDescriptorFromProto {#NewDecimalAttributeDescriptorFromProto}
 ### func NewDecimalAttributeDescriptorFromProto
 
 ```go
@@ -844,7 +844,7 @@ func NewDecimalAttributeDescriptorFromProto(s *proto.DecimalAttributeDefinition)
 
 
 
-<a name="DecimalAttributeDescriptor.ToProto"></a>
+###### DecimalAttributeDescriptor.ToProto {#DecimalAttributeDescriptor.ToProto}
 ### func \(DecimalAttributeDescriptor\) ToProto
 
 ```go
@@ -853,7 +853,7 @@ func (s DecimalAttributeDescriptor) ToProto() *proto.DecimalAttributeDefinition
 
 
 
-<a name="DecimalEnumAttributeDescriptor"></a>
+###### DecimalEnumAttributeDescriptor {#DecimalEnumAttributeDescriptor}
 ## type DecimalEnumAttributeDescriptor
 
 DecimalEnumAttributeDescriptor represents a descriptor for an attribute with a decimal enum value.
@@ -865,7 +865,7 @@ type DecimalEnumAttributeDescriptor struct {
 }
 ```
 
-<a name="NewDecimalEnumAttributeDescriptor"></a>
+###### NewDecimalEnumAttributeDescriptor {#NewDecimalEnumAttributeDescriptor}
 ### func NewDecimalEnumAttributeDescriptor
 
 ```go
@@ -874,7 +874,7 @@ func NewDecimalEnumAttributeDescriptor(name string, id string, description strin
 
 NewDecimalEnumAttributeDescriptor creates a new DecimalEnumAttributeDescriptor instance with the provided details.
 
-<a name="NewDecimalEnumAttributeDescriptorFromProto"></a>
+###### NewDecimalEnumAttributeDescriptorFromProto {#NewDecimalEnumAttributeDescriptorFromProto}
 ### func NewDecimalEnumAttributeDescriptorFromProto
 
 ```go
@@ -883,7 +883,7 @@ func NewDecimalEnumAttributeDescriptorFromProto(s *proto.DecimalEnumAttributeDef
 
 
 
-<a name="DecimalEnumAttributeDescriptor.ToProto"></a>
+###### DecimalEnumAttributeDescriptor.ToProto {#DecimalEnumAttributeDescriptor.ToProto}
 ### func \(DecimalEnumAttributeDescriptor\) ToProto
 
 ```go
@@ -892,7 +892,7 @@ func (s DecimalEnumAttributeDescriptor) ToProto() *proto.DecimalEnumAttributeDef
 
 
 
-<a name="Did"></a>
+###### Did {#Did}
 ## type Did
 
 Did represents a DID.
@@ -904,7 +904,7 @@ type Did struct {
 }
 ```
 
-<a name="NewDid"></a>
+###### NewDid {#NewDid}
 ### func NewDid
 
 ```go
@@ -913,7 +913,7 @@ func NewDid(did string, didMethod DidMethod) Did
 
 NewDid returns a new instance of Did for the given parameters.
 
-<a name="DidMethod"></a>
+###### DidMethod {#DidMethod}
 ## type DidMethod
 
 DidMethod represents the type of method did.
@@ -922,7 +922,7 @@ DidMethod represents the type of method did.
 type DidMethod int32
 ```
 
-<a name="PolygonID"></a>
+###### PolygonID {#PolygonID}
 
 ```go
 const (
@@ -933,7 +933,7 @@ const (
 )
 ```
 
-<a name="Holder"></a>
+###### Holder {#Holder}
 ## type Holder
 
 Holder represents a Holder identity.
@@ -945,7 +945,7 @@ type Holder struct {
 }
 ```
 
-<a name="NewHolder"></a>
+###### NewHolder {#NewHolder}
 ### func NewHolder
 
 ```go
@@ -954,7 +954,7 @@ func NewHolder(did string, didMethod DidMethod, key key.Key) Holder
 
 NewHolder returns a new instance of Holder identity for the given parameters.
 
-<a name="IntegerAttribute"></a>
+###### IntegerAttribute {#IntegerAttribute}
 ## type IntegerAttribute
 
 IntegerAttribute represents an attribute with an integer value.
@@ -965,7 +965,7 @@ type IntegerAttribute struct {
 }
 ```
 
-<a name="NewIntegerAttribute"></a>
+###### NewIntegerAttribute {#NewIntegerAttribute}
 ### func NewIntegerAttribute
 
 ```go
@@ -974,7 +974,7 @@ func NewIntegerAttribute(key string, value int64) IntegerAttribute
 
 NewIntegerAttribute creates a new IntegerAttribute instance with the provided key and value.
 
-<a name="NewIntegerAttributeFromProto"></a>
+###### NewIntegerAttributeFromProto {#NewIntegerAttributeFromProto}
 ### func NewIntegerAttributeFromProto
 
 ```go
@@ -983,7 +983,7 @@ func NewIntegerAttributeFromProto(s *proto.IntegerAttribute) IntegerAttribute
 
 
 
-<a name="IntegerAttribute.ToProto"></a>
+###### IntegerAttribute.ToProto {#IntegerAttribute.ToProto}
 ### func \(IntegerAttribute\) ToProto
 
 ```go
@@ -992,7 +992,7 @@ func (s IntegerAttribute) ToProto() *proto.IntegerAttribute
 
 
 
-<a name="IntegerAttributeDescriptor"></a>
+###### IntegerAttributeDescriptor {#IntegerAttributeDescriptor}
 ## type IntegerAttributeDescriptor
 
 IntegerAttributeDescriptor represents a descriptor for an attribute with an integer value.
@@ -1003,7 +1003,7 @@ type IntegerAttributeDescriptor struct {
 }
 ```
 
-<a name="NewIntegerAttributeDescriptor"></a>
+###### NewIntegerAttributeDescriptor {#NewIntegerAttributeDescriptor}
 ### func NewIntegerAttributeDescriptor
 
 ```go
@@ -1012,7 +1012,7 @@ func NewIntegerAttributeDescriptor(name string, id string, description string, r
 
 NewIntegerAttributeDescriptor creates a new IntegerAttributeDescriptor instance with the provided details.
 
-<a name="NewNumberAttributeDescriptorFromProto"></a>
+###### NewNumberAttributeDescriptorFromProto {#NewNumberAttributeDescriptorFromProto}
 ### func NewNumberAttributeDescriptorFromProto
 
 ```go
@@ -1021,7 +1021,7 @@ func NewNumberAttributeDescriptorFromProto(s *proto.IntegerAttributeDefinition) 
 
 
 
-<a name="IntegerAttributeDescriptor.ToProto"></a>
+###### IntegerAttributeDescriptor.ToProto {#IntegerAttributeDescriptor.ToProto}
 ### func \(IntegerAttributeDescriptor\) ToProto
 
 ```go
@@ -1030,7 +1030,7 @@ func (s IntegerAttributeDescriptor) ToProto() *proto.IntegerAttributeDefinition
 
 
 
-<a name="IntegerEnumAttributeDescriptor"></a>
+###### IntegerEnumAttributeDescriptor {#IntegerEnumAttributeDescriptor}
 ## type IntegerEnumAttributeDescriptor
 
 IntegerEnumAttributeDescriptor represents a descriptor for an attribute with an integer enum value.
@@ -1042,7 +1042,7 @@ type IntegerEnumAttributeDescriptor struct {
 }
 ```
 
-<a name="NewIntegerEnumAttributeDescriptor"></a>
+###### NewIntegerEnumAttributeDescriptor {#NewIntegerEnumAttributeDescriptor}
 ### func NewIntegerEnumAttributeDescriptor
 
 ```go
@@ -1051,7 +1051,7 @@ func NewIntegerEnumAttributeDescriptor(name string, id string, description strin
 
 NewIntegerEnumAttributeDescriptor creates a new IntegerEnumAttributeDescriptor instance with the provided details.
 
-<a name="NewIntegerEnumAttributeDescriptorFromProto"></a>
+###### NewIntegerEnumAttributeDescriptorFromProto {#NewIntegerEnumAttributeDescriptorFromProto}
 ### func NewIntegerEnumAttributeDescriptorFromProto
 
 ```go
@@ -1060,7 +1060,7 @@ func NewIntegerEnumAttributeDescriptorFromProto(s *proto.IntegerEnumAttributeDef
 
 
 
-<a name="IntegerEnumAttributeDescriptor.ToProto"></a>
+###### IntegerEnumAttributeDescriptor.ToProto {#IntegerEnumAttributeDescriptor.ToProto}
 ### func \(IntegerEnumAttributeDescriptor\) ToProto
 
 ```go
@@ -1069,7 +1069,7 @@ func (s IntegerEnumAttributeDescriptor) ToProto() *proto.IntegerEnumAttributeDef
 
 
 
-<a name="Issuer"></a>
+###### Issuer {#Issuer}
 ## type Issuer
 
 Issuer represents an Issuer identity.
@@ -1081,7 +1081,7 @@ type Issuer struct {
 }
 ```
 
-<a name="NewIssuer"></a>
+###### NewIssuer {#NewIssuer}
 ### func NewIssuer
 
 ```go
@@ -1090,7 +1090,7 @@ func NewIssuer(did string, didMethod DidMethod, key key.Key) Issuer
 
 NewIssuer returns a new instance of Issuer identity for the given parameters.
 
-<a name="IssuerStateReceipt"></a>
+###### IssuerStateReceipt {#IssuerStateReceipt}
 ## type IssuerStateReceipt
 
 IssuerStateReceipt represents a receipt for the issuer's state.
@@ -1101,7 +1101,7 @@ type IssuerStateReceipt struct {
 }
 ```
 
-<a name="NewIssuerStateReceiptFromProto"></a>
+###### NewIssuerStateReceiptFromProto {#NewIssuerStateReceiptFromProto}
 ### func NewIssuerStateReceiptFromProto
 
 ```go
@@ -1110,7 +1110,7 @@ func NewIssuerStateReceiptFromProto(s *proto.IssuerStateReceipt) IssuerStateRece
 
 
 
-<a name="IssuerStateReceipt.ToProto"></a>
+###### IssuerStateReceipt.ToProto {#IssuerStateReceipt.ToProto}
 ### func \(IssuerStateReceipt\) ToProto
 
 ```go
@@ -1119,7 +1119,7 @@ func (i IssuerStateReceipt) ToProto() *proto.IssuerStateReceipt
 
 
 
-<a name="PublishIntervalParams"></a>
+###### PublishIntervalParams {#PublishIntervalParams}
 ## type PublishIntervalParams
 
 PublishIntervalParams represents different publish intervals.
@@ -1128,7 +1128,7 @@ PublishIntervalParams represents different publish intervals.
 type PublishIntervalParams int32
 ```
 
-<a name="Interval5"></a>
+###### Interval5 {#Interval5}
 
 ```go
 const (
@@ -1141,7 +1141,7 @@ const (
 )
 ```
 
-<a name="Schema"></a>
+###### Schema {#Schema}
 ## type Schema
 
 Schema represents a schema with its attributes.
@@ -1155,7 +1155,7 @@ type Schema struct {
 }
 ```
 
-<a name="NewSchemaFromProto"></a>
+###### NewSchemaFromProto {#NewSchemaFromProto}
 ### func NewSchemaFromProto
 
 ```go
@@ -1164,7 +1164,7 @@ func NewSchemaFromProto(s *proto.Schema) Schema
 
 
 
-<a name="Schema.ToProto"></a>
+###### Schema.ToProto {#Schema.ToProto}
 ### func \(Schema\) ToProto
 
 ```go
@@ -1173,7 +1173,7 @@ func (c Schema) ToProto() *proto.Schema
 
 
 
-<a name="SchemaBuilder"></a>
+###### SchemaBuilder {#SchemaBuilder}
 ## type SchemaBuilder
 
 SchemaBuilder is a builder pattern for constructing schema instances.
@@ -1184,7 +1184,7 @@ type SchemaBuilder struct {
 }
 ```
 
-<a name="NewSchemaBuilder"></a>
+###### NewSchemaBuilder {#NewSchemaBuilder}
 ### func NewSchemaBuilder
 
 ```go
@@ -1193,7 +1193,7 @@ func NewSchemaBuilder(displayName string, schemaType, version, description strin
 
 NewSchemaBuilder creates a new instance of SchemaBuilder with initial values.
 
-<a name="SchemaBuilder.AddBooleanAttribute"></a>
+###### SchemaBuilder.AddBooleanAttribute {#SchemaBuilder.AddBooleanAttribute}
 ### func \(SchemaBuilder\) AddBooleanAttribute
 
 ```go
@@ -1202,7 +1202,7 @@ func (c SchemaBuilder) AddBooleanAttribute(name string, id string, description s
 
 AddBooleanAttribute adds a boolean attribute descriptor to the schema builder.
 
-<a name="SchemaBuilder.AddDateAttribute"></a>
+###### SchemaBuilder.AddDateAttribute {#SchemaBuilder.AddDateAttribute}
 ### func \(SchemaBuilder\) AddDateAttribute
 
 ```go
@@ -1211,7 +1211,7 @@ func (c SchemaBuilder) AddDateAttribute(name string, id string, description stri
 
 AddDateAttribute adds a date attribute descriptor to the schema builder.
 
-<a name="SchemaBuilder.AddDatetimeAttribute"></a>
+###### SchemaBuilder.AddDatetimeAttribute {#SchemaBuilder.AddDatetimeAttribute}
 ### func \(SchemaBuilder\) AddDatetimeAttribute
 
 ```go
@@ -1220,7 +1220,7 @@ func (c SchemaBuilder) AddDatetimeAttribute(name string, id string, description 
 
 AddDatetimeAttribute adds a datetime attribute descriptor to the schema builder.
 
-<a name="SchemaBuilder.AddDecimalAttribute"></a>
+###### SchemaBuilder.AddDecimalAttribute {#SchemaBuilder.AddDecimalAttribute}
 ### func \(SchemaBuilder\) AddDecimalAttribute
 
 ```go
@@ -1229,7 +1229,7 @@ func (c SchemaBuilder) AddDecimalAttribute(name string, id string, description s
 
 AddDecimalAttribute adds a decimal attribute descriptor to the schema builder.
 
-<a name="SchemaBuilder.AddDecimalEnumAttribute"></a>
+###### SchemaBuilder.AddDecimalEnumAttribute {#SchemaBuilder.AddDecimalEnumAttribute}
 ### func \(SchemaBuilder\) AddDecimalEnumAttribute
 
 ```go
@@ -1238,7 +1238,7 @@ func (c SchemaBuilder) AddDecimalEnumAttribute(name string, id string, descripti
 
 AddDecimalEnumAttribute adds a decimal enum attribute descriptor to the schema builder.
 
-<a name="SchemaBuilder.AddIntegerAttribute"></a>
+###### SchemaBuilder.AddIntegerAttribute {#SchemaBuilder.AddIntegerAttribute}
 ### func \(SchemaBuilder\) AddIntegerAttribute
 
 ```go
@@ -1247,7 +1247,7 @@ func (c SchemaBuilder) AddIntegerAttribute(name string, id string, description s
 
 AddIntegerAttribute adds an integer attribute descriptor to the schema builder.
 
-<a name="SchemaBuilder.AddIntegerEnumAttribute"></a>
+###### SchemaBuilder.AddIntegerEnumAttribute {#SchemaBuilder.AddIntegerEnumAttribute}
 ### func \(SchemaBuilder\) AddIntegerEnumAttribute
 
 ```go
@@ -1256,7 +1256,7 @@ func (c SchemaBuilder) AddIntegerEnumAttribute(name string, id string, descripti
 
 AddIntegerEnumAttribute adds an integer enum attribute descriptor to the schema builder.
 
-<a name="SchemaBuilder.AddStringAttribute"></a>
+###### SchemaBuilder.AddStringAttribute {#SchemaBuilder.AddStringAttribute}
 ### func \(SchemaBuilder\) AddStringAttribute
 
 ```go
@@ -1265,7 +1265,7 @@ func (c SchemaBuilder) AddStringAttribute(name string, id string, description st
 
 AddStringAttribute adds a string attribute descriptor to the schema builder.
 
-<a name="SchemaBuilder.AddStringEnumAttribute"></a>
+###### SchemaBuilder.AddStringEnumAttribute {#SchemaBuilder.AddStringEnumAttribute}
 ### func \(SchemaBuilder\) AddStringEnumAttribute
 
 ```go
@@ -1274,7 +1274,7 @@ func (c SchemaBuilder) AddStringEnumAttribute(name string, id string, descriptio
 
 AddStringEnumAttribute adds a string enum attribute descriptor to the schema builder.
 
-<a name="SchemaBuilder.Build"></a>
+###### SchemaBuilder.Build {#SchemaBuilder.Build}
 ### func \(SchemaBuilder\) Build
 
 ```go
@@ -1283,7 +1283,7 @@ func (c SchemaBuilder) Build() (Schema, error)
 
 Build creates a schema using the configured attributes.
 
-<a name="StringAttribute"></a>
+###### StringAttribute {#StringAttribute}
 ## type StringAttribute
 
 StringAttribute represents an attribute with a string value.
@@ -1294,7 +1294,7 @@ type StringAttribute struct {
 }
 ```
 
-<a name="NewStringAttribute"></a>
+###### NewStringAttribute {#NewStringAttribute}
 ### func NewStringAttribute
 
 ```go
@@ -1303,7 +1303,7 @@ func NewStringAttribute(key string, value string) StringAttribute
 
 NewStringAttribute creates a new StringAttribute instance with the provided key and value.
 
-<a name="NewStringAttributeFromProto"></a>
+###### NewStringAttributeFromProto {#NewStringAttributeFromProto}
 ### func NewStringAttributeFromProto
 
 ```go
@@ -1312,7 +1312,7 @@ func NewStringAttributeFromProto(s *proto.StringAttribute) StringAttribute
 
 
 
-<a name="StringAttribute.ToProto"></a>
+###### StringAttribute.ToProto {#StringAttribute.ToProto}
 ### func \(StringAttribute\) ToProto
 
 ```go
@@ -1321,7 +1321,7 @@ func (s StringAttribute) ToProto() *proto.StringAttribute
 
 
 
-<a name="StringAttributeDescriptor"></a>
+###### StringAttributeDescriptor {#StringAttributeDescriptor}
 ## type StringAttributeDescriptor
 
 StringAttributeDescriptor represents a descriptor for an attribute with a string value.
@@ -1332,7 +1332,7 @@ type StringAttributeDescriptor struct {
 }
 ```
 
-<a name="NewStringAttributeDescriptor"></a>
+###### NewStringAttributeDescriptor {#NewStringAttributeDescriptor}
 ### func NewStringAttributeDescriptor
 
 ```go
@@ -1341,7 +1341,7 @@ func NewStringAttributeDescriptor(name string, id string, description string, re
 
 NewStringAttributeDescriptor creates a new StringAttributeDescriptor instance with the provided details.
 
-<a name="NewStringAttributeDescriptorFromProto"></a>
+###### NewStringAttributeDescriptorFromProto {#NewStringAttributeDescriptorFromProto}
 ### func NewStringAttributeDescriptorFromProto
 
 ```go
@@ -1350,7 +1350,7 @@ func NewStringAttributeDescriptorFromProto(s *proto.StringAttributeDefinition) S
 
 
 
-<a name="StringAttributeDescriptor.ToProto"></a>
+###### StringAttributeDescriptor.ToProto {#StringAttributeDescriptor.ToProto}
 ### func \(StringAttributeDescriptor\) ToProto
 
 ```go
@@ -1359,7 +1359,7 @@ func (s StringAttributeDescriptor) ToProto() *proto.StringAttributeDefinition
 
 
 
-<a name="StringEnumAttributeDescriptor"></a>
+###### StringEnumAttributeDescriptor {#StringEnumAttributeDescriptor}
 ## type StringEnumAttributeDescriptor
 
 StringEnumAttributeDescriptor represents a descriptor for an attribute with a string enum value.
@@ -1371,7 +1371,7 @@ type StringEnumAttributeDescriptor struct {
 }
 ```
 
-<a name="NewStringEnumAttributeDescriptor"></a>
+###### NewStringEnumAttributeDescriptor {#NewStringEnumAttributeDescriptor}
 ### func NewStringEnumAttributeDescriptor
 
 ```go
@@ -1380,7 +1380,7 @@ func NewStringEnumAttributeDescriptor(name string, id string, description string
 
 NewStringEnumAttributeDescriptor creates a new StringEnumAttributeDescriptor instance with the provided details.
 
-<a name="NewStringEnumAttributeDescriptorFromProto"></a>
+###### NewStringEnumAttributeDescriptorFromProto {#NewStringEnumAttributeDescriptorFromProto}
 ### func NewStringEnumAttributeDescriptorFromProto
 
 ```go
@@ -1389,7 +1389,7 @@ func NewStringEnumAttributeDescriptorFromProto(s *proto.StringEnumAttributeDefin
 
 
 
-<a name="StringEnumAttributeDescriptor.ToProto"></a>
+###### StringEnumAttributeDescriptor.ToProto {#StringEnumAttributeDescriptor.ToProto}
 ### func \(StringEnumAttributeDescriptor\) ToProto
 
 ```go
@@ -1398,7 +1398,7 @@ func (s StringEnumAttributeDescriptor) ToProto() *proto.StringEnumAttributeDefin
 
 
 
-<a name="VerificationParams"></a>
+###### VerificationParams {#VerificationParams}
 ## type VerificationParams
 
 VerificationParams represents parameters for verification.
@@ -1409,7 +1409,7 @@ type VerificationParams struct {
 }
 ```
 
-<a name="NewVerificationParams"></a>
+###### NewVerificationParams {#NewVerificationParams}
 ### func NewVerificationParams
 
 ```go
@@ -1418,7 +1418,7 @@ func NewVerificationParams() VerificationParams
 
 NewVerificationParams creates a new VerificationParams instance with default values.
 
-<a name="VerificationReceipt"></a>
+###### VerificationReceipt {#VerificationReceipt}
 ## type VerificationReceipt
 
 VerificationReceipt represents a receipt for a verification session.
@@ -1430,7 +1430,7 @@ type VerificationReceipt struct {
 }
 ```
 
-<a name="NewVerificationReceiptFromProto"></a>
+###### NewVerificationReceiptFromProto {#NewVerificationReceiptFromProto}
 ### func NewVerificationReceiptFromProto
 
 ```go
@@ -1439,7 +1439,7 @@ func NewVerificationReceiptFromProto(s *proto.VerificationReceipt) VerificationR
 
 
 
-<a name="VerificationReceipt.ToProto"></a>
+###### VerificationReceipt.ToProto {#VerificationReceipt.ToProto}
 ### func \(VerificationReceipt\) ToProto
 
 ```go

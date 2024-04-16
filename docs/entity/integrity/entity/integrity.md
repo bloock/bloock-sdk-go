@@ -33,7 +33,7 @@ import "github.com/bloock/bloock-sdk-go/v2/entity/integrity"
 
 ## Constants
 
-<a name="InvalidRecordError"></a>
+###### InvalidRecordError {#InvalidRecordError}
 
 ```go
 const (
@@ -44,7 +44,7 @@ const (
 )
 ```
 
-<a name="NetworkToProto"></a>
+###### NetworkToProto {#NetworkToProto}
 ## func NetworkToProto
 
 ```go
@@ -53,7 +53,7 @@ func NetworkToProto(network Network) *proto.Network
 
 
 
-<a name="Anchor"></a>
+###### Anchor {#Anchor}
 ## type Anchor
 
 Anchor represents information about an anchor.
@@ -68,7 +68,7 @@ type Anchor struct {
 }
 ```
 
-<a name="NewAnchorFromProto"></a>
+###### NewAnchorFromProto {#NewAnchorFromProto}
 ### func NewAnchorFromProto
 
 ```go
@@ -77,7 +77,7 @@ func NewAnchorFromProto(a *proto.Anchor) Anchor
 
 
 
-<a name="AnchorNetwork"></a>
+###### AnchorNetwork {#AnchorNetwork}
 ## type AnchorNetwork
 
 AnchorNetwork represents information about an anchor network.
@@ -91,7 +91,7 @@ type AnchorNetwork struct {
 }
 ```
 
-<a name="MapAnchorNetworksFromProto"></a>
+###### MapAnchorNetworksFromProto {#MapAnchorNetworksFromProto}
 ### func MapAnchorNetworksFromProto
 
 ```go
@@ -100,7 +100,7 @@ func MapAnchorNetworksFromProto(n []*proto.AnchorNetwork) []AnchorNetwork
 
 
 
-<a name="NewAnchorNetworkFromProto"></a>
+###### NewAnchorNetworkFromProto {#NewAnchorNetworkFromProto}
 ### func NewAnchorNetworkFromProto
 
 ```go
@@ -109,7 +109,7 @@ func NewAnchorNetworkFromProto(a *proto.AnchorNetwork) AnchorNetwork
 
 
 
-<a name="AnchorNetwork.ToProto"></a>
+###### AnchorNetwork.ToProto {#AnchorNetwork.ToProto}
 ### func \(AnchorNetwork\) ToProto
 
 ```go
@@ -118,7 +118,7 @@ func (a AnchorNetwork) ToProto() *proto.AnchorNetwork
 
 
 
-<a name="AnchorParams"></a>
+###### AnchorParams {#AnchorParams}
 ## type AnchorParams
 
 AnchorParams represents parameters for anchor\-related operations.
@@ -129,7 +129,7 @@ type AnchorParams struct {
 }
 ```
 
-<a name="NewAnchorParams"></a>
+###### NewAnchorParams {#NewAnchorParams}
 ### func NewAnchorParams
 
 ```go
@@ -138,7 +138,7 @@ func NewAnchorParams() AnchorParams
 
 NewAnchorParams creates a new AnchorParams instance with default values.
 
-<a name="Network"></a>
+###### Network {#Network}
 ## type Network
 
 Network represents a network.
@@ -147,7 +147,7 @@ Network represents a network.
 type Network = proto.Network
 ```
 
-<a name="NetworkParams"></a>
+###### NetworkParams {#NetworkParams}
 ## type NetworkParams
 
 NetworkParams represents parameters for network\-related operations.
@@ -158,7 +158,7 @@ type NetworkParams struct {
 }
 ```
 
-<a name="NewNetworkParams"></a>
+###### NewNetworkParams {#NewNetworkParams}
 ### func NewNetworkParams
 
 ```go
@@ -167,7 +167,7 @@ func NewNetworkParams() NetworkParams
 
 NewNetworkParams creates a new NetworkParams instance with default values.
 
-<a name="Proof"></a>
+###### Proof {#Proof}
 ## type Proof
 
 Proof represents a proof, including leaves, nodes, depth, bitmap, and anchor information.
@@ -182,7 +182,7 @@ type Proof struct {
 }
 ```
 
-<a name="NewProofFromProto"></a>
+###### NewProofFromProto {#NewProofFromProto}
 ### func NewProofFromProto
 
 ```go
@@ -191,7 +191,7 @@ func NewProofFromProto(p *proto.Proof) Proof
 
 
 
-<a name="Proof.ToProto"></a>
+###### Proof.ToProto {#Proof.ToProto}
 ### func \(Proof\) ToProto
 
 ```go
@@ -200,7 +200,7 @@ func (p Proof) ToProto() *proto.Proof
 
 
 
-<a name="ProofAnchor"></a>
+###### ProofAnchor {#ProofAnchor}
 ## type ProofAnchor
 
 ProofAnchor represents a proof anchor.
@@ -214,7 +214,7 @@ type ProofAnchor struct {
 }
 ```
 
-<a name="NewProofAnchorFromProto"></a>
+###### NewProofAnchorFromProto {#NewProofAnchorFromProto}
 ### func NewProofAnchorFromProto
 
 ```go
@@ -223,7 +223,7 @@ func NewProofAnchorFromProto(p *proto.ProofAnchor) ProofAnchor
 
 
 
-<a name="ProofAnchor.ToProto"></a>
+###### ProofAnchor.ToProto {#ProofAnchor.ToProto}
 ### func \(ProofAnchor\) ToProto
 
 ```go
@@ -232,7 +232,7 @@ func (p ProofAnchor) ToProto() *proto.ProofAnchor
 
 
 
-<a name="RecordReceipt"></a>
+###### RecordReceipt {#RecordReceipt}
 ## type RecordReceipt
 
 RecordReceipt represents a receipt for a record, including anchor ID, client, record, and status information.
@@ -246,7 +246,7 @@ type RecordReceipt struct {
 }
 ```
 
-<a name="NewRecordReceiptFromProto"></a>
+###### NewRecordReceiptFromProto {#NewRecordReceiptFromProto}
 ### func NewRecordReceiptFromProto
 
 ```go

@@ -28,7 +28,7 @@ import "github.com/bloock/bloock-sdk-go/v2/entity/availability"
   - [func \(e PublisherArgs\) ToProto\(\) \*proto.PublisherArgs](#PublisherArgs.ToProto)
 
 
-<a name="HostedLoader"></a>
+###### HostedLoader {#HostedLoader}
 ## type HostedLoader
 
 HostedLoader represents a loader for hosted data availability.
@@ -40,7 +40,7 @@ type HostedLoader struct {
 }
 ```
 
-<a name="NewHostedLoader"></a>
+###### NewHostedLoader {#NewHostedLoader}
 ### func NewHostedLoader
 
 ```go
@@ -49,7 +49,7 @@ func NewHostedLoader(id string) HostedLoader
 
 NewHostedLoader creates a HostedLoader instance with the provided identifier \(ex: c137fded\-cb04\-4c6e\-9415\-1e7baf48b659\).
 
-<a name="HostedLoader.ToProto"></a>
+###### HostedLoader.ToProto {#HostedLoader.ToProto}
 ### func \(HostedLoader\) ToProto
 
 ```go
@@ -58,7 +58,7 @@ func (e HostedLoader) ToProto() *proto.Loader
 
 
 
-<a name="HostedPublisher"></a>
+###### HostedPublisher {#HostedPublisher}
 ## type HostedPublisher
 
 HostedPublisher represents a publisher for hosted data availability.
@@ -70,7 +70,7 @@ type HostedPublisher struct {
 }
 ```
 
-<a name="NewHostedPublisher"></a>
+###### NewHostedPublisher {#NewHostedPublisher}
 ### func NewHostedPublisher
 
 ```go
@@ -79,7 +79,7 @@ func NewHostedPublisher() HostedPublisher
 
 NewHostedPublisher creates a HostedPublisher instance with default publisher arguments.
 
-<a name="HostedPublisher.ToProto"></a>
+###### HostedPublisher.ToProto {#HostedPublisher.ToProto}
 ### func \(HostedPublisher\) ToProto
 
 ```go
@@ -88,7 +88,7 @@ func (e HostedPublisher) ToProto() *proto.Publisher
 
 
 
-<a name="IpfsLoader"></a>
+###### IpfsLoader {#IpfsLoader}
 ## type IpfsLoader
 
 IpfsLoader represents a loader for IPFS data availability.
@@ -100,7 +100,7 @@ type IpfsLoader struct {
 }
 ```
 
-<a name="NewIpfsLoader"></a>
+###### NewIpfsLoader {#NewIpfsLoader}
 ### func NewIpfsLoader
 
 ```go
@@ -109,7 +109,7 @@ func NewIpfsLoader(hash string) IpfsLoader
 
 NewIpfsLoader creates an IpfsLoader instance with the provided IPFS hash.
 
-<a name="IpfsLoader.ToProto"></a>
+###### IpfsLoader.ToProto {#IpfsLoader.ToProto}
 ### func \(IpfsLoader\) ToProto
 
 ```go
@@ -118,7 +118,7 @@ func (e IpfsLoader) ToProto() *proto.Loader
 
 
 
-<a name="IpfsPublisher"></a>
+###### IpfsPublisher {#IpfsPublisher}
 ## type IpfsPublisher
 
 IpfsPublisher represents a publisher for IPFS data availability.
@@ -130,7 +130,7 @@ type IpfsPublisher struct {
 }
 ```
 
-<a name="NewIpfsPublisher"></a>
+###### NewIpfsPublisher {#NewIpfsPublisher}
 ### func NewIpfsPublisher
 
 ```go
@@ -139,7 +139,7 @@ func NewIpfsPublisher() IpfsPublisher
 
 IpfsPublisher represents a publisher for IPFS data availability.
 
-<a name="IpfsPublisher.ToProto"></a>
+###### IpfsPublisher.ToProto {#IpfsPublisher.ToProto}
 ### func \(IpfsPublisher\) ToProto
 
 ```go
@@ -148,7 +148,7 @@ func (e IpfsPublisher) ToProto() *proto.Publisher
 
 
 
-<a name="Loader"></a>
+###### Loader {#Loader}
 ## type Loader
 
 
@@ -159,7 +159,7 @@ type Loader interface {
 }
 ```
 
-<a name="LoaderArgs"></a>
+###### LoaderArgs {#LoaderArgs}
 ## type LoaderArgs
 
 LoaderArgs represents the arguments for a data loader.
@@ -171,7 +171,7 @@ type LoaderArgs struct {
 }
 ```
 
-<a name="LoaderArgs.ToProto"></a>
+###### LoaderArgs.ToProto {#LoaderArgs.ToProto}
 ### func \(LoaderArgs\) ToProto
 
 ```go
@@ -180,7 +180,7 @@ func (e LoaderArgs) ToProto() *proto.LoaderArgs
 
 
 
-<a name="Publisher"></a>
+###### Publisher {#Publisher}
 ## type Publisher
 
 
@@ -191,7 +191,7 @@ type Publisher interface {
 }
 ```
 
-<a name="PublisherArgs"></a>
+###### PublisherArgs {#PublisherArgs}
 ## type PublisherArgs
 
 PublisherArgs represents the arguments for a data publisher.
@@ -201,7 +201,7 @@ type PublisherArgs struct {
 }
 ```
 
-<a name="PublisherArgs.ToProto"></a>
+###### PublisherArgs.ToProto {#PublisherArgs.ToProto}
 ### func \(PublisherArgs\) ToProto
 
 ```go

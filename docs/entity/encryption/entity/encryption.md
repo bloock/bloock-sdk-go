@@ -21,7 +21,7 @@ import "github.com/bloock/bloock-sdk-go/v2/entity/encryption"
 
 ## Variables
 
-<a name="EncryptionAlgFromProto"></a>
+###### EncryptionAlgFromProto {#EncryptionAlgFromProto}
 
 ```go
 var (
@@ -40,7 +40,7 @@ var (
 )
 ```
 
-<a name="Encrypter"></a>
+###### Encrypter {#Encrypter}
 ## type Encrypter
 
 Encrypter represents an encryption configuration with various key types and access control.
@@ -55,7 +55,7 @@ type Encrypter struct {
 }
 ```
 
-<a name="NewEncrypterWithLocalCertificate"></a>
+###### NewEncrypterWithLocalCertificate {#NewEncrypterWithLocalCertificate}
 ### func NewEncrypterWithLocalCertificate
 
 ```go
@@ -64,7 +64,7 @@ func NewEncrypterWithLocalCertificate(key key.LocalCertificate) Encrypter
 
 NewEncrypterWithLocalCertificate creates a new Encrypter instance with a local certificate for encryption.
 
-<a name="NewEncrypterWithLocalKey"></a>
+###### NewEncrypterWithLocalKey {#NewEncrypterWithLocalKey}
 ### func NewEncrypterWithLocalKey
 
 ```go
@@ -73,7 +73,7 @@ func NewEncrypterWithLocalKey(key key.LocalKey) Encrypter
 
 NewEncrypterWithLocalKey creates a new Encrypter instance with a local encryption key.
 
-<a name="NewEncrypterWithManagedCertificate"></a>
+###### NewEncrypterWithManagedCertificate {#NewEncrypterWithManagedCertificate}
 ### func NewEncrypterWithManagedCertificate
 
 ```go
@@ -82,7 +82,7 @@ func NewEncrypterWithManagedCertificate(key key.ManagedCertificate, accessContro
 
 NewEncrypterWithManagedCertificate creates a new Encrypter instance with a managed certificate for encryption and access control.
 
-<a name="NewEncrypterWithManagedKey"></a>
+###### NewEncrypterWithManagedKey {#NewEncrypterWithManagedKey}
 ### func NewEncrypterWithManagedKey
 
 ```go
@@ -91,7 +91,7 @@ func NewEncrypterWithManagedKey(key key.ManagedKey, accessControl *key.AccessCon
 
 NewEncrypterWithManagedKey creates a new Encrypter instance with a managed encryption key and access control.
 
-<a name="Encrypter.ToProto"></a>
+###### Encrypter.ToProto {#Encrypter.ToProto}
 ### func \(Encrypter\) ToProto
 
 ```go
@@ -100,7 +100,7 @@ func (s Encrypter) ToProto() *proto.Encrypter
 
 
 
-<a name="EncrypterArgs"></a>
+###### EncrypterArgs {#EncrypterArgs}
 ## type EncrypterArgs
 
 EncrypterArgs represents the arguments for an encrypter.
@@ -114,7 +114,7 @@ type EncrypterArgs struct {
 }
 ```
 
-<a name="EncryptionAlg"></a>
+###### EncryptionAlg {#EncryptionAlg}
 ## type EncryptionAlg
 
 EncryptionAlg represents encryption algorithm types.
@@ -123,7 +123,7 @@ EncryptionAlg represents encryption algorithm types.
 type EncryptionAlg int32
 ```
 
-<a name="AES256GCM"></a>
+###### AES256GCM {#AES256GCM}
 
 ```go
 const (
