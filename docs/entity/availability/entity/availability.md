@@ -16,10 +16,19 @@ import "github.com/bloock/bloock-sdk-go/v2/entity/availability"
   - [func \(e HostedPublisher\) ToProto\(\) \*proto.Publisher](#HostedPublisher.ToProto)
 - [type IpfsLoader](#IpfsLoader)
   - [func NewIpfsLoader\(hash string\) IpfsLoader](#NewIpfsLoader)
+  - [func NewIpnsLoader\(hash string\) IpfsLoader](#NewIpnsLoader)
   - [func \(e IpfsLoader\) ToProto\(\) \*proto.Loader](#IpfsLoader.ToProto)
 - [type IpfsPublisher](#IpfsPublisher)
   - [func NewIpfsPublisher\(\) IpfsPublisher](#NewIpfsPublisher)
   - [func \(e IpfsPublisher\) ToProto\(\) \*proto.Publisher](#IpfsPublisher.ToProto)
+- [type IpnsKey](#IpnsKey)
+  - [func NewIpnsKeyWithManagedKey\(key key.ManagedKey\) IpnsKey](#NewIpnsKeyWithManagedKey)
+  - [func \(s IpnsKey\) ToProto\(\) \*proto.IpnsKey](#IpnsKey.ToProto)
+- [type IpnsLoader](#IpnsLoader)
+  - [func \(e IpnsLoader\) ToProto\(\) \*proto.Loader](#IpnsLoader.ToProto)
+- [type IpnsPublisher](#IpnsPublisher)
+  - [func NewIpnsPublisher\(ipnsKey IpnsKey\) IpnsPublisher](#NewIpnsPublisher)
+  - [func \(e IpnsPublisher\) ToProto\(\) \*proto.Publisher](#IpnsPublisher.ToProto)
 - [type Loader](#Loader)
 - [type LoaderArgs](#LoaderArgs)
   - [func \(e LoaderArgs\) ToProto\(\) \*proto.LoaderArgs](#LoaderArgs.ToProto)
@@ -109,6 +118,15 @@ func NewIpfsLoader(hash string) IpfsLoader
 
 NewIpfsLoader creates an IpfsLoader instance with the provided IPFS hash.
 
+###### NewIpnsLoader {#NewIpnsLoader}
+### func NewIpnsLoader
+
+```go
+func NewIpnsLoader(hash string) IpfsLoader
+```
+
+NewIpnsLoader creates an IpnsLoader instance with the provided IPNS hash.
+
 ###### IpfsLoader.ToProto {#IpfsLoader.ToProto}
 ### func \(IpfsLoader\) ToProto
 
@@ -144,6 +162,87 @@ IpfsPublisher represents a publisher for IPFS data availability.
 
 ```go
 func (e IpfsPublisher) ToProto() *proto.Publisher
+```
+
+
+
+###### IpnsKey {#IpnsKey}
+## type IpnsKey
+
+IpnsKey represents an object with various key types.
+
+```go
+type IpnsKey struct {
+    ManagedKey         *key.ManagedKey
+    ManagedCertificate *key.ManagedCertificate
+}
+```
+
+###### NewIpnsKeyWithManagedKey {#NewIpnsKeyWithManagedKey}
+### func NewIpnsKeyWithManagedKey
+
+```go
+func NewIpnsKeyWithManagedKey(key key.ManagedKey) IpnsKey
+```
+
+NewIpnsKeyWithManagedKey creates an IpnsKey instance with a managed key.
+
+###### IpnsKey.ToProto {#IpnsKey.ToProto}
+### func \(IpnsKey\) ToProto
+
+```go
+func (s IpnsKey) ToProto() *proto.IpnsKey
+```
+
+
+
+###### IpnsLoader {#IpnsLoader}
+## type IpnsLoader
+
+IpnsLoader represents a loader for IPNS data availability.
+
+```go
+type IpnsLoader struct {
+    Type proto.DataAvailabilityType
+    Args LoaderArgs
+}
+```
+
+###### IpnsLoader.ToProto {#IpnsLoader.ToProto}
+### func \(IpnsLoader\) ToProto
+
+```go
+func (e IpnsLoader) ToProto() *proto.Loader
+```
+
+
+
+###### IpnsPublisher {#IpnsPublisher}
+## type IpnsPublisher
+
+IpnsPublisher represents a publisher for IPNS data availability.
+
+```go
+type IpnsPublisher struct {
+    Type proto.DataAvailabilityType
+    Args PublisherArgs
+}
+```
+
+###### NewIpnsPublisher {#NewIpnsPublisher}
+### func NewIpnsPublisher
+
+```go
+func NewIpnsPublisher(ipnsKey IpnsKey) IpnsPublisher
+```
+
+NewIpnsPublisher represents a publisher for IPNS data availability.
+
+###### IpnsPublisher.ToProto {#IpnsPublisher.ToProto}
+### func \(IpnsPublisher\) ToProto
+
+```go
+func (e IpnsPublisher) ToProto() *proto.Publisher
 ```
 
 
@@ -198,6 +297,8 @@ PublisherArgs represents the arguments for a data publisher.
 
 ```go
 type PublisherArgs struct {
+    // IpnsKey is a managed key or certificate object that will be used to create the IPNS record.
+    IpnsKey IpnsKey
 }
 ```
 
