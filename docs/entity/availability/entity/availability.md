@@ -22,16 +22,21 @@ import "github.com/bloock/bloock-sdk-go/v2/entity/availability"
   - [func NewIpfsPublisher\(\) IpfsPublisher](#NewIpfsPublisher)
   - [func \(e IpfsPublisher\) ToProto\(\) \*proto.Publisher](#IpfsPublisher.ToProto)
 - [type IpnsKey](#IpnsKey)
-  - [func NewIpnsKeyWithManagedKey\(key key.ManagedKey\) IpnsKey](#NewIpnsKeyWithManagedKey)
+  - [func NewIpnsKey\(keyID string\) IpnsKey](#NewIpnsKey)
+  - [func NewIpnsKeyFromProto\(ipnsKey \*proto.IpnsKey\) \*IpnsKey](#NewIpnsKeyFromProto)
   - [func \(s IpnsKey\) ToProto\(\) \*proto.IpnsKey](#IpnsKey.ToProto)
 - [type IpnsLoader](#IpnsLoader)
   - [func \(e IpnsLoader\) ToProto\(\) \*proto.Loader](#IpnsLoader.ToProto)
 - [type IpnsPublisher](#IpnsPublisher)
-  - [func NewIpnsPublisher\(ipnsKey IpnsKey\) IpnsPublisher](#NewIpnsPublisher)
+  - [func NewIpnsPublisher\(\) IpnsPublisher](#NewIpnsPublisher)
+  - [func UpdateIpnsPublisher\(ipnsKey \*IpnsKey\) IpnsPublisher](#UpdateIpnsPublisher)
   - [func \(e IpnsPublisher\) ToProto\(\) \*proto.Publisher](#IpnsPublisher.ToProto)
 - [type Loader](#Loader)
 - [type LoaderArgs](#LoaderArgs)
   - [func \(e LoaderArgs\) ToProto\(\) \*proto.LoaderArgs](#LoaderArgs.ToProto)
+- [type PublishResponse](#PublishResponse)
+  - [func NewPublishResponse\(id string, ipnsKey \*IpnsKey\) PublishResponse](#NewPublishResponse)
+  - [func NewPublishResponseFromProto\(res \*proto.PublishResponse\) PublishResponse](#NewPublishResponseFromProto)
 - [type Publisher](#Publisher)
 - [type PublisherArgs](#PublisherArgs)
   - [func \(e PublisherArgs\) ToProto\(\) \*proto.PublisherArgs](#PublisherArgs.ToProto)
@@ -169,23 +174,31 @@ func (e IpfsPublisher) ToProto() *proto.Publisher
 ###### IpnsKey {#IpnsKey}
 ## type IpnsKey
 
-IpnsKey represents an object with various key types.
+IpnsKey represents an object with a key uuid identifier.
 
 ```go
 type IpnsKey struct {
-    ManagedKey         *key.ManagedKey
-    ManagedCertificate *key.ManagedCertificate
+    KeyID string
 }
 ```
 
-###### NewIpnsKeyWithManagedKey {#NewIpnsKeyWithManagedKey}
-### func NewIpnsKeyWithManagedKey
+###### NewIpnsKey {#NewIpnsKey}
+### func NewIpnsKey
 
 ```go
-func NewIpnsKeyWithManagedKey(key key.ManagedKey) IpnsKey
+func NewIpnsKey(keyID string) IpnsKey
 ```
 
-NewIpnsKeyWithManagedKey creates an IpnsKey instance with a managed key.
+NewIpnsKey creates an IpnsKey instance with a key uuid identifier.
+
+###### NewIpnsKeyFromProto {#NewIpnsKeyFromProto}
+### func NewIpnsKeyFromProto
+
+```go
+func NewIpnsKeyFromProto(ipnsKey *proto.IpnsKey) *IpnsKey
+```
+
+
 
 ###### IpnsKey.ToProto {#IpnsKey.ToProto}
 ### func \(IpnsKey\) ToProto
@@ -233,10 +246,19 @@ type IpnsPublisher struct {
 ### func NewIpnsPublisher
 
 ```go
-func NewIpnsPublisher(ipnsKey IpnsKey) IpnsPublisher
+func NewIpnsPublisher() IpnsPublisher
 ```
 
-NewIpnsPublisher represents a publisher for IPNS data availability.
+NewIpnsPublisher represents a publisher for IPNS data availability with creation option.
+
+###### UpdateIpnsPublisher {#UpdateIpnsPublisher}
+### func UpdateIpnsPublisher
+
+```go
+func UpdateIpnsPublisher(ipnsKey *IpnsKey) IpnsPublisher
+```
+
+UpdateIpnsPublisher represents a publisher for IPNS data availability with update option.
 
 ###### IpnsPublisher.ToProto {#IpnsPublisher.ToProto}
 ### func \(IpnsPublisher\) ToProto
@@ -279,6 +301,36 @@ func (e LoaderArgs) ToProto() *proto.LoaderArgs
 
 
 
+###### PublishResponse {#PublishResponse}
+## type PublishResponse
+
+PublishResponse represents an object with a the publish response attributes.
+
+```go
+type PublishResponse struct {
+    ID      string
+    IpnsKey *IpnsKey
+}
+```
+
+###### NewPublishResponse {#NewPublishResponse}
+### func NewPublishResponse
+
+```go
+func NewPublishResponse(id string, ipnsKey *IpnsKey) PublishResponse
+```
+
+NewIpnsKey constructs a PublishResponse object with the specified parameters.
+
+###### NewPublishResponseFromProto {#NewPublishResponseFromProto}
+### func NewPublishResponseFromProto
+
+```go
+func NewPublishResponseFromProto(res *proto.PublishResponse) PublishResponse
+```
+
+
+
 ###### Publisher {#Publisher}
 ## type Publisher
 
@@ -298,7 +350,7 @@ PublisherArgs represents the arguments for a data publisher.
 ```go
 type PublisherArgs struct {
     // IpnsKey is a managed key or certificate object that will be used to create the IPNS record.
-    IpnsKey IpnsKey
+    IpnsKey *IpnsKey
 }
 ```
 

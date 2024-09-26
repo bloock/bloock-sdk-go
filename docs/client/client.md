@@ -20,7 +20,7 @@ Package client provides a client for interacting with the Bloock SDK.
 - [type AvailabilityClient](#AvailabilityClient)
   - [func NewAvailabilityClient\(\) AvailabilityClient](#NewAvailabilityClient)
   - [func NewAvailabilityClientWithConfig\(configData \*proto.ConfigData\) AvailabilityClient](#NewAvailabilityClientWithConfig)
-  - [func \(c \*AvailabilityClient\) Publish\(r record.Record, publisher availability.Publisher\) \(string, error\)](#AvailabilityClient.Publish)
+  - [func \(c \*AvailabilityClient\) Publish\(r record.Record, publisher availability.Publisher\) \(availability.PublishResponse, error\)](#AvailabilityClient.Publish)
   - [func \(c \*AvailabilityClient\) Retrieve\(loader availability.Loader\) \(record.Record, error\)](#AvailabilityClient.Retrieve)
 - [type BloockClient](#BloockClient)
   - [func NewBloockClient\(apiKey string, identityApiHost \*string\) BloockClient](#NewBloockClient)
@@ -197,7 +197,7 @@ NewAvailabilityClientWithConfig creates a new instance of the AvailabilityClient
 ### func \(\*AvailabilityClient\) Publish
 
 ```go
-func (c *AvailabilityClient) Publish(r record.Record, publisher availability.Publisher) (string, error)
+func (c *AvailabilityClient) Publish(r record.Record, publisher availability.Publisher) (availability.PublishResponse, error)
 ```
 
 Publish publishes a Bloock record to the Availability service using the specified publisher.
